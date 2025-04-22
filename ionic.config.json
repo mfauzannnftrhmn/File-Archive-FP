@@ -1,0 +1,7 @@
+{
+  "name": "SampleApk",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
