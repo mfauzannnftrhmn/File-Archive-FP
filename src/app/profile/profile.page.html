@@ -1,0 +1,71 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+</ion-content>
+
+<ion-tab-bar slot="bottom" class="bg-white border-t border-gray-100">
+  <ion-tab-button
+    tab="dashboard"
+    routerLink="/dashboard"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="grid-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Dashboard</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button
+    tab="aktivitas"
+    routerLink="/aktivitas"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="pulse-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Aktivitas</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button
+    tab="riwayat"
+    routerLink="/riwayatsurat"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="time-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Riwayat</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button
+    tab="profile"
+    routerLink="/profile"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="person-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Profile</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>

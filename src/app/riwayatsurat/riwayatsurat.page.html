@@ -1,0 +1,97 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Riwayat Surat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="bg-gray-100 p-4">
+  <!-- Jika tidak ada data surat yang diajukan -->
+  <div *ngIf="riwayatSurat.length === 0" class="text-center text-gray-500">
+    Belum ada surat yang diajukan.
+  </div>
+
+  <div *ngIf="riwayatSurat.length > 0" class="space-y-4">
+    <!-- Iterasi daftar surat yang diajukan -->
+    <ion-item
+      *ngFor="let surat of riwayatSurat"
+      class="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition duration-300"
+    >
+      <ion-label class="flex flex-col">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-lg font-semibold text-indigo-600">
+            {{ surat.suratNumber }}
+          </h3>
+          <span class="text-sm text-gray-500">{{ surat.date }}</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <p class="text-sm text-gray-700">{{ surat.title }}</p>
+          <ion-button
+            color="primary"
+            (click)="viewSuratDetails(surat)"
+            size="small"
+          >
+            Lihat Status
+          </ion-button>
+        </div>
+      </ion-label>
+    </ion-item>
+  </div>
+</ion-content>
+<ion-tab-bar slot="bottom" class="bg-white border-t border-gray-100">
+  <ion-tab-button
+    tab="dashboard"
+    routerLink="/dashboard"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="grid-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Dashboard</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button
+    tab="aktivitas"
+    routerLink="/aktivitas"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="pulse-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Aktivitas</ion-label>
+  </ion-tab-button>
+
+
+  <ion-tab-button
+    tab="riwayat"
+    routerLink="/riwayatsurat"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="time-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Riwayat</ion-label>
+  </ion-tab-button>
+
+  <ion-tab-button
+    tab="profile"
+    routerLink="/profile"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs sm:text-sm"
+  >
+    <ion-icon
+      name="person-outline"
+      class="text-base sm:text-lg md:text-xl"
+    ></ion-icon>
+    <ion-label>Profile</ion-label>
+  </ion-tab-button>
+</ion-tab-bar>

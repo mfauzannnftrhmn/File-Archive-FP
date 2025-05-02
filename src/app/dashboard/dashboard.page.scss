@@ -1,0 +1,121 @@
+#container {
+    text-align: center;
+  
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  #container strong {
+    font-size: 20px;
+    line-height: 26px;
+  }
+  
+  #container p {
+    font-size: 16px;
+    line-height: 22px;
+  
+    color: #8c8c8c;
+  
+    margin: 0;
+  }
+  
+  #container a {
+    text-decoration: none;
+  }
+  
+  ion-tab-bar {
+    --background: #ffffff;
+    --color: #666666;
+    --color-selected: #6366f1; /* Warna tab aktif */
+    --border: none;
+    position: relative;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Garis gradasi atas tab bar */
+  ion-tab-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, #8b5cf6, #6366f1, #3b82f6);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    z-index: 10;
+  }
+  
+  /* Style untuk tab yang aktif */
+  ion-tab-button.ion-selected {
+    --background: #eef2ff; /* Background ringan di tab aktif */
+    color: #4f46e5; /* Warna teks/icon aktif */
+    border-radius: 12px;
+    margin: 4px;
+    transition: 0.3s;
+  }
+  
+  /* Biar efek hover juga lebih smooth */
+  ion-tab-button:hover {
+    background: #f5f7ff;
+  }
+  
+  .quick-actions {
+    padding: 16px;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  
+  .action-grid {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .action-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .icon-link {
+    display: inline-block;
+    padding: 8px;
+  }
+  
+  .action-icon {
+    font-size: 24px;
+    color: #3b82f6; 
+  }
+  
+  .action-label {
+    font-size: 12px;
+    margin-top: 4px;
+  }
+  
+  .tab-selected {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }
+  
+  .tab-selected ion-icon {
+    color: var(--ion-color-primary);
+  }
+  
+  /* Optional: Add a bottom border or indicator */
+  .tab-selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background-color: var(--ion-color-primary);
+    border-radius: 3px 3px 0 0;
+  }

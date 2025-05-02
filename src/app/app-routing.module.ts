@@ -1,22 +1,66 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () =>
+      import('./home/home.module').then((m) => m.HomePageModule),
   },
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full',
+  },
+  {
+    path: 'templatesurat',
+    loadChildren: () =>
+      import('./templatesurat/templatesurat.module').then(
+        (m) => m.TemplatesuratPageModule
+      ),
+  },
+  {
+    path: 'pengajuansurat',
+    loadChildren: () =>
+      import('./pengajuansurat/pengajuansurat.module').then(
+        (m) => m.PengajuansuratPageModule
+      ),
+  },
+  {
+    path: 'statuspengajuan',
+    loadChildren: () =>
+      import('./statuspengajuan/statuspengajuan.module').then(
+        (m) => m.StatuspengajuanPageModule
+      ),
+  },
+  {
+    path: 'riwayatsurat',
+    loadChildren: () =>
+      import('./riwayatsurat/riwayatsurat.module').then(
+        (m) => m.RiwayatsuratPageModule
+      ),
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./dashboard/dashboard.module').then((m) => m.DashboardPageModule),
+  },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('./profile/profile.module').then((m) => m.ProfilePageModule),
+  },
+  {
+    path: 'aktivitas',
+    loadChildren: () => import('./aktivitas/aktivitas.module').then( m => m.AktivitasPageModule)
   },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

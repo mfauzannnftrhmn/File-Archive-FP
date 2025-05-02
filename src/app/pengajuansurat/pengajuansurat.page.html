@@ -1,0 +1,335 @@
+<ion-header>
+  <ion-toolbar color="primary" class="ion-padding-vertical">
+    <ion-title class="ion-text-center" size="large"
+      >Form Pengajuan Surat</ion-title
+    >
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-margin-bottom" [fullscreen]="true">
+  <!-- Template Selection Card -->
+  <ion-card
+    class="ion-margin-vertical ion-no-margin-horizontal ion-margin-bottom"
+  >
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-chip color="primary" outline>
+          <ion-label>Langkah 1</ion-label>
+        </ion-chip>
+      </ion-card-subtitle>
+      <ion-card-title class="ion-padding-top">
+        <ion-text color="dark">Pilih Template</ion-text>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item lines="none" class="ion-margin-vertical">
+        <ion-icon
+          name="document-text-outline"
+          slot="start"
+          color="primary"
+        ></ion-icon>
+        <ion-select
+          [(ngModel)]="selectedTemplate"
+          (ionChange)="generateSuratNumber()"
+          placeholder="Pilih jenis surat"
+          interface="action-sheet"
+          mode="md"
+          class="ion-select-full-width"
+        >
+          <ion-select-option
+            *ngFor="let template of suratTemplates"
+            [value]="template"
+          >
+            {{ template.title }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Dynamic Form Card -->
+  <ng-container *ngIf="selectedTemplate">
+    <ion-card class="ion-margin-vertical ion-no-margin-horizontal">
+      <ion-card-header>
+        <ion-card-subtitle>
+          <ion-chip color="primary" outline>
+            <ion-label>Langkah 2</ion-label>
+          </ion-chip>
+        </ion-card-subtitle>
+        <ion-card-title class="ion-padding-top">
+          <ion-text color="dark">{{ selectedTemplate }}</ion-text>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Surat Permohonan Cuti -->
+        <div
+          *ngIf="selectedTemplate === 'Surat Permohonan Cuti'"
+          class="form-fields"
+        >
+          <ion-list>
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="person-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Nama Pemohon Cuti</ion-label>
+              <ion-input
+                [(ngModel)]="formData.name"
+                type="text"
+                placeholder="Masukkan nama lengkap"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="calendar-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Tanggal Cuti</ion-label>
+              <ion-datetime
+                [(ngModel)]="formData.date"
+                displayFormat="DD MMM YYYY"
+                placeholder="Pilih tanggal"
+                class="ion-padding-top"
+              ></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon
+                name="document-text-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Alasan Cuti</ion-label>
+              <ion-textarea
+                [(ngModel)]="formData.additionalInfo"
+                rows="3"
+                placeholder="Jelaskan alasan cuti Anda"
+                class="ion-padding-top"
+              ></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Surat Keterangan Kerja -->
+        <div
+          *ngIf="selectedTemplate === 'Surat Keterangan Kerja'"
+          class="form-fields"
+        >
+          <ion-list>
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="person-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Nama Karyawan</ion-label>
+              <ion-input
+                [(ngModel)]="formData.name"
+                type="text"
+                placeholder="Masukkan nama lengkap"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="briefcase-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Jabatan</ion-label>
+              <ion-input
+                [(ngModel)]="formData.additionalInfo"
+                type="text"
+                placeholder="Masukkan jabatan"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon
+                name="business-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Perusahaan</ion-label>
+              <ion-input
+                [(ngModel)]="formData.email"
+                type="text"
+                placeholder="Masukkan nama perusahaan"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Surat Pengajuan Keluhan -->
+        <div
+          *ngIf="selectedTemplate === 'Surat Pengajuan Keluhan'"
+          class="form-fields"
+        >
+          <ion-list>
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="person-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Nama Pengaju</ion-label>
+              <ion-input
+                [(ngModel)]="formData.name"
+                type="text"
+                placeholder="Masukkan nama lengkap"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon
+                name="alert-circle-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Keluhan</ion-label>
+              <ion-textarea
+                [(ngModel)]="formData.additionalInfo"
+                rows="4"
+                placeholder="Deskripsikan keluhan Anda secara detail"
+                class="ion-padding-top"
+              ></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </div>
+
+        <!-- Surat Rekomendasi -->
+        <div
+          *ngIf="selectedTemplate === 'Surat Rekomendasi'"
+          class="form-fields"
+        >
+          <ion-list>
+            <ion-item class="ion-margin-bottom">
+              <ion-icon
+                name="person-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked"
+                >Nama yang Direkomendasikan</ion-label
+              >
+              <ion-input
+                [(ngModel)]="formData.name"
+                type="text"
+                placeholder="Masukkan nama lengkap"
+                class="ion-padding-top"
+              ></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-icon
+                name="ribbon-outline"
+                slot="start"
+                color="primary"
+              ></ion-icon>
+              <ion-label position="stacked">Keterangan</ion-label>
+              <ion-textarea
+                [(ngModel)]="formData.additionalInfo"
+                rows="4"
+                placeholder="Masukkan keterangan rekomendasi"
+                class="ion-padding-top"
+              ></ion-textarea>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- Submit Button -->
+  <div class="ion-padding-vertical ion-margin-bottom">
+    <ion-button
+      expand="block"
+      shape="round"
+      color="primary"
+      (click)="submitForm()"
+      [disabled]="!selectedTemplate"
+      class="ion-margin-horizontal"
+      size="large"
+    >
+      <ion-icon name="paper-plane" slot="start"></ion-icon>
+      <ion-text>Ajukan Surat</ion-text>
+    </ion-button>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button
+        tab="dashboard"
+        routerLink="/dashboard"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+      >
+        <ion-icon name="grid-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        tab="templatesurat"
+        routerLink="/templatesurat"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+      >
+        <ion-icon name="document-text-outline"></ion-icon>
+        <ion-label>Template</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        tab="pengajuansurat"
+        routerLink="/pengajuansurat"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+        class="tab-selected"
+      >
+        <ion-icon name="paper-plane-outline"></ion-icon>
+        <ion-label>Ajukan</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        tab="statuspengajuan"
+        routerLink="/statuspengajuan"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+      >
+        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+        <ion-label>Status</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        tab="riwayatsurat"
+        routerLink="/riwayatsurat"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+      >
+        <ion-icon name="time-outline"></ion-icon>
+        <ion-label>Riwayat</ion-label>
+      </ion-tab-button>
+
+      <ion-tab-button
+        tab="profile"
+        routerLink="/profile"
+        routerDirection="root"
+        routerLinkActive="tab-selected"
+      >
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Profile</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-footer>

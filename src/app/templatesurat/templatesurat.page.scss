@@ -1,0 +1,25 @@
+ion-content {
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+.tab-selected {
+  color: var(--ion-color-primary);
+  font-weight: bold;
+}
+
+.tab-selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+/* Optional: Add a bottom border or indicator */
+.tab-selected::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: var(--ion-color-primary);
+  border-radius: 3px 3px 0 0;
+}

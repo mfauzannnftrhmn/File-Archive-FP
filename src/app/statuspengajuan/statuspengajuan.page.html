@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Status Pengajuan Surat</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="bg-gray-100 p-4">
+  <!-- Bagian Judul -->
+  <div class="text-center mb-6">
+    <h2 class="text-2xl font-semibold text-gray-800">
+      Pantau Proses Pengajuan Surat
+    </h2>
+    <p class="text-gray-500 mt-2">
+      Pilih salah satu surat yang sudah diajukan untuk melihat status
+      pengajuannya.
+    </p>
+  </div>
+
+  <!-- Pilihan Surat yang Diajukan -->
+  <div class="mb-6">
+    <h3 class="text-lg font-semibold text-gray-700">Pilih Surat:</h3>
+    <ion-select
+      [(ngModel)]="selectedSurat"
+      (ionChange)="onSuratSelected()"
+      class="w-full"
+    >
+      <ion-select-option
+        *ngFor="let surat of submittedSurat"
+        [value]="surat.id"
+      >
+        {{ surat.title }} - {{ surat.suratNumber }}
+      </ion-select-option>
+    </ion-select>
+  </div>
+
+  <!-- Timeline Proses -->
+  <div *ngIf="selectedSuratDetails" class="space-y-6">
+    <!-- Timeline Surat -->
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h3 class="text-xl font-semibold text-indigo-600 mb-4">Proses Surat</h3>
+
+      <!-- Step 1: Distribusi Surat -->
+      <div class="flex items-center">
+        <div
+          class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"
+        >
+          <ion-icon
+            name="map-outline"
+            class="text-xl text-indigo-600"
+          ></ion-icon>
+        </div>
+        <div class="ml-4">
+          <h4 class="text-lg font-medium text-gray-700">Distribusi Surat</h4>
+          <p class="text-sm text-gray-500">
+            Surat Anda sedang didistribusikan ke bagian terkait.
+          </p>
+        </div>
+      </div>
+      <ion-progress-bar
+        [value]="selectedSuratDetails.distribusiProgress"
+        class="mt-2"
+      ></ion-progress-bar>
+      <p class="text-xs text-right text-gray-400 mt-1">
+        {{ selectedSuratDetails.distribusiProgress * 100 }}% selesai
+      </p>
+
+      <!-- Step 2: Verifikasi Surat -->
+      <div class="flex items-center mt-6">
+        <div
+          class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"
+        >
+          <ion-icon
+            name="checkmark-circle-outline"
+            class="text-xl text-indigo-600"
+          ></ion-icon>
+        </div>
+        <div class="ml-4">
+          <h4 class="text-lg font-medium text-gray-700">Verifikasi Surat</h4>
+          <p class="text-sm text-gray-500">
+            Surat Anda sedang dalam proses verifikasi oleh bagian terkait.
+          </p>
+        </div>
+      </div>
+      <ion-progress-bar
+        [value]="selectedSuratDetails.verifikasiProgress"
+        class="mt-2"
+      ></ion-progress-bar>
+      <p class="text-xs text-right text-gray-400 mt-1">
+        {{ selectedSuratDetails.verifikasiProgress * 100 }}% selesai
+      </p>
+
+      <!-- Step 3: Siap Dicetak -->
+      <div class="flex items-center mt-6">
+        <div
+          class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center"
+        >
+          <ion-icon
+            name="print-outline"
+            class="text-xl text-indigo-600"
+          ></ion-icon>
+        </div>
+        <div class="ml-4">
+          <h4 class="text-lg font-medium text-gray-700">Siap Dicetak</h4>
+          <p class="text-sm text-gray-500">
+            Surat Anda telah siap untuk dicetak setelah proses verifikasi
+            selesai.
+          </p>
+        </div>
+      </div>
+      <ion-progress-bar
+        [value]="selectedSuratDetails.cetakProgress"
+        class="mt-2"
+      ></ion-progress-bar>
+      <p class="text-xs text-right text-gray-400 mt-1">
+        {{ selectedSuratDetails.cetakProgress * 100 }}% selesai
+      </p>
+    </div>
+  </div>
+
+  <!-- Tombol untuk melihat detail -->
+  <div class="mt-6">
+    <ion-button expand="block" color="primary" routerLink="/detail-status">
+      Lihat Detail Status
+    </ion-button>
+  </div>
+</ion-content>
+
+<ion-tabs>
+  <ion-tab-bar slot="bottom" class="bg-white border-t border-gray-100">
+    <ion-tab-button
+      tab="dashboard"
+      routerLink="/dashboard"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+    >
+      <ion-icon name="grid-outline"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="templatesurat"
+      routerLink="/templatesurat"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+      class="tab-selected"
+    >
+      <ion-icon name="document-text-outline"></ion-icon>
+      <ion-label>Template</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="pengajuansurat"
+      routerLink="/pengajuansurat"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+    >
+      <ion-icon name="paper-plane-outline"></ion-icon>
+      <ion-label>Ajukan</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="statuspengajuan"
+      routerLink="/statuspengajuan"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+    >
+      <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+      <ion-label>Status</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="riwayatsurat"
+      routerLink="/riwayatsurat"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+    >
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>Riwayat</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button
+      tab="profile"
+      routerLink="/profile"
+      routerDirection="root"
+      routerLinkActive="tab-selected"
+    >
+      <ion-icon name="person-outline"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
