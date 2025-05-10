@@ -18,3 +18,173 @@
     background-color: var(--ion-color-primary);
     border-radius: 3px 3px 0 0;
   }
+
+/* Animations for the Riwayat Surat page */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply animations to elements */
+ion-content {
+  --background: transparent;
+}
+
+/* Header animation */
+div.px-4 {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Empty state animation */
+div.flex.flex-col.items-center.justify-center {
+  animation: scaleIn 0.7s ease-out forwards;
+}
+
+/* Filter controls animation */
+div.bg-white.rounded-lg {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Letter cards animation with staggered delay */
+div.space-y-3 > div:not(.bg-white) {
+  animation: slideInRight 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+div.space-y-3 > div:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+div.space-y-3 > div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+div.space-y-3 > div:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+div.space-y-3 > div:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+/* Button hover effects */
+ion-button {
+  transition: all 0.3s ease;
+}
+
+ion-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Card hover effects */
+div.space-y-3 > div:not(.bg-white) {
+  transition: all 0.3s ease;
+}
+
+div.space-y-3 > div:not(.bg-white):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  div.space-y-3 > div:not(.bg-white) {
+    animation-duration: 0.4s;
+  }
+}
+
+
+/* Refresh animation styles */
+ion-refresher {
+  z-index: 1;
+}
+
+ion-refresher-content {
+  --color: #BB3E00;
+}
+
+/* Custom spinner colors */
+ion-refresher-content .refresher-refreshing-icon {
+  color: #BB3E00;
+}
+
+/* Pulling indicator styles */
+ion-refresher-content .refresher-pulling-icon {
+  color: #BB3E00;
+  transition: transform 0.2s ease;
+}
+
+/* Pulling text styles */
+ion-refresher-content .refresher-pulling-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #BB3E00;
+  opacity: 0.9;
+}
+
+/* Refreshing text styles */
+ion-refresher-content .refresher-refreshing-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #BB3E00;
+  opacity: 0.9;
+}
+
+/* Refresh animation */
+@keyframes refreshRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Subtle refresh background */
+ion-refresher::part(scroll) {
+  background: rgba(255, 240, 230, 0.1);
+}
+
+/* Dark mode adjustments */
+.dark ion-refresher-content {
+  --color: #FF8C5A;
+}
+
+.dark ion-refresher-content .refresher-pulling-text,
+.dark ion-refresher-content .refresher-refreshing-text,
+.dark ion-refresher-content .refresher-pulling-icon,
+.dark ion-refresher-content .refresher-refreshing-icon {
+  color: #FF8C5A;
+}
+
+
+

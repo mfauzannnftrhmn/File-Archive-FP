@@ -1,129 +1,136 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title class="text-center text-gray-800"
-      >Daftar Template Surat 📄</ion-title
-    >
-  </ion-toolbar>
-</ion-header>
+<div class="px-4 sm:px-6 pt-4 pb-3 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-800">
+  <div class="flex items-center">
+    <ion-button fill="clear" class="text-gray-700 dark:text-gray-300 p-0 m-0" routerLink="/aktivitas">
+      <ion-icon name="arrow-back-outline" class="text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+    </ion-button>
+    <div class="ml-2">
+      <h2 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+        Template Surat
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
+        Pilih dan gunakan template yang tersedia
+      </p>
+    </div>
+  </div>
+</div>
 
 <ion-content>
-  <div class="bg-gradient-to-br from-indigo-50 via-white to-purple-100 p-3">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-      <div
-        *ngFor="let surat of suratTemplates"
-        class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full"
-      >
-        <!-- Preview Section -->
-        <div
-          class="relative h-32 bg-gray-50 flex items-center justify-center border-b"
-        >
-          <img
-            [src]="'assets/templates/previews/' + surat.title.replace(' ', '_') + '_thumb.jpg'"
-            class="object-cover h-full w-full opacity-75"
-            onerror="this.src='assets/templates/preview-placeholder.jpg'"
-            alt="Preview"
-          />
-          <div
-            class="absolute top-0 right-0 bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded-bl-lg"
-          >
-            {{ surat.category }}
-          </div>
-        </div>
-
-        <!-- Title Section -->
-        <div class="p-3">
-          <h3 class="text-sm font-semibold text-indigo-700 truncate">
-            {{ surat.title }}
-          </h3>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex justify-between p-2 pt-0 mt-auto">
-          <ion-button
-            size="small"
-            fill="clear"
-            color="primary"
-            (click)="viewTemplate(surat)"
-          >
-            <ion-icon name="eye-outline" slot="start" size="small"></ion-icon>
-            Lihat
-          </ion-button>
-
-          <div class="flex space-x-1">
-            <a [href]="surat.fileWord" download>
-              <ion-button size="small" fill="clear" color="tertiary">
-                <ion-icon name="document-outline" size="small"></ion-icon>
-              </ion-button>
-            </a>
-            <a [href]="surat.filePdf" download>
-              <ion-button size="small" fill="clear" color="success">
-                <ion-icon name="document-text-outline" size="small"></ion-icon>
-              </ion-button>
-            </a>
-          </div>
+  <div class="bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen p-4">
+    <!-- Kategori Surat -->
+    <div class="mb-6">
+      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center">
+        <ion-icon name="filter-outline" class="mr-2 text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+        Kategori
+      </h2>
+      
+      <!-- Elegant scrollable category pills -->
+      <div class="overflow-x-auto whitespace-nowrap pb-2 scrollbar-hide -mx-4 px-4" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+        <div class="inline-flex space-x-2 min-w-max">
+          <button 
+            [ngClass]="{'bg-[#BB3E00] text-white shadow-md': selectedCategory === 'all', 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-[#BB3E00] dark:border-[#FF6B2B]': selectedCategory !== 'all'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-sm flex items-center scroll-snap-align: start; hover:shadow-lg"
+            (click)="filterByCategory('all')">
+            <ion-icon name="apps-outline" class="mr-1.5 text-xs"></ion-icon>
+            Semua
+          </button>
+          <button 
+            [ngClass]="{'bg-[#BB3E00] text-white shadow-md': selectedCategory === 'Surat Keterangan Karyawan', 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-[#BB3E00] dark:border-[#FF6B2B]': selectedCategory !== 'Surat Keterangan Karyawan'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-sm flex items-center scroll-snap-align: start; hover:shadow-lg"
+            (click)="filterByCategory('Surat Keterangan Karyawan')">
+            <ion-icon name="person-outline" class="mr-1.5 text-xs"></ion-icon>
+            Keterangan
+          </button>
+          <button 
+            [ngClass]="{'bg-[#BB3E00] text-white shadow-md': selectedCategory === 'Pengajuan Keluhan', 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-[#BB3E00] dark:border-[#FF6B2B]': selectedCategory !== 'Pengajuan Keluhan'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-sm flex items-center scroll-snap-align: start; hover:shadow-lg"
+            (click)="filterByCategory('Pengajuan Keluhan')">
+            <ion-icon name="chatbox-outline" class="mr-1.5 text-xs"></ion-icon>
+            Keluhan
+          </button>
+          <button 
+            [ngClass]="{'bg-[#BB3E00] text-white shadow-md': selectedCategory === 'Permohonan Cuti', 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-[#BB3E00] dark:border-[#FF6B2B]': selectedCategory !== 'Permohonan Cuti'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-sm flex items-center scroll-snap-align: start; hover:shadow-lg"
+            (click)="filterByCategory('Permohonan Cuti')">
+            <ion-icon name="calendar-outline" class="mr-1.5 text-xs"></ion-icon>
+            Cuti
+          </button>
+          <button 
+            [ngClass]="{'bg-[#BB3E00] text-white shadow-md': selectedCategory === 'Surat Rekomendasi', 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-[#BB3E00] dark:border-[#FF6B2B]': selectedCategory !== 'Surat Rekomendasi'}"
+            class="px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 shadow-sm flex items-center scroll-snap-align: start; hover:shadow-lg"
+            (click)="filterByCategory('Surat Rekomendasi')">
+            <ion-icon name="ribbon-outline" class="mr-1.5 text-xs"></ion-icon>
+            Rekomendasi
+          </button>
         </div>
       </div>
     </div>
 
+    <!-- Template Cards - Responsive grid with elegant cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        *ngFor="let surat of filteredTemplates; let i = index"
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden flex flex-col h-full transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 card-item"
+        [style.animation-delay]="(i * 0.1) + 0.3 + 's'"
+      >
+        <!-- Image Preview Section -->
+        <div class="relative h-44 bg-gradient-to-r from-[#FFF0E6] to-[#FFDBC1] dark:from-[#3D1500] dark:to-[#592200] flex items-center justify-center overflow-hidden">
+          <!-- Image preview -->
+          <img 
+            [src]="surat.imagePreview" 
+            class="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+            alt="Template Preview"
+            onerror="this.src='assets/preview/Surat1.png'; this.onerror='';"
+          >
+          
+          <!-- Category badge -->
+          <div class="absolute top-3 right-3 bg-white dark:bg-gray-800 text-[#BB3E00] dark:text-[#FF6B2B] text-xs px-2.5 py-1 rounded-full shadow-md font-medium border border-[#FFDBC1] dark:border-[#592200]">
+            {{ surat.category.split(' ').pop() }}
+          </div>
+        </div>
+
+        <!-- Title Section with improved spacing -->
+        <div class="p-4">
+          <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+            {{ surat.title }}
+          </h3>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1.5 line-clamp-2 h-9">
+            {{ surat.description || 'Template surat resmi untuk keperluan kantor' }}
+          </p>
+        </div>
+
+        <!-- Action Button - Single elegant button -->
+        <div class="px-4 pb-4 pt-1 mt-auto">
+          <ion-button
+            expand="block"
+            fill="solid"
+            color="primary"
+            class="text-xs h-10 m-0 rounded-lg w-full shadow-md transition-all duration-300 hover:shadow-lg"
+            style="--background: #BB3E00; --background-hover: #A03500;"
+            routerLink="/pengajuansurat"
+          >
+            <ion-icon name="document-text-outline" slot="start" size="small"></ion-icon>
+            Gunakan Template Ini
+          </ion-button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state with improved design -->
+    <div *ngIf="filteredTemplates.length === 0" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center mt-6 max-w-md mx-auto border border-[#FFDBC1] dark:border-[#592200] animation-fadeIn">
+      <div class="bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full h-20 w-20 flex items-center justify-center mx-auto shadow-inner">
+        <ion-icon name="document-outline" class="text-4xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+      </div>
+      <h3 class="text-gray-800 dark:text-gray-200 font-semibold mt-5">Tidak ada template</h3>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Tidak ada template surat untuk kategori ini</p>
+      <ion-button size="small" fill="solid" class="mt-5 h-10 px-5 shadow-md" 
+                  style="--background: #BB3E00; --background-hover: #A03500;"
+                  (click)="filterByCategory('all')">
+        <ion-icon name="apps-outline" slot="start"></ion-icon>
+        Lihat semua template
+      </ion-button>
+    </div>
+
     <!-- Add padding at the bottom to prevent content being hidden by tabs -->
-    <div class="h-16"></div>
+    <div class="h-20"></div>
   </div>
 </ion-content>
-
-<ion-tab-bar slot="bottom" class="bg-white border-t border-gray-100">
-  <ion-tab-button
-    tab="dashboard"
-    routerLink="/dashboard"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
-  >
-    <ion-icon
-      name="grid-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Dashboard</ion-label>
-  </ion-tab-button>
-
-  <ion-tab-button
-    tab="aktivitas"
-    routerLink="/aktivitas"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
-  >
-    <ion-icon
-      name="pulse-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Aktivitas</ion-label>
-  </ion-tab-button>
-
-  <ion-tab-button
-    tab="riwayat"
-    routerLink="/riwayatsurat"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
-  >
-    <ion-icon
-      name="time-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Riwayat</ion-label>
-  </ion-tab-button>
-
-  <ion-tab-button
-    tab="profile"
-    routerLink="/profile"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
-  >
-    <ion-icon
-      name="person-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Profile</ion-label>
-  </ion-tab-button>
-</ion-tab-bar>

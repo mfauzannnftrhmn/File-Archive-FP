@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular'; // Import ToastController
+import { ToastController } from '@ionic/angular';
 
 @Component({
   standalone: false,
@@ -9,136 +9,115 @@ import { ToastController } from '@ionic/angular'; // Import ToastController
 })
 export class PengajuansuratPage {
   suratTemplates = [
-    { title: 'Surat Permohonan Cuti', category: 'GA' },
-    { title: 'Surat Keterangan Kerja', category: 'GA' },
-    { title: 'Surat Pengajuan Keluhan', category: 'GA' },
-    { title: 'Surat Rekomendasi', category: 'GA' },
+    { title: 'Surat Permohonan Cuti', category: 'Permohonan Cuti' },
+    { title: 'Surat Keterangan Karyawan', category: 'Surat Keterangan Karyawan' },
+    { title: 'Surat Pengajuan Keluhan', category: 'Pengajuan Keluhan' },
+    { title: 'Surat Rekomendasi', category: 'Surat Rekomendasi' },
   ];
 
-  selectedTemplate = ''; 
-  formData = {
+  selectedTemplate: any = null;
+  formData: any = {
+    suratNumber: '',
+    // General
     name: '',
     email: '',
-    date: '',
-    suratNumber: '',  // Surat Number yang akan dihasilkan otomatis
-    additionalInfo: '', // Untuk informasi tambahan yang berbeda per template
+    attachmentName: '',
+
+    // Cuti
+    startDate: '',
+    endDate: '',
+    reason: '',
+
+    // Karyawan
+    position: '',
+    joinDate: '',
+    purpose: '',
+
+    // Keluhan
+    department: '',
+    complaintCategory: '',
+    complaintDescription: '',
+
+    // Rekomendasi
+    recommendedName: '',
+    recommenderName: '',
+    recommenderPosition: '',
+    recommendationReason: '',
   };
 
   constructor(private toastController: ToastController) {}
 
-  ngOnInit() {
-    this.generateSuratNumber(); // Generate nomor surat ketika halaman dimuat
-  }
+  ngOnInit() {}
 
-  // Fungsi untuk mengenerate nomor surat secara otomatis
   generateSuratNumber() {
     if (this.selectedTemplate) {
-      const templateCategory = this.suratTemplates.find(
-        (template) => template.title === this.selectedTemplate
-      )?.category;
-
-      if (templateCategory) {
-        const year = new Date().getFullYear();
-        let suratCounter = Number(localStorage.getItem('suratCounter')) || 1;  // Ambil counter dan increment
-        const formattedNumber = suratCounter.toString().padStart(3, '0');
-        this.formData.suratNumber = `${templateCategory}/${year}/${formattedNumber}`;
-
-        // Simpan counter yang sudah increment ke localStorage
-        localStorage.setItem('suratCounter', (suratCounter + 1).toString());
-      }
+      const category = this.selectedTemplate.category;
+      const year = new Date().getFullYear();
+      let suratCounter = Number(localStorage.getItem('suratCounter')) || 1;
+      const formatted = suratCounter.toString().padStart(3, '0');
+      this.formData.suratNumber = `${category}/GA/${year}/${formatted}`;
+      localStorage.setItem('suratCounter', (suratCounter + 1).toString());
     }
   }
 
-  // Fungsi untuk menangani pengajuan surat
   async submitForm() {
-    // Cek apakah template sudah dipilih
-    if (!this.selectedTemplate) {
-      const toast = await this.toastController.create({
-        message: 'Silakan pilih template surat terlebih dahulu.',
-        duration: 2000,
-        color: 'danger',
-        position: 'top',
-      });
-      toast.present();
-      return;
+    const category = this.selectedTemplate?.category;
+    const requiredFields: string[] = [];
+
+    switch (category) {
+      case 'Permohonan Cuti':
+        requiredFields.push('name', 'startDate', 'endDate', 'reason');
+        break;
+      case 'Surat Keterangan Karyawan':
+        requiredFields.push('name', 'position', 'joinDate', 'purpose');
+        break;
+      case 'Pengajuan Keluhan':
+        requiredFields.push('name', 'department', 'complaintCategory', 'complaintDescription');
+        break;
+      case 'Surat Rekomendasi':
+        requiredFields.push('recommendedName', 'recommenderName', 'recommenderPosition', 'recommendationReason');
+        break;
+      default:
+        break;
     }
-  
-    // Validasi berdasarkan template surat yang dipilih
-    if (this.selectedTemplate === 'Surat Permohonan Cuti') {
-      if (!this.formData.name || !this.formData.date || !this.formData.additionalInfo) {
+
+    for (const field of requiredFields) {
+      if (!this.formData[field]) {
         const toast = await this.toastController.create({
-          message: 'Silakan lengkapi nama, tanggal, dan alasan cuti.',
+          message: `Silakan lengkapi field: ${field}`,
           duration: 2000,
           color: 'danger',
           position: 'top',
+          cssClass: 'toast-danger dark:text-white',
         });
-        toast.present();
+        await toast.present();
         return;
       }
     }
-  
-    if (this.selectedTemplate === 'Surat Keterangan Kerja') {
-      if (!this.formData.name || !this.formData.additionalInfo || !this.formData.email) {
-        const toast = await this.toastController.create({
-          message: 'Silakan lengkapi nama, jabatan, dan perusahaan.',
-          duration: 2000,
-          color: 'danger',
-          position: 'top',
-        });
-        toast.present();
-        return;
-      }
-    }
-  
-    if (this.selectedTemplate === 'Surat Pengajuan Keluhan') {
-      if (!this.formData.name || !this.formData.additionalInfo) {
-        const toast = await this.toastController.create({
-          message: 'Silakan lengkapi nama dan keluhan.',
-          duration: 2000,
-          color: 'danger',
-          position: 'top',
-        });
-        toast.present();
-        return;
-      }
-    }
-  
-    if (this.selectedTemplate === 'Surat Rekomendasi') {
-      if (!this.formData.name || !this.formData.additionalInfo) {
-        const toast = await this.toastController.create({
-          message: 'Silakan lengkapi nama yang direkomendasikan dan keterangan.',
-          duration: 2000,
-          color: 'danger',
-          position: 'top',
-        });
-        toast.present();
-        return;
-      }
-    }
-  
-    // Jika semua field valid, lanjutkan ke penyimpanan dan pengajuan
+
     const submittedSurat = {
       ...this.formData,
-      title: this.selectedTemplate,
-      category: this.suratTemplates.find(
-        (template) => template.title === this.selectedTemplate
-      )?.category,
+      title: this.selectedTemplate.title,
+      category: this.selectedTemplate.category,
       date: new Date().toLocaleDateString(),
     };
-  
+
     let riwayatSurat = JSON.parse(localStorage.getItem('riwayatSurat') || '[]');
     riwayatSurat.push(submittedSurat);
     localStorage.setItem('riwayatSurat', JSON.stringify(riwayatSurat));
-  
-    // Tampilkan notifikasi berhasil
+
     const toast = await this.toastController.create({
       message: 'Surat berhasil diajukan!',
       duration: 2000,
       color: 'success',
       position: 'top',
+      cssClass: 'toast-success dark:text-white',
     });
-  
     toast.present();
   }
-  
+
+  uploadAttachment() {
+    // Dummy function – implement file picker integration here
+    this.formData.attachmentName = 'lampiran_dummy.pdf';
+  }
 }

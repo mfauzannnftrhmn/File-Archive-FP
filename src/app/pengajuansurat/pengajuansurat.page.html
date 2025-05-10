@@ -1,335 +1,232 @@
-<ion-header>
-  <ion-toolbar color="primary" class="ion-padding-vertical">
-    <ion-title class="ion-text-center" size="large"
-      >Form Pengajuan Surat</ion-title
-    >
-  </ion-toolbar>
-</ion-header>
-
-<ion-content class="ion-padding ion-margin-bottom" [fullscreen]="true">
-  <!-- Template Selection Card -->
-  <ion-card
-    class="ion-margin-vertical ion-no-margin-horizontal ion-margin-bottom"
-  >
-    <ion-card-header>
-      <ion-card-subtitle>
-        <ion-chip color="primary" outline>
-          <ion-label>Langkah 1</ion-label>
-        </ion-chip>
-      </ion-card-subtitle>
-      <ion-card-title class="ion-padding-top">
-        <ion-text color="dark">Pilih Template</ion-text>
-      </ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-item lines="none" class="ion-margin-vertical">
-        <ion-icon
-          name="document-text-outline"
-          slot="start"
-          color="primary"
-        ></ion-icon>
-        <ion-select
-          [(ngModel)]="selectedTemplate"
-          (ionChange)="generateSuratNumber()"
-          placeholder="Pilih jenis surat"
-          interface="action-sheet"
-          mode="md"
-          class="ion-select-full-width"
-        >
-          <ion-select-option
-            *ngFor="let template of suratTemplates"
-            [value]="template"
-          >
-            {{ template.title }}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Dynamic Form Card -->
-  <ng-container *ngIf="selectedTemplate">
-    <ion-card class="ion-margin-vertical ion-no-margin-horizontal">
-      <ion-card-header>
-        <ion-card-subtitle>
-          <ion-chip color="primary" outline>
-            <ion-label>Langkah 2</ion-label>
-          </ion-chip>
-        </ion-card-subtitle>
-        <ion-card-title class="ion-padding-top">
-          <ion-text color="dark">{{ selectedTemplate }}</ion-text>
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-        <!-- Surat Permohonan Cuti -->
-        <div
-          *ngIf="selectedTemplate === 'Surat Permohonan Cuti'"
-          class="form-fields"
-        >
-          <ion-list>
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="person-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Nama Pemohon Cuti</ion-label>
-              <ion-input
-                [(ngModel)]="formData.name"
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="calendar-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Tanggal Cuti</ion-label>
-              <ion-datetime
-                [(ngModel)]="formData.date"
-                displayFormat="DD MMM YYYY"
-                placeholder="Pilih tanggal"
-                class="ion-padding-top"
-              ></ion-datetime>
-            </ion-item>
-
-            <ion-item>
-              <ion-icon
-                name="document-text-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Alasan Cuti</ion-label>
-              <ion-textarea
-                [(ngModel)]="formData.additionalInfo"
-                rows="3"
-                placeholder="Jelaskan alasan cuti Anda"
-                class="ion-padding-top"
-              ></ion-textarea>
-            </ion-item>
-          </ion-list>
-        </div>
-
-        <!-- Surat Keterangan Kerja -->
-        <div
-          *ngIf="selectedTemplate === 'Surat Keterangan Kerja'"
-          class="form-fields"
-        >
-          <ion-list>
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="person-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Nama Karyawan</ion-label>
-              <ion-input
-                [(ngModel)]="formData.name"
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="briefcase-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Jabatan</ion-label>
-              <ion-input
-                [(ngModel)]="formData.additionalInfo"
-                type="text"
-                placeholder="Masukkan jabatan"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-icon
-                name="business-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Perusahaan</ion-label>
-              <ion-input
-                [(ngModel)]="formData.email"
-                type="text"
-                placeholder="Masukkan nama perusahaan"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-          </ion-list>
-        </div>
-
-        <!-- Surat Pengajuan Keluhan -->
-        <div
-          *ngIf="selectedTemplate === 'Surat Pengajuan Keluhan'"
-          class="form-fields"
-        >
-          <ion-list>
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="person-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Nama Pengaju</ion-label>
-              <ion-input
-                [(ngModel)]="formData.name"
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-icon
-                name="alert-circle-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Keluhan</ion-label>
-              <ion-textarea
-                [(ngModel)]="formData.additionalInfo"
-                rows="4"
-                placeholder="Deskripsikan keluhan Anda secara detail"
-                class="ion-padding-top"
-              ></ion-textarea>
-            </ion-item>
-          </ion-list>
-        </div>
-
-        <!-- Surat Rekomendasi -->
-        <div
-          *ngIf="selectedTemplate === 'Surat Rekomendasi'"
-          class="form-fields"
-        >
-          <ion-list>
-            <ion-item class="ion-margin-bottom">
-              <ion-icon
-                name="person-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked"
-                >Nama yang Direkomendasikan</ion-label
-              >
-              <ion-input
-                [(ngModel)]="formData.name"
-                type="text"
-                placeholder="Masukkan nama lengkap"
-                class="ion-padding-top"
-              ></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-icon
-                name="ribbon-outline"
-                slot="start"
-                color="primary"
-              ></ion-icon>
-              <ion-label position="stacked">Keterangan</ion-label>
-              <ion-textarea
-                [(ngModel)]="formData.additionalInfo"
-                rows="4"
-                placeholder="Masukkan keterangan rekomendasi"
-                class="ion-padding-top"
-              ></ion-textarea>
-            </ion-item>
-          </ion-list>
-        </div>
-      </ion-card-content>
-    </ion-card>
-  </ng-container>
-
-  <!-- Submit Button -->
-  <div class="ion-padding-vertical ion-margin-bottom">
-    <ion-button
-      expand="block"
-      shape="round"
-      color="primary"
-      (click)="submitForm()"
-      [disabled]="!selectedTemplate"
-      class="ion-margin-horizontal"
-      size="large"
-    >
-      <ion-icon name="paper-plane" slot="start"></ion-icon>
-      <ion-text>Ajukan Surat</ion-text>
+<div class="px-4 sm:px-6 pt-4 pb-3 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-800">
+  <div class="flex items-center">
+    <ion-button fill="clear" class="text-gray-700 dark:text-gray-300 p-0 m-0" routerLink="/aktivitas">
+      <ion-icon name="arrow-back-outline" class="text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
     </ion-button>
+    <div class="ml-2">
+      <h2 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+        Pengajuan Surat
+      </h2>
+      <p class="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
+        Isi formulir pengajuan surat berdasarkan template
+      </p>
+    </div>
+  </div>
+</div>
+
+<ion-content>
+  <div class="bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-screen p-4">
+    
+    <div *ngIf="!selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-5">
+      <div class="flex flex-col items-center justify-center">
+        <div class="w-16 h-16 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-4">
+          <ion-icon name="document-text-outline" class="text-2xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Pilih Template Surat</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-md text-center">
+          Silakan pilih template surat yang sesuai dengan kebutuhan Anda di bawah ini.
+        </p>
+        
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-md">
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center mb-1">
+              <ion-icon name="checkmark-circle" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
+              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Mudah</span>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Form yang simpel dan intuitif</p>
+          </div>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center mb-1">
+              <ion-icon name="time" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
+              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Cepat</span>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Proses pengajuan instan</p>
+          </div>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center mb-1">
+              <ion-icon name="shield-checkmark" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
+              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Aman</span>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Data Anda terlindungi</p>
+          </div>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center mb-1">
+              <ion-icon name="file-tray-full" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
+              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Terarsip</span>
+            </div>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Riwayat tersimpan otomatis</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Template Selection -->
+    <div *ngIf="!selectedTemplate" class="mb-5">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div 
+          *ngFor="let template of suratTemplates"
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-transparent hover:border-[#BB3E00] dark:hover:border-[#FF6B2B]"
+          (click)="selectedTemplate = template; generateSuratNumber()">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-3">
+              <ion-icon 
+                [name]="template.category.includes('Keterangan') ? 'person-outline' : 
+                        template.category.includes('Keluhan') ? 'chatbox-outline' : 
+                        template.category.includes('Cuti') ? 'calendar-outline' : 
+                        template.category.includes('Rekomendasi') ? 'ribbon-outline' : 'document-outline'" 
+                class="text-xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+            </div>
+            <span class="text-xs font-medium text-gray-700 dark:text-gray-300 text-center">{{ template.category }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Form Section -->
+    <div *ngIf="selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5">
+      <!-- Header with back button -->
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center">
+          <ion-button fill="clear" class="p-0 h-8 w-8 mr-2" (click)="selectedTemplate = null">
+            <ion-icon name="arrow-back-outline" slot="icon-only" class="text-lg text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+          </ion-button>
+          <div>
+            <h2 class="text-base font-semibold text-[#BB3E00] dark:text-[#FF6B2B]">{{ selectedTemplate.title }}</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400">{{ selectedTemplate.category }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nomor Surat - Elegant Badge -->
+      <div class="mb-4 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3 flex items-center shadow-sm">
+        <ion-icon name="document-text-outline" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-3 text-lg"></ion-icon>
+        <div class="flex-1">
+          <div class="text-xs text-[#BB3E00] dark:text-[#FF6B2B]">Nomor Surat</div>
+          <div class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">{{ formData.suratNumber }}</div>
+        </div>
+      </div>
+
+      <!-- Form Fields in Card Layout -->
+      <div class="space-y-4">
+        <!-- Common Fields Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama Lengkap</label>
+            <ion-input [(ngModel)]="formData.name" placeholder="Nama lengkap" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Email</label>
+            <ion-input [(ngModel)]="formData.email" type="email" placeholder="Email" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+          </div>
+        </div>
+
+        <!-- Permohonan Cuti Fields -->
+        <div *ngIf="selectedTemplate.category === 'Permohonan Cuti'" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Mulai</label>
+              <ion-input [(ngModel)]="formData.startDate" type="date" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Selesai</label>
+              <ion-input [(ngModel)]="formData.endDate" type="date" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Alasan Cuti</label>
+            <ion-textarea [(ngModel)]="formData.reason" placeholder="Jelaskan alasan pengajuan cuti" rows="3" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-textarea>
+          </div>
+        </div>
+
+        <!-- Surat Keterangan Karyawan Fields -->
+        <div *ngIf="selectedTemplate.category === 'Surat Keterangan Karyawan'" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Jabatan</label>
+              <ion-input [(ngModel)]="formData.position" placeholder="Jabatan" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Bergabung</label>
+              <ion-input [(ngModel)]="formData.joinDate" type="date" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tujuan Pembuatan Surat</label>
+            <ion-textarea [(ngModel)]="formData.purpose" placeholder="Tujuan pembuatan surat" rows="3" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-textarea>
+          </div>
+        </div>
+
+        <!-- Pengajuan Keluhan Fields -->
+        <div *ngIf="selectedTemplate.category === 'Pengajuan Keluhan'" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Departemen</label>
+              <ion-input [(ngModel)]="formData.department" placeholder="Departemen" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Kategori Keluhan</label>
+              <ion-select [(ngModel)]="formData.complaintCategory" placeholder="Pilih kategori" interface="popover" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]">
+                <ion-select-option value="Fasilitas">Fasilitas</ion-select-option>
+                <ion-select-option value="Lingkungan Kerja">Lingkungan Kerja</ion-select-option>
+                <ion-select-option value="Rekan Kerja">Rekan Kerja</ion-select-option>
+                <ion-select-option value="Manajemen">Manajemen</ion-select-option>
+                <ion-select-option value="Lainnya">Lainnya</ion-select-option>
+              </ion-select>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Deskripsi Keluhan</label>
+            <ion-textarea [(ngModel)]="formData.complaintDescription" placeholder="Jelaskan keluhan secara detail" rows="3" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-textarea>
+          </div>
+        </div>
+
+        <!-- Surat Rekomendasi Fields -->
+        <div *ngIf="selectedTemplate.category === 'Surat Rekomendasi'" class="space-y-4">
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama yang Direkomendasikan</label>
+            <ion-input [(ngModel)]="formData.recommendedName" placeholder="Nama yang direkomendasikan" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama Pemberi Rekomendasi</label>
+              <ion-input [(ngModel)]="formData.recommenderName" placeholder="Nama pemberi rekomendasi" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+            <div>
+              <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Jabatan Pemberi Rekomendasi</label>
+              <ion-input [(ngModel)]="formData.recommenderPosition" placeholder="Jabatan pemberi rekomendasi" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 h-10 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-input>
+            </div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Alasan Rekomendasi</label>
+            <ion-textarea [(ngModel)]="formData.recommendationReason" placeholder="Alasan memberikan rekomendasi" rows="3" class="border border-gray-200 dark:border-gray-600 rounded-lg text-sm py-2 px-3 w-full bg-gray-50 dark:bg-gray-700 dark:text-gray-200 focus:border-[#BB3E00] dark:focus:border-[#FF6B2B]"></ion-textarea>
+          </div>
+        </div>
+
+        <!-- Attachment Section - Elegant Design -->
+        <div class="mt-3 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3">
+          <label class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B] mb-2 block">Lampiran (opsional)</label>
+          <div class="flex items-center">
+            <ion-button fill="outline" size="small" class="h-9 text-xs border-[#BB3E00] text-[#BB3E00] dark:border-[#FF6B2B] dark:text-[#FF6B2B]" (click)="uploadAttachment()">
+              <ion-icon name="attach-outline" slot="start" class="text-sm"></ion-icon>
+              Pilih File
+            </ion-button>
+            <span *ngIf="formData.attachmentName" class="ml-2 text-xs text-gray-600 dark:text-gray-400 truncate max-w-[200px]">
+              {{ formData.attachmentName }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button - Elegant Design -->
+      <div class="mt-6">
+        <ion-button expand="block" class="font-medium text-sm h-12 --ion-color-primary: #BB3E00; --ion-color-primary-contrast: #ffffff;" style="--background: #BB3E00; --color: #ffffff;" (click)="submitForm()">
+          <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
+          Ajukan Surat
+        </ion-button>
+      </div>
+    </div>
+
+    <!-- Add padding at the bottom to prevent content being hidden by tabs -->
+    <div class="h-20"></div>
   </div>
 </ion-content>
-
-<ion-footer class="ion-no-border">
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button
-        tab="dashboard"
-        routerLink="/dashboard"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-      >
-        <ion-icon name="grid-outline"></ion-icon>
-        <ion-label>Dashboard</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button
-        tab="templatesurat"
-        routerLink="/templatesurat"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-      >
-        <ion-icon name="document-text-outline"></ion-icon>
-        <ion-label>Template</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button
-        tab="pengajuansurat"
-        routerLink="/pengajuansurat"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-        class="tab-selected"
-      >
-        <ion-icon name="paper-plane-outline"></ion-icon>
-        <ion-label>Ajukan</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button
-        tab="statuspengajuan"
-        routerLink="/statuspengajuan"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-      >
-        <ion-icon name="checkmark-done-circle-outline"></ion-icon>
-        <ion-label>Status</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button
-        tab="riwayatsurat"
-        routerLink="/riwayatsurat"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-      >
-        <ion-icon name="time-outline"></ion-icon>
-        <ion-label>Riwayat</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button
-        tab="profile"
-        routerLink="/profile"
-        routerDirection="root"
-        routerLinkActive="tab-selected"
-      >
-        <ion-icon name="person-outline"></ion-icon>
-        <ion-label>Profile</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
-</ion-footer>

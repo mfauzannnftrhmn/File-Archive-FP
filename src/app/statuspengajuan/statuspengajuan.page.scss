@@ -18,3 +18,62 @@
     background-color: var(--ion-color-primary);
     border-radius: 3px 3px 0 0;
   }
+
+
+/* Card entrance animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bg-white {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+
+
+.rounded-full {
+  animation: statusPulse 2s infinite;
+}
+
+/* Subtle hover effect for selectable items */
+ion-select, ion-button {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+ion-select:hover, ion-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth color transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1.5s linear infinite;
+}
+
+/* Elegant fade-in for page content */
+ion-content {
+  --background: linear-gradient(135deg, var(--ion-background-color) 0%, var(--ion-background-color-rgb) 100%);
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

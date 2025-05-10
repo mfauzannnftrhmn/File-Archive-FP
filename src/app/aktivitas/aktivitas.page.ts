@@ -13,4 +13,14 @@ export class AktivitasPage implements OnInit {
   ngOnInit() {
   }
 
+  doRefresh(event: any) {
+    console.log('Begin async operation');
+
+    // Simulate loading data
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      // Complete the refresh operation
+      event.target.complete();
+    }, 2000);
+  }
 }

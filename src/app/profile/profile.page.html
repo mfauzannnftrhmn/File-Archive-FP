@@ -1,30 +1,139 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+<ion-content [fullscreen]="true" class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon=""
+      pullingText=""
+      refreshingSpinner="circles"
+      refreshingText="">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Profile Header with Cover Image -->
+  <div class="relative">
+    <div class="h-32 bg-gradient-to-r from-[#BB3E00] to-[#A03500] dark:from-[#FF8C5A] dark:to-[#BB3E00]"></div>
+    <div class="absolute left-0 right-0 -bottom-16 flex justify-center">
+      <div class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-white dark:bg-gray-700 overflow-hidden shadow-lg">
+        <img src="assets/profile-avatar.png" alt="Profile" class="w-full h-full object-cover" onerror="this.src='assets/default-avatar.png'; this.onerror='';">
+      </div>
+    </div>
+  </div>
+  
+  <!-- Profile Info -->
+  <div class="mt-20 text-center px-4">
+    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Fauzan </h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Programmer</p>
+    <div class="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+      Aktif
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="mx-4 mt-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+    <div class="grid grid-cols-3 divide-x divide-gray-100 dark:divide-gray-700">
+      <div class="text-center py-4">
+        <p class="text-2xl font-bold text-[#BB3E00] dark:text-[#FF8C5A]">12</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Surat</p>
+      </div>
+      <div class="text-center py-4">
+        <p class="text-2xl font-bold text-[#BB3E00] dark:text-[#FF8C5A]">5</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Cuti</p>
+      </div>
+      <div class="text-center py-4">
+        <p class="text-2xl font-bold text-[#BB3E00] dark:text-[#FF8C5A]">13</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Tahun</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Information -->
+  <div class="mx-4 mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+    <div class="px-4 py-3 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
+      <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
+      <ion-button fill="clear" size="small" class="text-xs text-[#BB3E00] dark:text-[#FF8C5A] p-0 m-0 h-auto">
+        <ion-icon name="create-outline" size="small" slot="start"></ion-icon>
+        Edit
+      </ion-button>
+    </div>
+    
+    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">NIP</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">198705122010011002</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal Lahir</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">12 Mei 1987</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Alamat</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Jl. Merdeka No. 123</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">No. Telepon</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">+62 812-3456-7890</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Work Information -->
+  <div class="mx-4 mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+    <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+      <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pekerjaan</h3>
+    </div>
+    
+    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Departemen</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">IT</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Jabatan</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Programmer</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal Bergabung</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">1 Januari 2010</span>
+      </div>
+      <div class="flex justify-between items-center px-4 py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">Status Karyawan</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Tetap</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="px-6 py-6 mt-2">
+    <div class="grid grid-cols-1 gap-3">
+      <ion-button expand="block" class="m-0 h-11 text-sm font-medium" style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;">
+        <ion-icon name="create-outline" slot="start"></ion-icon>
+        Edit Profil
+      </ion-button>
+      <ion-button expand="block" class="m-0 h-11 text-sm font-medium" fill="outline" color="medium" (click)="confirmLogout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Keluar
+      </ion-button>
+    </div>
+  </div>
+  
 </ion-content>
 
-<ion-tab-bar slot="bottom" class="bg-white border-t border-gray-100">
+<ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16">
   <ion-tab-button
     tab="dashboard"
     routerLink="/dashboard"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
+    class="text-xs"
   >
-    <ion-icon
-      name="grid-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Dashboard</ion-label>
+    <div class="flex flex-col items-center justify-center">
+      <div class="w-6 h-6 flex items-center justify-center mb-1">
+        <ion-icon name="grid" class="text-xl"></ion-icon>
+      </div>
+      <ion-label>Beranda</ion-label>
+    </div>
   </ion-tab-button>
 
   <ion-tab-button
@@ -32,13 +141,14 @@
     routerLink="/aktivitas"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
+    class="text-xs"
   >
-    <ion-icon
-      name="pulse-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Aktivitas</ion-label>
+    <div class="flex flex-col items-center justify-center">
+      <div class="w-6 h-6 flex items-center justify-center mb-1">
+        <ion-icon name="pulse" class="text-xl"></ion-icon>
+      </div>
+      <ion-label>Aktivitas</ion-label>
+    </div>
   </ion-tab-button>
 
   <ion-tab-button
@@ -46,13 +156,14 @@
     routerLink="/riwayatsurat"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
+    class="text-xs"
   >
-    <ion-icon
-      name="time-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Riwayat</ion-label>
+    <div class="flex flex-col items-center justify-center">
+      <div class="w-6 h-6 flex items-center justify-center mb-1">
+        <ion-icon name="time" class="text-xl"></ion-icon>
+      </div>
+      <ion-label>Riwayat</ion-label>
+    </div>
   </ion-tab-button>
 
   <ion-tab-button
@@ -60,12 +171,13 @@
     routerLink="/profile"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs sm:text-sm"
+    class="text-xs"
   >
-    <ion-icon
-      name="person-outline"
-      class="text-base sm:text-lg md:text-xl"
-    ></ion-icon>
-    <ion-label>Profile</ion-label>
+    <div class="flex flex-col items-center justify-center">
+      <div class="w-6 h-6 flex items-center justify-center mb-1">
+        <ion-icon name="person" class="text-xl"></ion-icon>
+      </div>
+      <ion-label>Profil</ion-label>
+    </div>
   </ion-tab-button>
 </ion-tab-bar>

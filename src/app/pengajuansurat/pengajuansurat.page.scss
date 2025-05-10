@@ -1,19 +1,4 @@
-ion-content {
-    --background: #f8f8f8;
-  }
-  
-  .bg-white {
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .ion-toolbar {
-    background-color: #4c6ef5; /* Ubah warna toolbar sesuai kebutuhan */
-  }
-  
-  .ion-button {
-    margin-top: 16px;
-  }
+
 
   .tab-selected {
     color: var(--ion-color-primary);
@@ -34,5 +19,114 @@ ion-content {
     height: 3px;
     background-color: var(--ion-color-primary);
     border-radius: 3px 3px 0 0;
+  }
+
+  /* Form entrance animation */
+  @keyframes formEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Template card hover effect */
+  .bg-white {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .bg-white:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(187, 62, 0, 0.15);
+  }
+
+  /* Staggered animation for template cards */
+  .grid > div {
+    animation: formEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+  }
+
+  .grid > div:nth-child(1) { animation-delay: 0.1s; }
+  .grid > div:nth-child(2) { animation-delay: 0.2s; }
+  .grid > div:nth-child(3) { animation-delay: 0.3s; }
+  .grid > div:nth-child(4) { animation-delay: 0.4s; }
+  .grid > div:nth-child(5) { animation-delay: 0.5s; }
+  .grid > div:nth-child(6) { animation-delay: 0.6s; }
+  .grid > div:nth-child(7) { animation-delay: 0.7s; }
+  .grid > div:nth-child(8) { animation-delay: 0.8s; }
+
+  /* Icon pulse animation */
+  @keyframes iconPulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .w-12 ion-icon, .w-16 ion-icon {
+    animation: iconPulse 2s ease-in-out infinite;
+  }
+
+  /* Form field focus animation */
+  ion-input {
+    transition: all 0.3s ease;
+  }
+
+  ion-input:focus {
+    transform: translateX(5px);
+  }
+
+  /* Button click effect */
+  ion-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  ion-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%, -50%);
+    transform-origin: 50% 50%;
+  }
+
+  ion-button:active::after {
+    animation: ripple 0.6s ease-out;
+  }
+
+  @keyframes ripple {
+    0% {
+      transform: scale(0, 0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(20, 20);
+      opacity: 0;
+    }
+  }
+
+  /* Smooth page transition */
+  ion-content {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
   

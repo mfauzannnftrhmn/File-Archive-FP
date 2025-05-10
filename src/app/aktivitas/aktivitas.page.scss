@@ -1,0 +1,253 @@
+.tab-selected {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+  }
+  
+  .tab-selected ion-icon {
+    color: var(--ion-color-primary);
+  }
+  
+  /* Optional: Add a bottom border or indicator */
+  .tab-selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background-color: var(--ion-color-primary);
+    border-radius: 3px 3px 0 0;
+  }
+
+/* Animations for the Aktivitas page */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply animations to elements */
+ion-content {
+  --background: transparent;
+}
+
+/* Header animation */
+div.px-4 {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Service cards animation with staggered delay */
+.grid-cols-2 > div {
+  animation: scaleIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.grid-cols-2 > div:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.grid-cols-2 > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.grid-cols-2 > div:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Activity list animation */
+ion-list {
+  animation: fadeInUp 0.7s ease-out forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
+}
+
+
+.rounded-xl {
+  transition: all 0.3s ease;
+}
+
+.rounded-xl:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .grid-cols-2 > div {
+    animation-duration: 0.5s;
+  }
+  
+}
+
+@media (min-width: 641px) {
+  .grid-cols-2 > div:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
+}   
+
+/* Refresher styling */
+ion-refresher {
+  z-index: 1;
+}
+
+/* Custom refresher animation */
+@keyframes refreshPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+}
+
+@keyframes refreshRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pulling indicator styles */
+ion-refresher-content .refresher-pulling-icon {
+  color: #BB3E00;
+  transition: transform 0.3s ease;
+}
+
+ion-refresher-content .refresher-pulling-icon {
+  animation: refreshPulse 1.5s infinite ease-in-out;
+}
+
+/* Pulling text styles */
+ion-refresher-content .refresher-pulling-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #BB3E00;
+  opacity: 0.9;
+}
+
+/* Refreshing spinner styles */
+ion-refresher-content .refresher-refreshing-icon {
+  color: #BB3E00;
+  animation: refreshRotate 1.2s linear infinite;
+}
+
+/* Spinner color override - More specific selectors to ensure color change */
+ion-refresher-content ion-spinner {
+  --spinner-color: #BB3E00 !important;
+  width: 28px;
+  height: 28px;
+}
+
+/* Target the circles spinner specifically */
+ion-refresher-content ion-spinner.spinner-circles circle {
+  fill: #BB3E00 !important;
+  stroke: #BB3E00 !important;
+}
+
+/* Force the spinner color with higher specificity */
+:host ::ng-deep ion-refresher-content ion-spinner {
+  --spinner-color: #BB3E00 !important;
+  color: #BB3E00 !important;
+}
+
+:host ::ng-deep ion-refresher-content ion-spinner * {
+  stroke: #BB3E00 !important;
+  fill: #BB3E00 !important;
+}
+
+/* Refreshing text styles */
+ion-refresher-content .refresher-refreshing-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #BB3E00;
+  opacity: 0.9;
+}
+
+/* Subtle refresh background */
+ion-refresher::part(scroll) {
+  background: rgba(255, 240, 230, 0.15);
+}
+
+/* Dark mode adjustments */
+.dark ion-refresher-content .refresher-pulling-text,
+.dark ion-refresher-content .refresher-refreshing-text,
+.dark ion-refresher-content .refresher-pulling-icon,
+.dark ion-refresher-content .refresher-refreshing-icon {
+  color: #FF8C5A;
+}
+
+.dark ion-refresher-content ion-spinner {
+  --spinner-color: #FF8C5A !important;
+  color: #FF8C5A !important;
+}
+
+.dark ion-refresher-content ion-spinner.spinner-circles circle {
+  fill: #FF8C5A !important;
+  stroke: #FF8C5A !important;
+}
+
+.dark :host ::ng-deep ion-refresher-content ion-spinner {
+  --spinner-color: #FF8C5A !important;
+  color: #FF8C5A !important;
+}
+
+.dark :host ::ng-deep ion-refresher-content ion-spinner * {
+  stroke: #FF8C5A !important;
+  fill: #FF8C5A !important;
+}
+
+/* Refresher complete animation */
+@keyframes refreshComplete {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+ion-refresher.refresher-completing ion-spinner {
+  animation: refreshComplete 0.3s ease-out forwards;
+}
+

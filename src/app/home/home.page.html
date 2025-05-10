@@ -1,29 +1,29 @@
 <ion-content
   [fullscreen]="true"
-  class="flex items-center justify-center h-full bg-gradient-to-br from-[#05284E] via-[#0A3A6A] to-[#D0C05B]"
+  class="flex items-center justify-center h-full bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
 >
-  <!-- Decorative shapes -->
+  <!-- Decorative elements -->
   <div class="absolute top-0 left-0 w-full overflow-hidden">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full h-auto">
-      <path fill="rgba(255, 255, 255, 0.2)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full h-auto opacity-75">
+      <path fill="rgba(187, 62, 0, 0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
     </svg>
   </div>
   
-  <div class="absolute top-0 right-0 hidden md:block">
-    <div class="w-32 h-32 bg-[#D0C05B] opacity-20 rounded-full -mt-10 -mr-10"></div>
+  <div class="absolute bottom-0 right-0 hidden md:block">
+    <div class="w-64 h-64 bg-[#BB3E00] opacity-5 rounded-full -mb-20 -mr-20"></div>
   </div>
   
-  <div class="absolute bottom-0 left-0 hidden md:block">
-    <div class="w-40 h-40 bg-[#05284E] opacity-20 rounded-full -mb-10 -ml-10"></div>
+  <div class="absolute top-1/4 left-0 hidden md:block">
+    <div class="w-40 h-40 bg-[#BB3E00] opacity-5 rounded-full -ml-20"></div>
   </div>
 
   <div
     id="container"
-    class="w-full max-w-md p-6 sm:p-8 bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl mx-auto my-4 sm:my-0 relative z-10"
+    class="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl mx-auto my-4 sm:my-0 relative z-10 border border-gray-100 dark:border-gray-700"
   >
-    <!-- Colorful top decoration -->
+    <!-- Logo decoration -->
     <div class="flex justify-center -mt-16 mb-6">
-      <div class="w-20 h-20 bg-gradient-to-r from-[#D0C05B] to-[#05284E] rounded-full flex items-center justify-center shadow-lg">
+      <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-[#BB3E00]/20">
         <img
           src="assets/icon/logo.png"
           alt="Logo"
@@ -33,20 +33,18 @@
     </div>
 
     <div class="text-center mb-8">
-      <h2 class="text-3xl font-extrabold bg-gradient-to-r from-[#05284E] to-[#D0C05B] bg-clip-text text-transparent">Selamat Datang</h2>
-      <p class="text-gray-500 text-sm mt-2">Login untuk melanjutkan</p>
+      <h2 class="text-2xl font-bold text-[#BB3E00] dark:text-[#FF8C5A]">Selamat Datang</h2>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Login untuk melanjutkan</p>
     </div>
-    <p class="text-xs text-white">Email: {{ email }}</p>
-    <p class="text-xs text-white">Password: {{ password }}</p>
     
     <form class="space-y-5" (ngSubmit)="doSubmit()">
       <!-- Email Input -->
-      <div class="relative bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg focus-within:ring-2 focus-within:ring-[#05284E]">
+      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
-          <div class="bg-gradient-to-r from-[#05284E] to-[#0A3A6A] p-4 flex items-center justify-center">
+          <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
             <ion-icon
               name="mail-outline"
-              class="text-white text-2xl"
+              class="text-white text-xl"
             ></ion-icon>
           </div>
           <div class="flex-1">
@@ -55,19 +53,19 @@
               name="email"
               type="email"
               placeholder="Masukkan Email anda"
-              class="w-full py-4 px-4 text-gray-700 focus:outline-none transition-all duration-200"
+              class="w-full py-3 px-4 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
             ></ion-input>
           </div>
         </div>
       </div>
 
-      <!-- Password Input Card -->
-      <div class="relative bg-white rounded-2xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg focus-within:ring-2 focus-within:ring-[#D0C05B]">
+      <!-- Password Input -->
+      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
-          <div class="bg-gradient-to-r from-[#D0C05B] to-[#B5A84C] p-4 flex items-center justify-center">
+          <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
             <ion-icon
               name="lock-closed-outline"
-              class="text-white text-2xl"
+              class="text-white text-xl"
             ></ion-icon>
           </div>
           <div class="flex-1">
@@ -76,7 +74,7 @@
               name="password"
               type="password"
               placeholder="Masukkan Password anda"
-              class="w-full py-4 px-4 text-gray-700 focus:outline-none transition-all duration-200"
+              class="w-full py-3 px-4 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
             ></ion-input>
           </div>
         </div>
@@ -85,25 +83,26 @@
       <!-- Remember me and Forgot password -->
       <div class="flex justify-between items-center text-sm">
         <div class="flex items-center space-x-2">
-          <ion-checkbox class="h-4 w-4 text-[#05284E]"></ion-checkbox>
-          <span class="text-gray-600">Ingat saya</span>
         </div>
-        <a href="#" class="text-[#05284E] font-medium hover:text-[#D0C05B] transition-colors">Lupa password?</a>
+        <a href="#" class="text-[#BB3E00] dark:text-[#FF8C5A] font-medium hover:underline transition-colors">Lupa password?</a>
       </div>
 
       <!-- Login Button -->
       <ion-button
         expand="block"
-        class="mt-8 font-bold text-white tracking-wide overflow-hidden"
+        class="mt-8 font-medium text-white tracking-wide overflow-hidden"
         (click)="doSubmit()"
         shape="round"
-        size="large"
-        color="primary"
-        style="--background: linear-gradient(to right, #05284E, #D0C05B);"
+        style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
       >
+        <ion-icon name="log-in-outline" slot="start"></ion-icon>
         Masuk
       </ion-button>
       
+      <!-- Additional help text -->
+      <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
+        Butuh bantuan? <a href="#" class="text-[#BB3E00] dark:text-[#FF8C5A] hover:underline">Hubungi kami</a>
+      </p>
     </form>
   </div>
 </ion-content>
