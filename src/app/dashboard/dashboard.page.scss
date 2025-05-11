@@ -1,286 +1,284 @@
+.tab-selected {
+  color: var(--ion-color-primary);
+  font-weight: bold;
+}
 
-  
-  .tab-selected {
-    color: var(--ion-color-primary);
-    font-weight: bold;
-  }
-  
-  .tab-selected ion-icon {
-    color: var(--ion-color-primary);
-  }
-  
-  /* Optional: Add a bottom border or indicator */
-  .tab-selected::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 25%;
-    width: 50%;
-    height: 3px;
-    background-color: var(--ion-color-primary);
-    border-radius: 3px 3px 0 0;
-  }
+.tab-selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+/* Optional: Add a bottom border or indicator */
+.tab-selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: var(--ion-color-primary);
+  border-radius: 3px 3px 0 0;
+}
 
 /* Dashboard animations */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+to {
+  opacity: 1;
+  transform: scale(1);
+}
 }
 
 @keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+to {
+  opacity: 1;
+  transform: translateX(0);
+}
 }
 
 @keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(var(--ion-color-primary-rgb), 0.4);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(var(--ion-color-primary-rgb), 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(var(--ion-color-primary-rgb), 0);
-  }
+0% {
+  box-shadow: 0 0 0 0 rgba(var(--ion-color-primary-rgb), 0.4);
+}
+70% {
+  box-shadow: 0 0 0 10px rgba(var(--ion-color-primary-rgb), 0);
+}
+100% {
+  box-shadow: 0 0 0 0 rgba(var(--ion-color-primary-rgb), 0);
+}
 }
 
 /* Login success animation for dashboard elements */
 ion-content {
-  animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+animation: scaleIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 ion-card, .dashboard-card {
-  animation: fadeInUp 0.6s ease-out forwards;
-  opacity: 0;
+animation: fadeInUp 0.6s ease-out forwards;
+opacity: 0;
 }
 
 ion-card:nth-child(2), .dashboard-card:nth-child(2) {
-  animation-delay: 0.2s;
+animation-delay: 0.2s;
 }
 
 ion-card:nth-child(3), .dashboard-card:nth-child(3) {
-  animation-delay: 0.3s;
+animation-delay: 0.3s;
 }
 
 ion-card:nth-child(4), .dashboard-card:nth-child(4) {
-  animation-delay: 0.4s;
+animation-delay: 0.4s;
 }
 
 /* Welcome message animation */
 .welcome-message, h1, h2 {
-  animation: slideInRight 0.7s ease-out forwards;
-  opacity: 0;
+animation: slideInRight 0.7s ease-out forwards;
+opacity: 0;
 }
 
 /* Button hover effects */
 ion-button {
-  transition: all 0.3s ease;
+transition: all 0.3s ease;
 }
 
 ion-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+transform: translateY(-2px);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Card hover effects */
 ion-card, .dashboard-card {
-  transition: all 0.3s ease;
+transition: all 0.3s ease;
 }
 
 ion-card:hover, .dashboard-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+transform: translateY(-3px);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* Responsive adjustments */
 @media (max-width: 640px) {
-  ion-card, .dashboard-card {
-    animation-duration: 0.4s;
-  }
+ion-card, .dashboard-card {
+  animation-duration: 0.4s;
+}
 }
 
 /* Refresh animation styles */
 ion-refresher {
-  z-index: 1;
+z-index: 1;
 }
 
 ion-refresher-content {
-  --color: #BB3E00;
+--color: #BB3E00;
 }
 
 /* Custom spinner colors */
 ion-refresher-content .refresher-refreshing-icon {
-  color: #BB3E00;
+color: #BB3E00;
 }
 
 /* Pulling indicator styles */
 ion-refresher-content .refresher-pulling-icon {
-  color: #BB3E00;
-  transition: transform 0.2s ease;
+color: #BB3E00;
+transition: transform 0.2s ease;
 }
 
 /* Pulling text styles */
 ion-refresher-content .refresher-pulling-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: #BB3E00;
-  opacity: 0.9;
+font-size: 14px;
+font-weight: 500;
+color: #BB3E00;
+opacity: 0.9;
 }
 
 /* Refreshing text styles */
 ion-refresher-content .refresher-refreshing-text {
-  font-size: 14px;
-  font-weight: 500;
-  color: #BB3E00;
-  opacity: 0.9;
+font-size: 14px;
+font-weight: 500;
+color: #BB3E00;
+opacity: 0.9;
 }
 
 /* Refresh animation */
 @keyframes refreshRotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+from {
+  transform: rotate(0deg);
+}
+to {
+  transform: rotate(360deg);
+}
 }
 
 /* Subtle refresh background */
 ion-refresher::part(scroll) {
-  background: rgba(255, 240, 230, 0.1);
+background: rgba(255, 240, 230, 0.1);
 }
 
 /* Dark mode adjustments */
 .dark ion-refresher-content {
-  --color: #FF8C5A;
+--color: #FF8C5A;
 }
 
 .dark ion-refresher-content .refresher-pulling-text,
 .dark ion-refresher-content .refresher-refreshing-text,
 .dark ion-refresher-content .refresher-pulling-icon,
 .dark ion-refresher-content .refresher-refreshing-icon {
-  color: #FF8C5A;
+color: #FF8C5A;
 }
 
 /* Notification Popup Styles */
 .notification-popup {
-  position: absolute;
-  right: 0;
-  top: 12px;
-  width: 72px;
-  max-width: 90vw;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  z-index: 50;
-  overflow: hidden;
+position: absolute;
+right: 0;
+top: 12px;
+width: 72px;
+max-width: 90vw;
+background-color: white;
+border-radius: 0.5rem;
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+z-index: 50;
+overflow: hidden;
 }
 
 /* Notification popup header */
 .notification-header {
-  padding: 0.75rem;
-  background-color: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+padding: 0.75rem;
+background-color: #f9fafb;
+border-bottom: 1px solid #e5e7eb;
+display: flex;
+align-items: center;
+justify-content: space-between;
 }
 
 /* Notification list container */
 .notification-list {
-  max-height: 80vh;
-  overflow-y: auto;
+max-height: 80vh;
+overflow-y: auto;
 }
 
 /* Individual notification item */
 .notification-item {
-  padding: 0.75rem;
-  border-bottom: 1px solid #f3f4f6;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+padding: 0.75rem;
+border-bottom: 1px solid #f3f4f6;
+cursor: pointer;
+transition: background-color 0.2s ease;
 }
 
 .notification-item:hover {
-  background-color: #f9fafb;
+background-color: #f9fafb;
 }
 
 /* Notification indicator dot */
 .notification-indicator {
-  width: 0.5rem;
-  height: 0.5rem;
-  background-color: #BB3E00;
-  border-radius: 50%;
+width: 0.5rem;
+height: 0.5rem;
+background-color: #BB3E00;
+border-radius: 50%;
 }
 
 /* Empty notification state */
 .notification-empty {
-  padding: 1rem;
-  text-align: center;
-  color: #6b7280;
-  font-size: 0.875rem;
+padding: 1rem;
+text-align: center;
+color: #6b7280;
+font-size: 0.875rem;
 }
 
 /* Dark mode styles */
 .dark .notification-popup {
-  background-color: #1f2937;
+background-color: #1f2937;
 }
 
 .dark .notification-header {
-  background-color: #374151;
-  border-bottom-color: #4b5563;
+background-color: #374151;
+border-bottom-color: #4b5563;
 }
 
 .dark .notification-item {
-  border-bottom-color: #374151;
+border-bottom-color: #374151;
 }
 
 .dark .notification-item:hover {
-  background-color: #2d3748;
+background-color: #2d3748;
 }
 
 .dark .notification-empty {
-  color: #9ca3af;
+color: #9ca3af;
 }
 
 /* Media queries for better responsiveness */
 @media (max-width: 640px) {
-  .notification-popup {
-    width: 85vw;
-    right: 1rem;
-  }
+.notification-popup {
+  width: 85vw;
+  right: 1rem;
+}
 }
 
 @media (max-width: 480px) {
-  .notification-popup {
-    width: 95vw;
-    right: 0.5rem;
-    left: 0.5rem;
-  }
-  
-  .notification-list {
-    max-height: 60vh;
-  }
+.notification-popup {
+  width: 95vw;
+  right: 0.5rem;
+  left: 0.5rem;
+}
+
+.notification-list {
+  max-height: 60vh;
+}
 }

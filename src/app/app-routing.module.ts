@@ -55,6 +55,14 @@ const routes: Routes = [
     path: 'aktivitas',
     loadChildren: () => import('./aktivitas/aktivitas.module').then( m => m.AktivitasPageModule)
   },
+  {
+    path: 'lupapassword',
+    loadChildren: () => import('./lupapassword/lupapassword.module').then( m => m.LupapasswordPageModule)
+  },
+  {
+    path: 'editprofile',
+    loadChildren: () => import('./editprofile/editprofile.module').then( m => m.EditprofilePageModule)
+  },
 ];
 
 @NgModule({

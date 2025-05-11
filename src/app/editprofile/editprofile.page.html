@@ -1,0 +1,249 @@
+
+
+<ion-content
+  [fullscreen]="true"
+  class="bg-gray-50 dark:bg-gray-900"
+>
+  <div class="max-w-md mx-auto pb-20">
+    <!-- Profile Photo Section -->
+    <div class="flex flex-col items-center justify-center py-6 bg-white dark:bg-gray-800 shadow-sm mb-4">
+      <div class="relative">
+        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
+          <img src="assets/avatar-placeholder.png" alt="Profile Photo" class="w-full h-full object-cover" />
+        </div>
+        <div class="absolute bottom-0 right-0 bg-[#BB3E00] rounded-full p-1.5 shadow-lg">
+          <ion-icon name="camera" class="text-white text-lg"></ion-icon>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Tap untuk mengubah foto profil</p>
+    </div>
+
+    <!-- Form Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4">
+      <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
+      </div>
+      
+      <form class="p-4 space-y-4">
+        <!-- Name Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Nama Lengkap</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="Fauzan"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- Email Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Email</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="email"
+              value="fzn@example.com"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- NIP Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">NIP</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="198705122010011002"
+              disabled
+              class="w-full py-2.5 px-3 text-gray-500 dark:text-gray-400 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+          <p class="text-xs text-gray-400 dark:text-gray-500 italic">NIP tidak dapat diubah</p>
+        </div>
+        
+        <!-- Birth Date Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Tanggal Lahir</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-datetime-button
+              datetime="birthdate"
+              class="w-full text-left px-3 py-2.5 text-gray-700 dark:text-gray-200"
+            ></ion-datetime-button>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime
+                  id="birthdate"
+                  presentation="date"
+                  [value]="'1987-05-12'"
+                  locale="id-ID"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </div>
+        </div>
+        
+        <!-- Address Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Alamat</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-textarea
+              rows="3"
+              value="Jl. Merdeka No. 123"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-textarea>
+          </div>
+        </div>
+        
+        <!-- Phone Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">No. Telepon</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="tel"
+              value="+62 812-3456-7890"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Work Information Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4 mt-4">
+      <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pekerjaan</h3>
+      </div>
+      
+      <form class="p-4 space-y-4">
+        <!-- Department Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Departemen</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="IT"
+              disabled
+              readonly
+              class="w-full py-2.5 px-3 text-gray-500 dark:text-gray-400 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- Position Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Jabatan</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="Programmer"
+              disabled
+              readonly
+              class="w-full py-2.5 px-3 text-gray-500 dark:text-gray-400 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- Join Date Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Tanggal Bergabung</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="1 Januari 2010"
+              disabled
+              class="w-full py-2.5 px-3 text-gray-500 dark:text-gray-400 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- Employee Status Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Status Karyawan</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="text"
+              value="Tetap"
+              disabled
+              readonly
+              class="w-full py-2.5 px-3 text-gray-500 dark:text-gray-400 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Password Change Section -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4 mt-4">
+      <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Ubah Password</h3>
+      </div>
+      
+      <form class="p-4 space-y-4">
+        <!-- Current Password Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Saat Ini</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="password"
+              placeholder="Masukkan password saat ini"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- New Password Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Baru</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="password"
+              placeholder="Masukkan password baru"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+        
+        <!-- Confirm New Password Input -->
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Konfirmasi Password Baru</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="password"
+              placeholder="Konfirmasi password baru"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <!-- Fixed Action Buttons -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg">
+    <div class="flex space-x-3">
+      <ion-button
+        expand="block"
+        fill="outline"
+        color="medium"
+        class="flex-1 m-0 h-11 text-sm font-medium"
+        routerLink="/profile"
+        routerDirection="back"
+      >
+        Batal
+      </ion-button>
+      <ion-button
+        expand="block"
+        class="flex-1 m-0 h-11 text-sm font-medium"
+        style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
+        routerLink="/profile"
+        routerDirection="root"
+        (click)="saveProfile()"
+      >
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Simpan
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
