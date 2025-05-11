@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 
 @Component({
   standalone: false,
@@ -50,7 +50,8 @@ export class PengajuansuratPage {
 
   constructor(
     private toastController: ToastController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {}
@@ -103,11 +104,19 @@ export class PengajuansuratPage {
     }
 
     // Validasi form untuk memastikan semua field yang diperlukan sudah diisi
-    for (const field of requiredFields) {
-      if (!this.formData[field]) {
-        this.isLoading = false;
-        return;
-      }
+    const missingFields = requiredFields.filter(field => !this.formData[field]);
+    if (missingFields.length > 0) {
+      this.isLoading = false;
+      
+      // Menampilkan alert untuk field yang belum diisi
+      const alert = await this.alertController.create({
+        header: 'Form Belum Lengkap',
+        message: 'Mohon lengkapi semua field yang diperlukan sebelum mengirim.',
+        buttons: ['OK']
+      });
+      
+      await alert.present();
+      return;
     }
 
     // Menyimulasikan proses pemrosesan data yang lebih cepat

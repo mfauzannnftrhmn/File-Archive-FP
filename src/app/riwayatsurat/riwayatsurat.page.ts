@@ -97,14 +97,6 @@ export class RiwayatsuratPage {
       // Urutkan dari yang terbaru (nilai terbesar) ke terlama
       return dateB.getTime() - dateA.getTime();
     });
-    
-    // Tampilkan toast konfirmasi
-    this.toastController.create({
-      message: 'Diurutkan berdasarkan terbaru',
-      duration: 1500,
-      color: 'success',
-      position: 'top'
-    }).then(toast => toast.present());
   }
 
   // Fungsi untuk mengurutkan surat berdasarkan yang terlama
@@ -119,13 +111,7 @@ export class RiwayatsuratPage {
       return dateA.getTime() - dateB.getTime();
     });
     
-    // Tampilkan toast konfirmasi
-    this.toastController.create({
-      message: 'Diurutkan berdasarkan terlama',
-      duration: 1500,
-      color: 'success',
-      position: 'top'
-    }).then(toast => toast.present());
+
   }
 
   // Fungsi untuk refresh data
@@ -134,13 +120,7 @@ export class RiwayatsuratPage {
       // Muat ulang data riwayat surat
       this.loadRiwayatSurat();
       
-      // Tampilkan toast konfirmasi refresh
-      this.toastController.create({
-        message: 'Data berhasil diperbarui',
-        duration: 1500,
-        color: 'success',
-        position: 'top'
-      }).then(toast => toast.present());
+      // Refresh selesai tanpa notifikasi toast
       
       // Selesaikan event refresh
       event.target.complete();
