@@ -10,32 +10,35 @@
       pullingIcon=""
       pullingText=""
       refreshingSpinner="circles"
-      refreshingText="">
+      refreshingText=""
+    >
     </ion-refresher-content>
   </ion-refresher>
 
   <!-- Header with profile summary -->
-  <div class="px-4 sm:px-6 pt-6 pb-4 sticky top-0 z-10 bg-gradient-to-r from-[#BB3E00]/90 to-[#A03500]/90 dark:from-[#BB3E00]/80 dark:to-[#A03500]/80 backdrop-blur-md shadow-md">
+  <div
+    class="px-4 sm:px-6 pt-6 pb-4 sticky top-0 z-10 bg-gradient-to-r from-[#BB3E00]/90 to-[#A03500]/90 dark:from-[#BB3E00]/80 dark:to-[#A03500]/80 backdrop-blur-md shadow-md"
+  >
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-white text-xl font-bold">
-          Halo, {{ userName }}
-        </h1>
+        <h1 class="text-white text-xl font-bold">Halo, {{ userName }}</h1>
         <p class="text-white/80 text-sm mt-1">Selamat datang kembali</p>
       </div>
-      <div class="flex items-center space-x-2">
-        <div class="relative">
-          <ion-icon
-            name="notifications-outline"
-            class="text-white text-xl p-2 bg-white/20 rounded-full"
-          ></ion-icon>
-          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
-        </div>
-        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-          <ion-icon
-            name="person"
-            class="text-white text-xl"
-          ></ion-icon>
+      <div class="flex items-center">
+        <div class="relative w-10 h-10">
+          <div
+            class="w-full h-full bg-white/20 rounded-full flex items-center justify-center"
+          >
+            <ion-icon
+              name="notifications-outline"
+              class="text-white text-xl"
+            ></ion-icon>
+          </div>
+          <span
+            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full translate-x-1/2 -translate-y-1/2"
+          >
+            3
+          </span>
         </div>
       </div>
     </div>
@@ -45,26 +48,48 @@
   <div class="px-4 sm:px-6 py-4">
     <!-- Quick Stats Cards -->
     <div class="grid grid-cols-2 gap-3 mb-6">
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]"
+      >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-xs">Surat Diajukan</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">12</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-xs">
+              Surat Diajukan
+            </p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+              12
+            </h3>
           </div>
-          <div class="w-10 h-10 bg-[#FFF0E6] dark:bg-[#3E2A23] rounded-full flex items-center justify-center">
-            <ion-icon name="document-text" class="text-[#BB3E00] text-xl"></ion-icon>
+          <div
+            class="w-10 h-10 bg-[#FFF0E6] dark:bg-[#3E2A23] rounded-full flex items-center justify-center"
+          >
+            <ion-icon
+              name="document-text"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
         </div>
       </div>
-      
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+
+      <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-green-500"
+      >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-xs">Surat Disetujui</p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">8</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-xs">
+              Surat Disetujui
+            </p>
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+              8
+            </h3>
           </div>
-          <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-            <ion-icon name="checkmark-circle" class="text-green-600 dark:text-green-400 text-xl"></ion-icon>
+          <div
+            class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
+          >
+            <ion-icon
+              name="checkmark-circle"
+              class="text-green-600 dark:text-green-400 text-xl"
+            ></ion-icon>
           </div>
         </div>
       </div>
@@ -72,72 +97,134 @@
 
     <!-- Quick Actions -->
     <div class="mb-6">
-      <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center">
+      <h2
+        class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center"
+      >
         <ion-icon name="flash" class="mr-2 text-[#BB3E00]"></ion-icon>
         Aksi Cepat
       </h2>
       <div class="grid grid-cols-4 gap-2">
-        <div class="flex flex-col items-center" routerLink="/pengajuansurat" routerDirection="root">
-          <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20">
-            <ion-icon name="document-text-outline" class="text-[#BB3E00] text-xl"></ion-icon>
+        <div
+          class="flex flex-col items-center"
+          routerLink="/pengajuansurat"
+          routerDirection="root"
+        >
+          <div
+            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+          >
+            <ion-icon
+              name="document-text-outline"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
-          <span class="text-xs text-center text-gray-700 dark:text-gray-300">Ajukan Surat</span>
+          <span class="text-xs text-center text-gray-700 dark:text-gray-300"
+            >Ajukan Surat</span
+          >
         </div>
-        
-        <div class="flex flex-col items-center" routerLink="/templatesurat" routerDirection="root">
-          <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20">
-            <ion-icon name="copy-outline" class="text-[#BB3E00] text-xl"></ion-icon>
+
+        <div
+          class="flex flex-col items-center"
+          routerLink="/templatesurat"
+          routerDirection="root"
+        >
+          <div
+            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+          >
+            <ion-icon
+              name="copy-outline"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
-          <span class="text-xs text-center text-gray-700 dark:text-gray-300">Template</span>
+          <span class="text-xs text-center text-gray-700 dark:text-gray-300"
+            >Template</span
+          >
         </div>
-        
-        <div class="flex flex-col items-center" routerLink="/riwayatsurat" routerDirection="root">
-          <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20">
-            <ion-icon name="time-outline" class="text-[#BB3E00] text-xl"></ion-icon>
+
+        <div
+          class="flex flex-col items-center"
+          routerLink="/riwayatsurat"
+          routerDirection="root"
+        >
+          <div
+            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+          >
+            <ion-icon
+              name="time-outline"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
-          <span class="text-xs text-center text-gray-700 dark:text-gray-300">Riwayat</span>
+          <span class="text-xs text-center text-gray-700 dark:text-gray-300"
+            >Riwayat</span
+          >
         </div>
-        
+
         <div class="flex flex-col items-center">
-          <div class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20">
-            <ion-icon name="help-outline" class="text-[#BB3E00] text-xl"></ion-icon>
+          <div
+            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+          >
+            <ion-icon
+              name="help-outline"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
-          <span class="text-xs text-center text-gray-700 dark:text-gray-300">Bantuan</span>
+          <span class="text-xs text-center text-gray-700 dark:text-gray-300"
+            >Bantuan</span
+          >
         </div>
       </div>
     </div>
 
-
     <!-- Popular Services -->
     <div class="mb-6">
-      <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center">
+      <h2
+        class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center"
+      >
         <ion-icon name="star" class="mr-2 text-[#BB3E00]"></ion-icon>
         Layanan Populer
       </h2>
-      
+
       <div class="space-y-3">
         <!-- Service 1 -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center">
-          <div class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4">
-            <ion-icon name="document-text" class="text-[#BB3E00] text-xl"></ion-icon>
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center"
+        >
+          <div
+            class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
+          >
+            <ion-icon
+              name="document-text"
+              class="text-[#BB3E00] text-xl"
+            ></ion-icon>
           </div>
           <div class="flex-1">
-            <h4 class="font-medium text-gray-800 dark:text-white">Surat Keterangan</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Dokumen umum untuk berbagai keperluan</p>
+            <h4 class="font-medium text-gray-800 dark:text-white">
+              Surat Keterangan
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Dokumen umum untuk berbagai keperluan
+            </p>
           </div>
           <ion-button fill="clear" class="h-8 text-[#BB3E00]">
             <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
           </ion-button>
         </div>
-        
+
         <!-- Service 2 -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center">
-          <div class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4">
+        <div
+          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center"
+        >
+          <div
+            class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
+          >
             <ion-icon name="card" class="text-[#BB3E00] text-xl"></ion-icon>
           </div>
           <div class="flex-1">
-            <h4 class="font-medium text-gray-800 dark:text-white">Kartu Identitas</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Pembuatan & perpanjangan identitas</p>
+            <h4 class="font-medium text-gray-800 dark:text-white">
+              Kartu Identitas
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              Pembuatan & perpanjangan identitas
+            </p>
           </div>
           <ion-button fill="clear" class="h-8 text-[#BB3E00]">
             <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
@@ -148,15 +235,24 @@
 
     <!-- Help & Support -->
     <div class="mb-8">
-      <div class="bg-gradient-to-r from-[#BB3E00] to-[#A03500] dark:from-[#BB3E00]/80 dark:to-[#A03500]/80 rounded-xl shadow-md p-5 text-white">
+      <div
+        class="bg-gradient-to-r from-[#BB3E00] to-[#A03500] dark:from-[#BB3E00]/80 dark:to-[#A03500]/80 rounded-xl shadow-md p-5 text-white"
+      >
         <div class="flex items-center">
           <div class="mr-4">
             <ion-icon name="headset" class="text-3xl"></ion-icon>
           </div>
           <div class="flex-1">
             <h3 class="font-bold text-lg mb-1">Butuh bantuan?</h3>
-            <p class="text-white/80 text-sm mb-3">Tim kami siap membantu Anda 24/7</p>
-            <ion-button fill="solid" color="light" size="small" class="text-[#BB3E00] font-medium">
+            <p class="text-white/80 text-sm mb-3">
+              Tim kami siap membantu Anda 24/7
+            </p>
+            <ion-button
+              fill="solid"
+              color="light"
+              size="small"
+              class="text-[#BB3E00] font-medium"
+            >
               Hubungi Kami
             </ion-button>
           </div>
@@ -167,7 +263,10 @@
 </ion-content>
 
 <!-- Tab Navigation -->
-<ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16">
+<ion-tab-bar
+  slot="bottom"
+  class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16"
+>
   <ion-tab-button
     tab="dashboard"
     routerLink="/dashboard"
