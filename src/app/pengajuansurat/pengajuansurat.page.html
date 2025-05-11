@@ -1,5 +1,5 @@
-<div class="px-4 sm:px-6 pt-4 pb-3 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-800">
-  <div class="flex items-center">
+<div class="pt-4 pb-3 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-800">
+  <div class="flex items-center px-4 sm:px-6">
     <ion-button fill="clear" class="text-gray-700 dark:text-gray-300 p-0 m-0" routerLink="/aktivitas">
       <ion-icon name="arrow-back-outline" class="text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
     </ion-button>
@@ -15,53 +15,53 @@
 </div>
 
 <ion-content class="ion-no-padding">
-  <div class="bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 h-full flex flex-col p-4 overflow-hidden">
+  <div class="bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 h-full flex flex-col overflow-hidden">
     
-    <div *ngIf="!selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-4 flex-shrink-0">
+    <div *ngIf="!selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mb-3 flex-shrink-0 mx-4 mt-3">
       <div class="flex flex-col items-center justify-center">
-        <div class="w-16 h-16 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-4">
-          <ion-icon name="document-text-outline" class="text-2xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+        <div class="w-12 h-12 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-3">
+          <ion-icon name="document-text-outline" class="text-xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
         </div>
-        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">Pilih Template Surat</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-md text-center">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-1">Pilih Template Surat</h3>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 max-w-md text-center">
           Silakan pilih template surat yang sesuai dengan kebutuhan Anda di bawah ini.
         </p>
         
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-md">
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
-            <div class="flex items-center mb-1">
-              <ion-icon name="checkmark-circle" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
-              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Mudah</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-md">
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center">
+              <ion-icon name="checkmark-circle" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
+              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Mudah</span>
             </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400">Form yang simpel dan intuitif</p>
+            <p class="text-[10px] text-gray-600 dark:text-gray-400">Form yang simpel</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
-            <div class="flex items-center mb-1">
-              <ion-icon name="time" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
-              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Cepat</span>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center">
+              <ion-icon name="time" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
+              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Cepat</span>
             </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400">Proses pengajuan instan</p>
+            <p class="text-[10px] text-gray-600 dark:text-gray-400">Proses instan</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
-            <div class="flex items-center mb-1">
-              <ion-icon name="shield-checkmark" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
-              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Aman</span>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center">
+              <ion-icon name="shield-checkmark" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
+              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Aman</span>
             </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400">Data Anda terlindungi</p>
+            <p class="text-[10px] text-gray-600 dark:text-gray-400">Data terlindungi</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-3 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
-            <div class="flex items-center mb-1">
-              <ion-icon name="file-tray-full" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-2"></ion-icon>
-              <span class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Terarsip</span>
+          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+            <div class="flex items-center">
+              <ion-icon name="file-tray-full" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
+              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Terarsip</span>
             </div>
-            <p class="text-xs text-gray-600 dark:text-gray-400">Riwayat tersimpan otomatis</p>
+            <p class="text-[10px] text-gray-600 dark:text-gray-400">Riwayat tersimpan</p>
           </div>
         </div>
       </div>
     </div>
     
     <!-- Template Selection -->
-    <div *ngIf="!selectedTemplate" class="flex-1 overflow-auto">
+    <div *ngIf="!selectedTemplate" class="flex-1 overflow-auto px-4">
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div 
           *ngFor="let template of suratTemplates"
@@ -83,9 +83,9 @@
     </div>
     
     <!-- Form Section -->
-    <div *ngIf="selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-5 h-full flex flex-col overflow-hidden">
+    <div *ngIf="selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg h-full flex flex-col overflow-hidden mx-4 my-4">
       <!-- Header with back button -->
-      <div class="flex justify-between items-center mb-4 flex-shrink-0">
+      <div class="flex justify-between items-center p-5 flex-shrink-0">
         <div class="flex items-center">
           <ion-button fill="clear" class="p-0 h-8 w-8 mr-2" (click)="selectedTemplate = null">
             <ion-icon name="arrow-back-outline" slot="icon-only" class="text-lg text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
@@ -98,7 +98,7 @@
       </div>
 
       <!-- Nomor Surat - Elegant Badge -->
-      <div class="mb-4 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3 flex items-center shadow-sm flex-shrink-0">
+      <div class="mx-5 mb-4 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3 flex items-center shadow-sm flex-shrink-0">
         <ion-icon name="document-text-outline" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-3 text-lg"></ion-icon>
         <div class="flex-1">
           <div class="text-xs text-[#BB3E00] dark:text-[#FF6B2B]">Nomor Surat</div>
@@ -107,7 +107,7 @@
       </div>
 
       <!-- Form Fields in Card Layout -->
-      <div class="flex-1 overflow-auto">
+      <div class="flex-1 overflow-auto px-5">
         <div class="space-y-4">
           <!-- Common Fields Section -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -225,7 +225,7 @@
       </div>
 
       <!-- Submit Button - Elegant Design -->
-      <div class="mt-4 flex-shrink-0">
+      <div class="px-5 py-4 flex-shrink-0">
         <ion-button
           expand="block"
           [disabled]="isLoading"  
