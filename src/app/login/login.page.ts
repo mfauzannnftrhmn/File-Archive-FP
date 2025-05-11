@@ -5,12 +5,12 @@ import { AuthService } from '../services/auth.service';  // Impor AuthService
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
   standalone: false,
+  selector: 'app-login',
+  templateUrl: './login.page.html',
+  styleUrls: ['./login.page.scss'],
 })
-export class HomePage {
+export class LoginPage {
   email: string = '';
   password: string = '';
 

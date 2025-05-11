@@ -46,7 +46,7 @@ export class ProfilePage implements OnInit {
             localStorage.clear();
             
             // Navigate to login page
-            this.router.navigate(['/home']);
+            this.router.navigate(['/login']);
           }
         }
       ],
