@@ -25,7 +25,7 @@ export class EditprofilePage implements OnInit {
     const toast = await this.toastController.create({
       message: 'Profil berhasil disimpan',
       duration: 2000,
-      position: 'bottom',
+      position: 'top',
       color: 'success',
       cssClass: 'toast-success'
     });
