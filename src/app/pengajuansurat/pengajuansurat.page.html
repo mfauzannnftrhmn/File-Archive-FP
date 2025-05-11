@@ -219,14 +219,22 @@
 
       <!-- Submit Button - Elegant Design -->
       <div class="mt-6">
-        <ion-button expand="block" class="font-medium text-sm h-12 --ion-color-primary: #BB3E00; --ion-color-primary-contrast: #ffffff;" style="--background: #BB3E00; --color: #ffffff;" (click)="submitForm()">
+        <ion-button
+          expand="block"
+          [disabled]="isLoading"  
+          style="--background: #BB3E00; --color: #ffffff;"
+          (click)="submitForm()"
+        >
           <ion-icon name="paper-plane-outline" slot="start"></ion-icon>
           Ajukan Surat
         </ion-button>
       </div>
+      
     </div>
 
     <!-- Add padding at the bottom to prevent content being hidden by tabs -->
     <div class="h-20"></div>
   </div>
 </ion-content>
+
+

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 @Component({
   standalone: false,
@@ -10,7 +10,10 @@ import { ToastController } from '@ionic/angular';
 export class PengajuansuratPage {
   suratTemplates = [
     { title: 'Surat Permohonan Cuti', category: 'Permohonan Cuti' },
-    { title: 'Surat Keterangan Karyawan', category: 'Surat Keterangan Karyawan' },
+    {
+      title: 'Surat Keterangan Karyawan',
+      category: 'Surat Keterangan Karyawan',
+    },
     { title: 'Surat Pengajuan Keluhan', category: 'Pengajuan Keluhan' },
     { title: 'Surat Rekomendasi', category: 'Surat Rekomendasi' },
   ];
@@ -45,7 +48,10 @@ export class PengajuansuratPage {
     recommendationReason: '',
   };
 
-  constructor(private toastController: ToastController) {}
+  constructor(
+    private toastController: ToastController,
+    private loadingController: LoadingController
+  ) {}
 
   ngOnInit() {}
 
@@ -60,7 +66,18 @@ export class PengajuansuratPage {
     }
   }
 
+  isLoading = false;
+
   async submitForm() {
+    const loading = await this.loadingController.create({
+      message: 'Mengajukan surat...',
+      spinner: 'crescent',
+      translucent: true,
+      backdropDismiss: false,
+    });
+
+    await loading.present(); // tampilkan loading
+
     const category = this.selectedTemplate?.category;
     const requiredFields: string[] = [];
 
@@ -72,17 +89,29 @@ export class PengajuansuratPage {
         requiredFields.push('name', 'position', 'joinDate', 'purpose');
         break;
       case 'Pengajuan Keluhan':
-        requiredFields.push('name', 'department', 'complaintCategory', 'complaintDescription');
+        requiredFields.push(
+          'name',
+          'department',
+          'complaintCategory',
+          'complaintDescription'
+        );
         break;
       case 'Surat Rekomendasi':
-        requiredFields.push('recommendedName', 'recommenderName', 'recommenderPosition', 'recommendationReason');
+        requiredFields.push(
+          'recommendedName',
+          'recommenderName',
+          'recommenderPosition',
+          'recommendationReason'
+        );
         break;
       default:
         break;
     }
 
+    // Validasi form untuk memastikan semua field yang diperlukan sudah diisi
     for (const field of requiredFields) {
       if (!this.formData[field]) {
+        await loading.dismiss(); // tutup loading jika ada field yang kosong
         const toast = await this.toastController.create({
           message: `Silakan lengkapi field: ${field}`,
           duration: 2000,
@@ -95,25 +124,33 @@ export class PengajuansuratPage {
       }
     }
 
-    const submittedSurat = {
-      ...this.formData,
-      title: this.selectedTemplate.title,
-      category: this.selectedTemplate.category,
-      date: new Date().toLocaleDateString(),
-    };
+    // Menyimulasikan proses pemrosesan data yang lebih lama sebelum menyelesaikan
+    setTimeout(async () => {
+      const submittedSurat = {
+        ...this.formData,
+        title: this.selectedTemplate.title,
+        category: this.selectedTemplate.category,
+        date: new Date().toLocaleDateString(),
+      };
 
-    let riwayatSurat = JSON.parse(localStorage.getItem('riwayatSurat') || '[]');
-    riwayatSurat.push(submittedSurat);
-    localStorage.setItem('riwayatSurat', JSON.stringify(riwayatSurat));
+      // Menyimpan data surat ke dalam local storage
+      let riwayatSurat = JSON.parse(
+        localStorage.getItem('riwayatSurat') || '[]'
+      );
+      riwayatSurat.push(submittedSurat);
+      localStorage.setItem('riwayatSurat', JSON.stringify(riwayatSurat));
 
-    const toast = await this.toastController.create({
-      message: 'Surat berhasil diajukan!',
-      duration: 2000,
-      color: 'success',
-      position: 'top',
-      cssClass: 'toast-success dark:text-white',
-    });
-    toast.present();
+      await loading.dismiss(); // Menutup loading spinner setelah proses selesai
+
+      const toast = await this.toastController.create({
+        message: 'Surat berhasil diajukan!',
+        duration: 2000,
+        color: 'success',
+        position: 'top',
+        cssClass: 'toast-success dark:text-white',
+      });
+      await toast.present();      
+    }, 2000); // Mengatur delay 3 detik (sesuaikan sesuai kebutuhan)
   }
 
   uploadAttachment() {
