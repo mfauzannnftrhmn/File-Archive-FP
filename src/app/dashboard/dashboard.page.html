@@ -1,5 +1,5 @@
 <ion-content
-  class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
+  class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:to-gray-800"
   scrollEvents="true"
   [scrollY]="true"
   forceOverscroll="true"
@@ -26,19 +26,56 @@
       </div>
       <div class="flex items-center">
         <div class="relative w-10 h-10">
-          <div
-            class="w-full h-full bg-white/20 rounded-full flex items-center justify-center"
+          <button 
+            class="w-full h-full bg-white/20 rounded-full flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 active:bg-white/30 transition-all duration-150"
+            (click)="toggleNotificationPopup()"
           >
             <ion-icon
               name="notifications-outline"
               class="text-white text-xl"
             ></ion-icon>
-          </div>
+          </button>
           <span
+            *ngIf="notificationCount > 0"
             class="absolute top-0 right-0 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full translate-x-1/2 -translate-y-1/2"
           >
-            3
+            {{ notificationCount }}
           </span>
+        </div>
+        
+        <!-- Notification Popup -->
+        <div *ngIf="showNotifications" class="absolute right-0 top-12 w-72 md:w-80 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-50 overflow-hidden mx-2 sm:mx-0">
+          <div class="p-3 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-medium text-gray-700 dark:text-gray-200">Notifikasi</h3>
+              <div class="flex items-center space-x-3">
+                <span class="text-xs text-[#BB3E00] dark:text-[#FF6B2B] cursor-pointer" (click)="markAllAsRead()">Tandai sudah dibaca</span>
+                <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200" (click)="toggleNotificationPopup()">
+                  <ion-icon name="close-outline" class="text-lg"></ion-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="max-h-60 sm:max-h-80 overflow-y-auto">
+            <div *ngFor="let notification of notifications" class="p-3 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750 cursor-pointer">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 mr-3">
+                  <div class="w-8 h-8 rounded-full bg-[#FFF0E6] dark:bg-[#3D1500] flex items-center justify-center">
+                    <ion-icon name="document-text" class="text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <p class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ notification.title }}</p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">{{ notification.time }}</p>
+                </div>
+                <div *ngIf="!notification.read" class="w-2 h-2 bg-[#BB3E00] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="notifications.length === 0" class="p-4 text-center text-gray-500 dark:text-gray-400 text-sm">
+            Tidak ada notifikasi
+          </div>
         </div>
       </div>
     </div>
@@ -49,11 +86,11 @@
     <!-- Quick Stats Cards -->
     <div class="grid grid-cols-2 gap-3 mb-6">
       <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]"
+        class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]"
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-xs">
+            <p class="text-gray-500 dark:text-gray-300 text-xs">
               Surat Diajukan
             </p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
@@ -72,11 +109,11 @@
       </div>
 
       <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 border-l-4 border-green-500"
+        class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-green-500"
       >
         <div class="flex items-center justify-between">
           <div>
-            <p class="text-gray-500 dark:text-gray-400 text-xs">
+            <p class="text-gray-500 dark:text-gray-300 text-xs">
               Surat Disetujui
             </p>
             <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
@@ -110,7 +147,7 @@
           routerDirection="root"
         >
           <div
-            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+            class="w-14 h-14 bg-white dark:bg-gray-700 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
           >
             <ion-icon
               name="document-text-outline"
@@ -128,7 +165,7 @@
           routerDirection="root"
         >
           <div
-            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+            class="w-14 h-14 bg-white dark:bg-gray-700 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
           >
             <ion-icon
               name="copy-outline"
@@ -146,7 +183,7 @@
           routerDirection="root"
         >
           <div
-            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+            class="w-14 h-14 bg-white dark:bg-gray-700 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
           >
             <ion-icon
               name="time-outline"
@@ -160,7 +197,7 @@
 
         <div class="flex flex-col items-center">
           <div
-            class="w-14 h-14 bg-white dark:bg-gray-800 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
+            class="w-14 h-14 bg-white dark:bg-gray-700 rounded-full shadow-sm flex items-center justify-center mb-2 border-2 border-[#BB3E00]/20"
           >
             <ion-icon
               name="help-outline"
@@ -186,7 +223,7 @@
       <div class="space-y-3">
         <!-- Service 1 -->
         <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center"
+          class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 flex items-center"
         >
           <div
             class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
@@ -200,7 +237,7 @@
             <h4 class="font-medium text-gray-800 dark:text-white">
               Surat Keterangan
             </h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">
               Dokumen umum untuk berbagai keperluan
             </p>
           </div>
@@ -211,7 +248,7 @@
 
         <!-- Service 2 -->
         <div
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-4 flex items-center"
+          class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 flex items-center"
         >
           <div
             class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
@@ -222,7 +259,7 @@
             <h4 class="font-medium text-gray-800 dark:text-white">
               Kartu Identitas
             </h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">
               Pembuatan & perpanjangan identitas
             </p>
           </div>
@@ -265,7 +302,7 @@
 <!-- Tab Navigation -->
 <ion-tab-bar
   slot="bottom"
-  class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16"
+  class="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 h-16"
 >
   <ion-tab-button
     tab="dashboard"

@@ -67,16 +67,10 @@ export class PengajuansuratPage {
   }
 
   isLoading = false;
+  isSuccess = false;
 
   async submitForm() {
-    const loading = await this.loadingController.create({
-      message: 'Mengajukan surat...',
-      spinner: 'crescent',
-      translucent: true,
-      backdropDismiss: false,
-    });
-
-    await loading.present(); // tampilkan loading
+    this.isLoading = true;
 
     const category = this.selectedTemplate?.category;
     const requiredFields: string[] = [];
@@ -111,21 +105,13 @@ export class PengajuansuratPage {
     // Validasi form untuk memastikan semua field yang diperlukan sudah diisi
     for (const field of requiredFields) {
       if (!this.formData[field]) {
-        await loading.dismiss(); // tutup loading jika ada field yang kosong
-        const toast = await this.toastController.create({
-          message: `Silakan lengkapi field: ${field}`,
-          duration: 2000,
-          color: 'danger',
-          position: 'top',
-          cssClass: 'toast-danger dark:text-white',
-        });
-        await toast.present();
+        this.isLoading = false;
         return;
       }
     }
 
-    // Menyimulasikan proses pemrosesan data yang lebih lama sebelum menyelesaikan
-    setTimeout(async () => {
+    // Menyimulasikan proses pemrosesan data yang lebih cepat
+    setTimeout(() => {
       const submittedSurat = {
         ...this.formData,
         title: this.selectedTemplate.title,
@@ -140,17 +126,50 @@ export class PengajuansuratPage {
       riwayatSurat.push(submittedSurat);
       localStorage.setItem('riwayatSurat', JSON.stringify(riwayatSurat));
 
-      await loading.dismiss(); // Menutup loading spinner setelah proses selesai
+      this.isLoading = false;
+      this.isSuccess = true;
+      
+      // Menghapus auto dismiss, biarkan user klik tombol selesai
+    }, 800); // Mengatur delay lebih cepat menjadi 800ms
+  }
 
-      const toast = await this.toastController.create({
-        message: 'Surat berhasil diajukan!',
-        duration: 2000,
-        color: 'success',
-        position: 'top',
-        cssClass: 'toast-success dark:text-white',
-      });
-      await toast.present();      
-    }, 2000); // Mengatur delay 3 detik (sesuaikan sesuai kebutuhan)
+  resetForm() {
+    // Reset form data to initial state
+    this.formData = {
+      suratNumber: '',
+      // General
+      name: '',
+      email: '',
+      attachmentName: '',
+
+      // Cuti
+      startDate: '',
+      endDate: '',
+      reason: '',
+
+      // Karyawan
+      position: '',
+      joinDate: '',
+      purpose: '',
+
+      // Keluhan
+      department: '',
+      complaintCategory: '',
+      complaintDescription: '',
+
+      // Rekomendasi
+      recommendedName: '',
+      recommenderName: '',
+      recommenderPosition: '',
+      recommendationReason: '',
+    };
+    
+    // Reset selected template
+    this.selectedTemplate = null;
+  }
+
+  dismissSuccess() {
+    this.isSuccess = false;
   }
 
   uploadAttachment() {

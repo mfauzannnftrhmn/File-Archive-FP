@@ -36,9 +36,9 @@ export class TemplatesuratPage implements OnInit {
       imagePreview: 'assets/templates/preview/keluhan.png',
     },
     {
-      title: 'Surat Cuti Tahunan',
+      title: 'Surat Permohonan Cuti',
       category: 'Permohonan Cuti',
-      description: 'Permohonan cuti tahunan karyawan',
+      description: 'Permohonan cuti karyawan',
       fileWord: 'assets/templates/cuti.docx',
       filePdf: 'assets/templates/Surat1.pdf',
       imagePreview: 'assets/templates/preview/cuti.png',

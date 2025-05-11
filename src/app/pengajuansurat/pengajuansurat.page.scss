@@ -131,4 +131,341 @@
   }
 
   
-  
+  /* Form styling */
+  .form-container {
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  .dark .form-container {
+    background-color: #1f2937;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .dark .form-title {
+    color: #e5e7eb;
+    border-bottom-color: #374151;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    margin-bottom: 0.5rem;
+  }
+
+  .dark .form-label {
+    color: #9ca3af;
+  }
+
+  ion-input, ion-textarea, ion-datetime, ion-select {
+    --background: #f9fafb;
+    --color: #1f2937;
+    --placeholder-color: #9ca3af;
+    --placeholder-opacity: 0.8;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --padding-top: 0.75rem;
+    --padding-bottom: 0.75rem;
+    --border-radius: 8px;
+    --border-width: 1px;
+    --border-color: #e5e7eb;
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .dark ion-input, .dark ion-textarea, .dark ion-datetime, .dark ion-select {
+    --background: #374151;
+    --color: #e5e7eb;
+    --placeholder-color: #9ca3af;
+    --border-color: #4b5563;
+  }
+
+  ion-input:focus-within, ion-textarea:focus-within, ion-datetime:focus-within, ion-select:focus-within {
+    --border-color: #BB3E00;
+    --border-width: 2px;
+    box-shadow: 0 0 0 2px rgba(187, 62, 0, 0.1);
+  }
+
+  .dark ion-input:focus-within, .dark ion-textarea:focus-within, 
+  .dark ion-datetime:focus-within, .dark ion-select:focus-within {
+    --border-color: #f97316;
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+  }
+
+  .form-helper {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.375rem;
+  }
+
+  .dark .form-helper {
+    color: #9ca3af;
+  }
+
+  .form-error {
+    font-size: 0.75rem;
+    color: #ef4444;
+    margin-top: 0.375rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-error ion-icon {
+    margin-right: 0.25rem;
+    font-size: 1rem;
+  }
+
+  .form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #e5e7eb;
+  }
+
+  .dark .form-section {
+    border-bottom-color: #374151;
+  }
+
+  .form-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4b5563;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .dark .form-section-title {
+    color: #d1d5db;
+  }
+
+  .form-section-title ion-icon {
+    margin-right: 0.5rem;
+    color: #BB3E00;
+  }
+
+  .dark .form-section-title ion-icon {
+    color: #f97316;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .form-actions ion-button {
+    --border-radius: 8px;
+    --padding-top: 1rem;
+    --padding-bottom: 1rem;
+    --padding-start: 1.5rem;
+    --padding-end: 1.5rem;
+    font-weight: 500;
+  }
+
+  /* File upload styling */
+  .file-upload {
+    border: 2px dashed #e5e7eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #f9fafb;
+  }
+
+  .dark .file-upload {
+    border-color: #4b5563;
+    background-color: #374151;
+  }
+
+  .file-upload:hover {
+    border-color: #BB3E00;
+    background-color: rgba(187, 62, 0, 0.05);
+  }
+
+  .dark .file-upload:hover {
+    border-color: #f97316;
+    background-color: rgba(249, 115, 22, 0.1);
+  }
+
+  .file-upload-icon {
+    font-size: 2rem;
+    color: #9ca3af;
+    margin-bottom: 0.5rem;
+  }
+
+  .file-upload-text {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .dark .file-upload-text {
+    color: #9ca3af;
+  }
+
+  .file-upload-helper {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin-top: 0.5rem;
+  }
+
+  /* Form progress indicator */
+  .form-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .form-progress::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #e5e7eb;
+    z-index: 1;
+  }
+
+  .dark .form-progress::before {
+    background-color: #4b5563;
+  }
+
+  .progress-step {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .step-indicator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .dark .step-indicator {
+    background-color: #1f2937;
+    border-color: #4b5563;
+    color: #9ca3af;
+  }
+
+  .step-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: center;
+    max-width: 80px;
+  }
+
+  .dark .step-label {
+    color: #9ca3af;
+  }
+
+  .progress-step.active .step-indicator {
+    background-color: #BB3E00;
+    border-color: #BB3E00;
+    color: #ffffff;
+  }
+
+  .dark .progress-step.active .step-indicator {
+    background-color: #f97316;
+    border-color: #f97316;
+  }
+
+  .progress-step.active .step-label {
+    color: #BB3E00;
+    font-weight: 500;
+  }
+
+  .dark .progress-step.active .step-label {
+    color: #f97316;
+  }
+
+  .progress-step.completed .step-indicator {
+    background-color: #10b981;
+    border-color: #10b981;
+    color: #ffffff;
+  }
+
+  .dark .progress-step.completed .step-indicator {
+    background-color: #34d399;
+    border-color: #34d399;
+  }
+
+  /* Form animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .form-group {
+    animation: slideIn 0.4s ease-out forwards;
+    opacity: 0;
+  }
+
+  .form-group:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+
+  .form-group:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+
+  .form-group:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+
+  .form-group:nth-child(5) {
+    animation-delay: 0.4s;
+  }

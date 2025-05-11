@@ -185,3 +185,102 @@ ion-refresher::part(scroll) {
   color: #FF8C5A;
 }
 
+/* Notification Popup Styles */
+.notification-popup {
+  position: absolute;
+  right: 0;
+  top: 12px;
+  width: 72px;
+  max-width: 90vw;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  overflow: hidden;
+}
+
+/* Notification popup header */
+.notification-header {
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Notification list container */
+.notification-list {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Individual notification item */
+.notification-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.notification-item:hover {
+  background-color: #f9fafb;
+}
+
+/* Notification indicator dot */
+.notification-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #BB3E00;
+  border-radius: 50%;
+}
+
+/* Empty notification state */
+.notification-empty {
+  padding: 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Dark mode styles */
+.dark .notification-popup {
+  background-color: #1f2937;
+}
+
+.dark .notification-header {
+  background-color: #374151;
+  border-bottom-color: #4b5563;
+}
+
+.dark .notification-item {
+  border-bottom-color: #374151;
+}
+
+.dark .notification-item:hover {
+  background-color: #2d3748;
+}
+
+.dark .notification-empty {
+  color: #9ca3af;
+}
+
+/* Media queries for better responsiveness */
+@media (max-width: 640px) {
+  .notification-popup {
+    width: 85vw;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification-popup {
+    width: 95vw;
+    right: 0.5rem;
+    left: 0.5rem;
+  }
+  
+  .notification-list {
+    max-height: 60vh;
+  }
+}
