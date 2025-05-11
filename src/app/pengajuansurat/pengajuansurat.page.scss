@@ -1,471 +1,394 @@
+/* Tab selection styling with smooth transitions */
+.tab-selected {
+  color: var(--ion-color-primary);
+  font-weight: bold;
+  transition: color 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
+.tab-selected ion-icon {
+  color: var(--ion-color-primary);
+  transform: scale(1.1);
+  transition: color 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 
-  .tab-selected {
-    color: var(--ion-color-primary);
-    font-weight: bold;
-  }
-  
-  .tab-selected ion-icon {
-    color: var(--ion-color-primary);
-  }
-  
-  /* Optional: Add a bottom border or indicator */
-  .tab-selected::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 25%;
-    width: 50%;
-    height: 3px;
-    background-color: var(--ion-color-primary);
-    border-radius: 3px 3px 0 0;
-  }
+/* Tab indicator with elegant animation */
+.tab-selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: var(--ion-color-primary);
+  border-radius: 3px 3px 0 0;
+  transform-origin: center;
+  animation: tabIndicator 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
 
-  /* Form entrance animation */
-  @keyframes formEntrance {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Template card hover effect */
-  .bg-white {
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .bg-white:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(187, 62, 0, 0.15);
-  }
-
-  /* Staggered animation for template cards */
-  .grid > div {
-    animation: formEntrance 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+@keyframes tabIndicator {
+  0% {
+    transform: scaleX(0);
     opacity: 0;
   }
-
-  .grid > div:nth-child(1) { animation-delay: 0.1s; }
-  .grid > div:nth-child(2) { animation-delay: 0.2s; }
-  .grid > div:nth-child(3) { animation-delay: 0.3s; }
-  .grid > div:nth-child(4) { animation-delay: 0.4s; }
-  .grid > div:nth-child(5) { animation-delay: 0.5s; }
-  .grid > div:nth-child(6) { animation-delay: 0.6s; }
-  .grid > div:nth-child(7) { animation-delay: 0.7s; }
-  .grid > div:nth-child(8) { animation-delay: 0.8s; }
-
-  /* Icon pulse animation */
-  @keyframes iconPulse {
-    0% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.15);
-    }
-    100% {
-      transform: scale(1);
-    }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
   }
+}
 
-  .w-12 ion-icon, .w-16 ion-icon {
-    animation: iconPulse 2s ease-in-out infinite;
-  }
+/* Page transition animations */
+ion-content {
+  --background: var(--ion-background-color);
+}
 
-  /* Form field focus animation */
-  ion-input {
-    transition: all 0.3s ease;
-  }
+ion-card, ion-item, ion-button, .form-container {
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+}
 
-  ion-input:focus {
-    transform: translateX(5px);
-  }
+ion-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
 
-  /* Button click effect */
-  ion-button {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
+ion-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
 
-  ion-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
+ion-item:nth-child(odd) {
+  animation-delay: 0.15s;
+}
+
+ion-item:nth-child(even) {
+  animation-delay: 0.25s;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+  from {
     opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%, -50%);
-    transform-origin: 50% 50%;
+    transform: translateY(20px);
   }
-
-  ion-button:active::after {
-    animation: ripple 0.6s ease-out;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-  @keyframes ripple {
-    0% {
-      transform: scale(0, 0);
-      opacity: 0.5;
-    }
-    100% {
-      transform: scale(20, 20);
-      opacity: 0;
-    }
+/* Scale animation for interactive elements */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
   }
-
-  /* Smooth page transition */
-  ion-content {
-    animation: fadeIn 0.5s ease-in-out;
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* Enhanced button interactions */
+ion-button {
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+ion-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+  transition: all 0.6s ease;
+}
+
+ion-button:hover::before {
+  left: 100%;
+}
+
+ion-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+ion-button:active {
+  transform: translateY(-1px);
+}
+
+/* Form field animations */
+ion-input, ion-select, ion-textarea {
+  transition: all 0.3s ease;
+}
+
+ion-input:focus-within, ion-select:focus-within, ion-textarea:focus-within {
+  transform: translateY(-2px);
+}
+
+/* Card hover effects */
+ion-card {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, box-shadow;
+  position: relative;
+  overflow: hidden;
+}
+
+ion-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Card spotlight effect - follows cursor */
+ion-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+              rgba(255, 255, 255, 0.3) 0%, 
+              rgba(255, 255, 255, 0) 60%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 2;
+}
+
+ion-card:hover::after {
+  opacity: 1;
+}
+
+/* Loading state animations */
+.loading-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--ion-color-light-rgb), 0.5) 0%,
+    rgba(var(--ion-color-light-rgb), 0.8) 50%,
+    rgba(var(--ion-color-light-rgb), 0.5) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
   }
+  100% {
+    background-position: -200% 0;
+  }
+}
 
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  ion-card, ion-item {
+    animation-duration: 0.4s;
+  }
   
-  /* Form styling */
-  .form-container {
-    padding: 1rem;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    margin-bottom: 1.5rem;
-    animation: fadeInUp 0.6s ease-out forwards;
+  ion-card:hover {
+    transform: translateY(-3px) scale(1.005);
   }
+}
 
-  .dark .form-container {
-    background-color: #1f2937;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  }
+/* Success/error notification animations */
+.notification {
+  animation: slideInDown 0.5s forwards, fadeOut 0.5s 3s forwards;
+}
 
-  .form-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #374151;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #e5e7eb;
-  }
-
-  .dark .form-title {
-    color: #e5e7eb;
-    border-bottom-color: #374151;
-  }
-
-  .form-group {
-    margin-bottom: 1.25rem;
-  }
-
-  .form-label {
-    display: block;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4b5563;
-    margin-bottom: 0.5rem;
-  }
-
-  .dark .form-label {
-    color: #9ca3af;
-  }
-
-  ion-input, ion-textarea, ion-datetime, ion-select {
-    --background: #f9fafb;
-    --color: #1f2937;
-    --placeholder-color: #9ca3af;
-    --placeholder-opacity: 0.8;
-    --padding-start: 1rem;
-    --padding-end: 1rem;
-    --padding-top: 0.75rem;
-    --padding-bottom: 0.75rem;
-    --border-radius: 8px;
-    --border-width: 1px;
-    --border-color: #e5e7eb;
-    margin-top: 0.25rem;
-    font-size: 0.95rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-  }
-
-  .dark ion-input, .dark ion-textarea, .dark ion-datetime, .dark ion-select {
-    --background: #374151;
-    --color: #e5e7eb;
-    --placeholder-color: #9ca3af;
-    --border-color: #4b5563;
-  }
-
-  ion-input:focus-within, ion-textarea:focus-within, ion-datetime:focus-within, ion-select:focus-within {
-    --border-color: #BB3E00;
-    --border-width: 2px;
-    box-shadow: 0 0 0 2px rgba(187, 62, 0, 0.1);
-  }
-
-  .dark ion-input:focus-within, .dark ion-textarea:focus-within, 
-  .dark ion-datetime:focus-within, .dark ion-select:focus-within {
-    --border-color: #f97316;
-    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
-  }
-
-  .form-helper {
-    font-size: 0.75rem;
-    color: #6b7280;
-    margin-top: 0.375rem;
-  }
-
-  .dark .form-helper {
-    color: #9ca3af;
-  }
-
-  .form-error {
-    font-size: 0.75rem;
-    color: #ef4444;
-    margin-top: 0.375rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .form-error ion-icon {
-    margin-right: 0.25rem;
-    font-size: 1rem;
-  }
-
-  .form-section {
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px dashed #e5e7eb;
-  }
-
-  .dark .form-section {
-    border-bottom-color: #374151;
-  }
-
-  .form-section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #4b5563;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-  }
-
-  .dark .form-section-title {
-    color: #d1d5db;
-  }
-
-  .form-section-title ion-icon {
-    margin-right: 0.5rem;
-    color: #BB3E00;
-  }
-
-  .dark .form-section-title ion-icon {
-    color: #f97316;
-  }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-
-  .form-actions ion-button {
-    --border-radius: 8px;
-    --padding-top: 1rem;
-    --padding-bottom: 1rem;
-    --padding-start: 1.5rem;
-    --padding-end: 1.5rem;
-    font-weight: 500;
-  }
-
-  /* File upload styling */
-  .file-upload {
-    border: 2px dashed #e5e7eb;
-    border-radius: 8px;
-    padding: 1.5rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-color: #f9fafb;
-  }
-
-  .dark .file-upload {
-    border-color: #4b5563;
-    background-color: #374151;
-  }
-
-  .file-upload:hover {
-    border-color: #BB3E00;
-    background-color: rgba(187, 62, 0, 0.05);
-  }
-
-  .dark .file-upload:hover {
-    border-color: #f97316;
-    background-color: rgba(249, 115, 22, 0.1);
-  }
-
-  .file-upload-icon {
-    font-size: 2rem;
-    color: #9ca3af;
-    margin-bottom: 0.5rem;
-  }
-
-  .file-upload-text {
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  .dark .file-upload-text {
-    color: #9ca3af;
-  }
-
-  .file-upload-helper {
-    font-size: 0.75rem;
-    color: #9ca3af;
-    margin-top: 0.5rem;
-  }
-
-  /* Form progress indicator */
-  .form-progress {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-    position: relative;
-  }
-
-  .form-progress::before {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background-color: #e5e7eb;
-    z-index: 1;
-  }
-
-  .dark .form-progress::before {
-    background-color: #4b5563;
-  }
-
-  .progress-step {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .step-indicator {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    border: 2px solid #e5e7eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #6b7280;
-    margin-bottom: 0.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .dark .step-indicator {
-    background-color: #1f2937;
-    border-color: #4b5563;
-    color: #9ca3af;
-  }
-
-  .step-label {
-    font-size: 0.75rem;
-    color: #6b7280;
-    text-align: center;
-    max-width: 80px;
-  }
-
-  .dark .step-label {
-    color: #9ca3af;
-  }
-
-  .progress-step.active .step-indicator {
-    background-color: #BB3E00;
-    border-color: #BB3E00;
-    color: #ffffff;
-  }
-
-  .dark .progress-step.active .step-indicator {
-    background-color: #f97316;
-    border-color: #f97316;
-  }
-
-  .progress-step.active .step-label {
-    color: #BB3E00;
-    font-weight: 500;
-  }
-
-  .dark .progress-step.active .step-label {
-    color: #f97316;
-  }
-
-  .progress-step.completed .step-indicator {
-    background-color: #10b981;
-    border-color: #10b981;
-    color: #ffffff;
-  }
-
-  .dark .progress-step.completed .step-indicator {
-    background-color: #34d399;
-    border-color: #34d399;
-  }
-
-  /* Form animations */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  .form-group {
-    animation: slideIn 0.4s ease-out forwards;
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
     opacity: 0;
   }
-
-  .form-group:nth-child(2) {
-    animation-delay: 0.1s;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
+}
 
-  .form-group:nth-child(3) {
-    animation-delay: 0.2s;
+@keyframes fadeOut {
+  from {
+    opacity: 1;
   }
+  to {
+    opacity: 0;
+  }
+}
 
-  .form-group:nth-child(4) {
-    animation-delay: 0.3s;
-  }
+/* Unique 3D card flip effect for important cards */
+.flip-card {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  height: 200px;
+}
 
-  .form-group:nth-child(5) {
-    animation-delay: 0.4s;
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ion-color-primary);
+  color: white;
+}
+
+/* Elegant progress bar animation */
+.progress-bar {
+  height: 6px;
+  background: linear-gradient(90deg, var(--ion-color-primary) 0%, var(--ion-color-secondary) 100%);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: progressShimmer 2s infinite;
+}
+
+@keyframes progressShimmer {
+  0% {
+    left: -100%;
   }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Floating label animation */
+.floating-label {
+  position: relative;
+  overflow: hidden;
+}
+
+.floating-label label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  color: var(--ion-color-medium);
+}
+
+.floating-label input:focus ~ label,
+.floating-label input:not(:placeholder-shown) ~ label {
+  top: 0;
+  font-size: 12px;
+  color: var(--ion-color-primary);
+  font-weight: 500;
+}
+
+/* Elegant wave animation for section dividers */
+.wave-divider {
+  height: 60px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25' class='shape-fill'%3E%3C/path%3E%3Cpath d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5' class='shape-fill'%3E%3C/path%3E%3Cpath d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' class='shape-fill'%3E%3C/path%3E%3C/svg%3E") bottom no-repeat;
+  background-size: 100% 100%;
+  animation: waveAnimation 10s linear infinite;
+}
+
+@keyframes waveAnimation {
+  0% {
+    background-position-x: 0%;
+  }
+  100% {
+    background-position-x: 100%;
+  }
+}
+
+/* Magnetic button effect */
+.magnetic-button {
+  position: relative;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.magnetic-button:hover {
+  transform: perspective(1000px) rotateX(10deg) rotateY(10deg) scale(1.05);
+}
+
+/* Particle effect for success actions */
+.success-particles {
+  position: relative;
+}
+
+.success-particles::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 0 2px rgba(var(--ion-color-success-rgb), 0.3),
+    -20px -15px 0 rgba(var(--ion-color-success-rgb), 0.7),
+    15px -25px 0 rgba(var(--ion-color-success-rgb), 0.5),
+    -15px 10px 0 rgba(var(--ion-color-success-rgb), 0.6),
+    20px 10px 0 rgba(var(--ion-color-success-rgb), 0.4);
+  animation: particleExplosion 1s forwards;
+}
+
+@keyframes particleExplosion {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+

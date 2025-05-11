@@ -150,7 +150,6 @@ ion-card:nth-child(4), .dashboard-card:nth-child(4) {
   left: 0;
   width: 40px;
   height: 2px;
-  background: linear-gradient(90deg, var(--ion-color-primary), transparent);
   animation: expandWidth 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: 0.8s;
   transform-origin: left;
