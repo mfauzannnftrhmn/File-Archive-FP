@@ -1,5 +1,10 @@
 import { Component } from '@angular/core';
-import { LoadingController, ToastController, AlertController } from '@ionic/angular';
+import {
+  LoadingController,
+  ToastController,
+  AlertController,
+} from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   standalone: false,
@@ -51,7 +56,8 @@ export class PengajuansuratPage {
   constructor(
     private toastController: ToastController,
     private loadingController: LoadingController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {}
@@ -103,43 +109,46 @@ export class PengajuansuratPage {
         break;
     }
 
-    // Validasi form untuk memastikan semua field yang diperlukan sudah diisi
-    const missingFields = requiredFields.filter(field => !this.formData[field]);
+    const missingFields = requiredFields.filter(
+      (field) => !this.formData[field]
+    );
     if (missingFields.length > 0) {
       this.isLoading = false;
-      
-      // Menampilkan alert untuk field yang belum diisi
+
       const alert = await this.alertController.create({
         header: 'Form Belum Lengkap',
         message: 'Mohon lengkapi semua field yang diperlukan sebelum mengirim.',
-        buttons: ['OK']
+        buttons: ['OK'],
       });
-      
       await alert.present();
       return;
     }
 
-    // Menyimulasikan proses pemrosesan data yang lebih cepat
-    setTimeout(() => {
-      const submittedSurat = {
-        ...this.formData,
-        title: this.selectedTemplate.title,
-        category: this.selectedTemplate.category,
-        date: new Date().toLocaleDateString(),
-      };
+    const submittedSurat = {
+      ...this.formData,
+      title: this.selectedTemplate.title,
+      category: this.selectedTemplate.category,
+      date: new Date().toISOString(),
+    };
 
-      // Menyimpan data surat ke dalam local storage
-      let riwayatSurat = JSON.parse(
-        localStorage.getItem('riwayatSurat') || '[]'
-      );
-      riwayatSurat.push(submittedSurat);
-      localStorage.setItem('riwayatSurat', JSON.stringify(riwayatSurat));
+    // GANTI URL BERIKUT SESUAI LARAVEL BACKEND
+    const apiUrl = 'http://localhost:8000/api/pengajuan-surat';
 
-      this.isLoading = false;
-      this.isSuccess = true;
-      
-      // Menghapus auto dismiss, biarkan user klik tombol selesai
-    }, 800); // Mengatur delay lebih cepat menjadi 800ms
+    this.http.post(apiUrl, submittedSurat).subscribe({
+      next: async (response) => {
+        this.isLoading = false;
+        this.isSuccess = true;
+      },
+      error: async (error) => {
+        this.isLoading = false;
+        const alert = await this.alertController.create({
+          header: 'Gagal Mengirim',
+          message: 'Terjadi kesalahan saat mengirim surat. Silakan coba lagi.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      },
+    });
   }
 
   resetForm() {
@@ -172,7 +181,7 @@ export class PengajuansuratPage {
       recommenderPosition: '',
       recommendationReason: '',
     };
-    
+
     // Reset selected template
     this.selectedTemplate = null;
   }

@@ -1,9 +1,9 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.kakoia.SampleApk',
+  appId: 'io.ionic.starter',
   appName: 'SampleApk',
-  webDir: 'www'
+  webDir: 'www',
 };
 
 export default config;
