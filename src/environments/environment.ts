@@ -1,5 +1,5 @@
 // src/environments/environment.ts
 export const environment = {
   production: false,
-  apiUrl: 'https://archiver.up.railway.app/' // Pastikan URL backend API Anda di sini
+  apiUrl: 'https://simpap.my.id/public/api' // Pastikan URL backend API Anda di sini
 };
