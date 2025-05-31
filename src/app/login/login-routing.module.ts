@@ -1,11 +1,12 @@
+// src/app/login/login-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginPage } from './login.page';
+import { LoginPage } from './login.page'; // ✅ Import component untuk digunakan di route
 
 const routes: Routes = [
   {
     path: '',
-    component: LoginPage
+    component: LoginPage // ✅ Gunakan component langsung
   }
 ];
 

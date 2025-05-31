@@ -1,8 +1,10 @@
+// src/app/login/login.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { LoginPage } from './login.page';
+// Hapus import LoginPage jika tidak dideklarasikan di sini
+// import { LoginPage } from './login.page';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 @NgModule({
@@ -12,6 +14,6 @@ import { LoginPageRoutingModule } from './login-routing.module';
     IonicModule,
     LoginPageRoutingModule
   ],
-  declarations: [LoginPage]
+  // declarations: [LoginPage] // ⛔ HAPUS BARIS INI
 })
 export class LoginPageModule {}

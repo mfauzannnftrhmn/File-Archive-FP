@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.kakoia.SampleApk',
-  appName: 'SampleApk',
+  appId: 'com.kakoi.app',
+  appName: 'Sistem Manajemen File Archive',
   webDir: 'www'
 };
 

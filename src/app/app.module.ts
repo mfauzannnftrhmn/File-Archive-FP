@@ -8,7 +8,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // ✅ Import HTTP_INTERCEPTORS dan HttpClientModule
+import { AuthInterceptor } from './auth.interceptor'; // Tanpa './interceptors/'
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,8 +23,10 @@ import { HttpClientModule } from '@angular/common/http';
     ButtonModule,
     HttpClientModule 
   ],
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+   providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    // ✅ Daftarkan Interceptor Anda
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

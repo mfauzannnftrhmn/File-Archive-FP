@@ -1,14 +1,23 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
-import { AuthService } from '../services/auth.service';  // Impor AuthService
-import { HttpClient } from '@angular/common/http';
+// ✅ Import RouterModule
+import { Router, RouterModule } from '@angular/router';
+import { AlertController, LoadingController, NavController, IonicModule } from '@ionic/angular';
+import { AuthService, UserData } from '../services/auth.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  standalone: false,
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  standalone: true,
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    RouterModule // ✅ TAMBAHKAN RouterModule DI SINI
+  ]
 })
 export class LoginPage {
   email: string = '';
@@ -18,50 +27,49 @@ export class LoginPage {
     private router: Router,
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private http: HttpClient,
-    private authService: AuthService  // Menambahkan AuthService ke konstruktor
-  ) { }
+    private authService: AuthService,
+    private navCtrl: NavController
+  ) {}
 
   async doSubmit() {
     if (!this.email || !this.password) {
       await this.showAlert('Error', 'Email dan Password harus diisi!');
       return;
     }
-  
+
     const loading = await this.loadingController.create({
       message: 'Sedang memproses login...',
       spinner: 'crescent',
       translucent: true,
       backdropDismiss: false,
     });
-  
+
     await loading.present();
-  
-    console.log('Email:', this.email, 'Password:', this.password);
-  
-    this.authService.login(this.email, this.password).subscribe({
-      next: async (res) => {
-        await loading.dismiss();
-        console.log('RESPON API:', res);
-  
-        if (res?.role === 'karyawan') {
-          localStorage.setItem('token', res.access_token);
-          localStorage.setItem('email', this.email);
-          this.router.navigateByUrl('/dashboard');
-        } else {
-          await this.showAlert('Akses Ditolak', 'Hanya user dengan role "karyawan" yang bisa login lewat aplikasi ini.');
-        }
-      },
-      error: async (err) => {
-        await loading.dismiss();
-        console.error('ERROR API:', JSON.stringify(err));
-  
-        const msg = err?.error?.message || 'Login gagal. Periksa kembali email dan password.';
-        await this.showAlert('Login Gagal', msg);
-      }
-    });
+
+    this.authService.loginKaryawan({ email: this.email, password: this.password })
+      .subscribe({
+        next: async (userData: UserData) => {
+          await loading.dismiss();
+          console.log('Login berhasil, data pengguna terautentikasi:', userData);
+
+          if (!userData.emailVerified) {
+            await this.showAlert(
+              'Verifikasi Email Diperlukan',
+              'Email Anda belum diverifikasi. Silakan periksa email Anda untuk link verifikasi sebelum login.'
+            );
+            this.authService.logout().subscribe();
+            return;
+          }
+          this.navCtrl.navigateRoot('/aktivitas', { animated: true, animationDirection: 'forward' });
+        },
+        error: async (error: Error) => {
+          await loading.dismiss();
+          console.error('ERROR LOGIN DI PAGE:', error);
+          await this.showAlert('Login Gagal', error.message);
+        },
+      });
   }
-  
+
   private async showAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header,
