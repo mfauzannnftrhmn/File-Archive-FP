@@ -11,7 +11,6 @@ import { ButtonModule } from 'primeng/button';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // ✅ Import HTTP_INTERCEPTORS dan HttpClientModule
 import { AuthInterceptor } from './auth.interceptor'; // Tanpa './interceptors/'
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,13 +20,13 @@ import { AuthInterceptor } from './auth.interceptor'; // Tanpa './interceptors/'
     FormsModule,
     BrowserAnimationsModule,
     ButtonModule,
-    HttpClientModule 
+    HttpClientModule,
   ],
-   providers: [
+  providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     // ✅ Daftarkan Interceptor Anda
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
