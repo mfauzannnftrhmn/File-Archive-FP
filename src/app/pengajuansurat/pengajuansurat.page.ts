@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'; // Tambahkan ViewChild, ElementRef
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LoadingController, ToastController, AlertController } from '@ionic/angular';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http'; // Import HttpErrorResponse
+import { saveAs } from 'file-saver';
 
 @Component({
   standalone: false,
@@ -9,14 +10,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./pengajuansurat.page.scss'],
 })
 export class PengajuansuratPage implements OnInit {
-  @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>; // Untuk mereset file input
+  @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
 
   suratTemplates = [
     { title: 'Surat Permohonan Cuti', category: 'Permohonan Cuti' },
-    {
-      title: 'Surat Keterangan Karyawan',
-      category: 'Surat Keterangan Karyawan',
-    },
+    { title: 'Surat Keterangan Karyawan', category: 'Surat Keterangan Karyawan' },
     { title: 'Surat Pengajuan Keluhan', category: 'Pengajuan Keluhan' },
     { title: 'Surat Rekomendasi', category: 'Surat Rekomendasi' },
   ];
@@ -38,16 +36,17 @@ export class PengajuansuratPage implements OnInit {
     complaintCategory: '',
     complaintDescription: '',
     recommendedName: '',
-    recommenderName: '', // Akan diisi otomatis dari formData.name saat submit
+    recommenderName: '',
     recommenderPosition: '',
     recommendationReason: '',
   };
 
   isLoading = false;
-  isCheckingStatus = false; // State baru untuk loading pengecekan status
-  isSubmissionPending = false; // State baru untuk menandakan ada pengajuan pending
-  pendingSubmissionMessage = ''; // Pesan untuk ditampilkan jika ada pengajuan pending
+  isCheckingStatus = false;
+  isSubmissionPending = false;
+  pendingSubmissionMessage = '';
   isSuccess = false;
+  isLoadingPdfPreview = false;
 
   public todayDateString: string;
   public minEndDate: string;
@@ -65,26 +64,71 @@ export class PengajuansuratPage implements OnInit {
   }
 
   ngOnInit() {
-    const storedEmail = localStorage.getItem('email');
-    if (storedEmail) {
-      this.formData.email = storedEmail;
+    this.loadUserDataFromLocalStorage();
+  }
+
+  loadUserDataFromLocalStorage() {
+    console.log('Mencoba memuat data pengguna dari localStorage...');
+    const currentUserString = localStorage.getItem('currentUser');
+
+    if (currentUserString) {
+      console.log(`Data ditemukan di localStorage (kunci 'currentUser'): ${currentUserString}`);
+      try {
+        const userData = JSON.parse(currentUserString);
+
+        if (userData && userData.email) {
+          this.formData.email = userData.email;
+          console.log(`Email berhasil dimuat dari 'currentUser': ${this.formData.email}`);
+        } else {
+          console.warn("Objek 'currentUser' yang diparse tidak memiliki properti 'email'.");
+        }
+
+        if (userData && userData.name) {
+          this.formData.name = userData.name;
+          this.formData.recommenderName = userData.name;
+          console.log(`Nama berhasil dimuat dari 'currentUser': ${this.formData.name}`);
+        } else {
+          console.warn("Objek 'currentUser' yang diparse tidak memiliki properti 'name'.");
+        }
+
+      } catch (e) {
+        console.error("Gagal parse JSON dari localStorage (kunci 'currentUser'):", e);
+        this.presentToast('Gagal memuat data pengguna dari penyimpanan. Format tidak sesuai.', 'danger');
+      }
+    } else {
+      console.warn("localStorage: Kunci 'currentUser' tidak ditemukan.");
     }
 
-    const storedName = localStorage.getItem('namaUser');
-    if (storedName) {
-      this.formData.name = storedName;
+    if (!this.formData.email || !this.formData.name) {
+      console.warn('Nama atau Email masih kosong setelah mencoba memuat dari localStorage.');
+    } else {
+      console.log('Data pengguna berhasil di-assign ke formData:', { email: this.formData.email, name: this.formData.name });
     }
   }
 
+  private async ensureUserDataIsLoaded(): Promise<boolean> {
+    if (!this.formData.name || !this.formData.email) {
+        this.loadUserDataFromLocalStorage();
+        if (!this.formData.name || !this.formData.email) {
+            await this.presentAlert('Data Pengguna Tidak Lengkap', 'Nama atau email pengguna tidak terdeteksi. Silakan coba login ulang.');
+            return false;
+        }
+    }
+    return true;
+  }
+
   async selectTemplate(template: any) {
-    if (this.isCheckingStatus) return; // Hindari klik ganda saat sedang memeriksa
+    if (this.isCheckingStatus) return;
+    if (!await this.ensureUserDataIsLoaded()) {
+        this.isCheckingStatus = false;
+        return;
+    }
 
     this.isCheckingStatus = true;
-    this.isSubmissionPending = false; // Reset status pending sebelumnya
-    this.selectedTemplate = null; // Reset dulu agar UI loading terlihat
+    this.isSubmissionPending = false;
+    this.selectedTemplate = null;
     this.pendingSubmissionMessage = '';
 
-    // Tampilkan loading sederhana saat cek status
     const loading = await this.loadingController.create({
       message: 'Memeriksa status pengajuan...',
       spinner: 'crescent',
@@ -93,72 +137,125 @@ export class PengajuansuratPage implements OnInit {
     await loading.present();
 
     try {
-      // Panggil API untuk cek status
-      // GANTI URL ini dengan URL API Anda yang sebenarnya
-      const userEmail = this.formData.email;
-       const token = localStorage.getItem('token');
-      let headers = new HttpHeaders();
-      if (token) {
-        headers = headers.set('Authorization', `Bearer ${token}`);
+      let token = localStorage.getItem('token');
+      if (!token) {
+          const currentUserString = localStorage.getItem('currentUser');
+          if (currentUserString) {
+              try {
+                  const currentUserData = JSON.parse(currentUserString);
+                  token = currentUserData.token;
+              } catch (e) {
+                  console.error('Gagal parse currentUser untuk ambil token:', e);
+              }
+          }
       }
-      headers = headers.set('Accept', 'application/json');
 
-      // Hapus parameter 'email' dari URL karena backend mengambilnya dari user terotentikasi
-      const response: any = await this.http.get(
-        `https://simpap.my.id/public/api/pengajuan-surats/check-status?category=${encodeURIComponent(template.category)}`,
-        { headers }
-      ).toPromise();// Convert Observable to Promise for await
-
-      await loading.dismiss(); // Tutup loading setelah API response
-
-      // Asumsikan response.status berisi 'Proses' jika ada pengajuan yang masih diProses
-      if (response && response.status === 'Proses') {
-        this.isSubmissionPending = true;
-        this.selectedTemplate = template; // Tetap pilih template untuk menampilkan pesan di konteks form
-        this.pendingSubmissionMessage = `Anda sudah memiliki pengajuan '${template.title}' yang sedang diProses. Anda tidak dapat mengajukan lagi hingga statusnya berubah.`;
-        // Kita tidak akan generate nomor surat atau menampilkan form input jika pending
-        // Pesan akan ditampilkan di HTML
-      } else {
-        // Tidak ada pengajuan 'Proses', lanjutkan seperti biasa
-        this.selectedTemplate = template;
-        this.generateSuratNumber();
-        this.isSubmissionPending = false;
+      if (!token) {
+        await loading.dismiss();
+        this.isCheckingStatus = false;
+        await this.presentAlert('Otentikasi Gagal', 'Token tidak ditemukan. Silakan login kembali.');
+        return;
       }
+
+      let headers = new HttpHeaders()
+        .set('Authorization', `Bearer ${token}`)
+        .set('Accept', 'application/json');
+
+      const categoryParam = encodeURIComponent(template.category);
+      const url = `https://simpap.my.id/public/api/pengajuan-surats/check-status?category=${categoryParam}`;
+      console.log('Requesting check-status URL:', url);
+
+      this.http.get(url, { headers }).subscribe({
+          next: async (response: any) => {
+              await loading.dismiss();
+              this.isCheckingStatus = false;
+              console.log('Respon check-status:', response);
+
+              if (response && response.status === 'Proses') {
+                this.isSubmissionPending = true;
+                this.selectedTemplate = template;
+                this.pendingSubmissionMessage = `Anda sudah memiliki pengajuan '${template.title}' yang sedang diProses. Anda tidak dapat mengajukan lagi hingga statusnya berubah.`;
+              } else if (response && response.status === 'aman') {
+                this.selectedTemplate = template;
+                this.generateSuratNumber();
+                this.isSubmissionPending = false;
+              } else {
+                this.selectedTemplate = template;
+                this.generateSuratNumber();
+                this.isSubmissionPending = false;
+                console.warn('Respon check-status tidak memiliki status "Proses" atau "aman". Anggap aman.', response);
+              }
+          },
+          error: async (errorResponse: HttpErrorResponse) => {
+              await loading.dismiss();
+              this.isCheckingStatus = false;
+              this.selectedTemplate = null;
+              console.error('Error checking submission status:', errorResponse);
+
+              let errorMessage = `Gagal memeriksa status pengajuan.`;
+              if (errorResponse.status === 0) {
+                  errorMessage = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
+              } else {
+                  errorMessage += ` Status: ${errorResponse.status}.`;
+              }
+
+              if (errorResponse.error) {
+                  if (typeof errorResponse.error === 'string') {
+                      try {
+                          const parsedError = JSON.parse(errorResponse.error);
+                          if (parsedError.message) errorMessage = parsedError.message;
+                      } catch (e) {
+                          // Jika error.error bukan JSON string valid, coba ambil message dari errorResponse jika ada
+                          if(errorResponse.message) errorMessage = errorResponse.message;
+                      }
+                  } else if (typeof errorResponse.error.message === 'string') {
+                      errorMessage = errorResponse.error.message;
+                  } else if (errorResponse.message) {
+                       errorMessage = errorResponse.message;
+                  }
+              } else if (errorResponse.message) {
+                 errorMessage = errorResponse.message;
+              }
+
+
+              if (errorResponse.status === 404 && errorResponse.error && typeof errorResponse.error.message === 'string' &&
+                  errorResponse.error.message.includes('Belum ada pengajuan untuk kategori ini')) {
+                  console.log('Status 404 diterima: Belum ada pengajuan. Dianggap aman.');
+                  this.selectedTemplate = template;
+                  this.generateSuratNumber();
+                  this.isSubmissionPending = false;
+              } else {
+                  await this.presentAlert('Error Pemeriksaan Status', errorMessage);
+              }
+          }
+      });
+
     } catch (error: any) {
-      await loading.dismiss();
-      console.error('Error checking submission status:', error);
-      // Jika error saat cek status, anggap tidak ada yang pending agar user tidak terblokir
-      // Atau tampilkan error spesifik jika API gagal
-      if (error.status === 404 && error.error && error.error.message === 'Belum ada pengajuan untuk kategori ini oleh user ini.') {
-        // Ini bukan error, tapi konfirmasi tidak ada yang pending
-        this.selectedTemplate = template;
-        this.generateSuratNumber();
-        this.isSubmissionPending = false;
-      } else {
-         await this.presentAlert('Error', 'Gagal memeriksa status pengajuan. Silakan coba lagi.');
-         this.selectedTemplate = null; // Jangan lanjutkan jika ada error tak terduga
-      }
-    } finally {
+      if (loading) await loading.dismiss();
       this.isCheckingStatus = false;
+      this.selectedTemplate = null;
+      console.error('Error sinkron dalam selectTemplate:', error);
+      await this.presentAlert('Error Internal Aplikasi', 'Terjadi kesalahan sebelum menghubungi server.');
     }
   }
 
-  // Fungsi untuk kembali dari form ke pemilihan template
   deselectTemplate() {
     this.selectedTemplate = null;
-    this.isSubmissionPending = false; // Reset status pending
+    this.isSubmissionPending = false;
     this.pendingSubmissionMessage = '';
-    // Reset form fields juga bisa ditambahkan di sini jika diperlukan
-    // this.resetFormFieldsOnly(); // Buat fungsi baru untuk reset field tanpa reset nama & email
+    this.resetFormFieldsOnly();
+    this.formData.suratNumber = '';
   }
 
   generateSuratNumber() {
-    if (this.selectedTemplate && !this.isSubmissionPending) { // Hanya generate jika tidak pending
+    if (this.selectedTemplate && !this.isSubmissionPending) {
       const categoryCode = this.getCategoryCode(this.selectedTemplate.category);
       const year = new Date().getFullYear();
       let suratCounter = Number(localStorage.getItem(`suratCounter_${categoryCode}_${year}_next`) || 1);
       const formattedCounter = suratCounter.toString().padStart(3, '0');
       this.formData.suratNumber = `${formattedCounter}/GA-${categoryCode}/${this.getRomanMonth()}/${year}`;
+    } else if (!this.selectedTemplate) {
+        this.formData.suratNumber = '';
     }
   }
 
@@ -194,6 +291,10 @@ export class PengajuansuratPage implements OnInit {
   }
 
   async submitForm() {
+    if (!await this.ensureUserDataIsLoaded()) {
+        this.isLoading = false;
+        return;
+    }
     if (this.isSubmissionPending) {
       await this.presentAlert('Pengajuan Diblokir', this.pendingSubmissionMessage);
       return;
@@ -204,13 +305,18 @@ export class PengajuansuratPage implements OnInit {
     if (!this.formData.suratNumber && this.selectedTemplate) {
       this.generateSuratNumber();
     }
-    if (!this.formData.suratNumber) {
+    if (!this.formData.suratNumber && this.selectedTemplate) {
       this.isLoading = false;
       await this.presentAlert('Error Nomor Surat', 'Gagal membuat nomor surat. Silakan pilih template lagi.');
       return;
     }
 
     const category = this.selectedTemplate?.category;
+    if (!category) {
+        this.isLoading = false;
+        await this.presentAlert('Error', 'Template tidak dipilih.');
+        return;
+    }
     let requiredFields: string[] = ['name', 'email', 'suratNumber'];
 
     switch (category) {
@@ -240,7 +346,6 @@ export class PengajuansuratPage implements OnInit {
         break;
       case 'Surat Rekomendasi':
         requiredFields.push('recommendedName', 'recommenderPosition', 'recommendationReason');
-        // 'recommenderName' akan diambil dari this.formData.name
         break;
       default:
         this.isLoading = false;
@@ -268,7 +373,7 @@ export class PengajuansuratPage implements OnInit {
     payload.append('name', this.formData.name);
     payload.append('email', this.formData.email);
     payload.append('category', category as string);
-    payload.append('status', 'Proses'); // Status awal saat pengajuan
+    payload.append('status', 'Proses');
 
     if (category === 'Permohonan Cuti') {
         payload.append('start_date', this.formData.startDate);
@@ -284,11 +389,10 @@ export class PengajuansuratPage implements OnInit {
         payload.append('complaint_description', this.formData.complaintDescription);
     } else if (category === 'Surat Rekomendasi') {
         payload.append('recommended_name', this.formData.recommendedName);
-        payload.append('recommender_name', this.formData.name); // Nama pengaju = pemberi rekomendasi
+        payload.append('recommender_name', this.formData.name);
         payload.append('recommender_position', this.formData.recommenderPosition);
         payload.append('recommendation_reason', this.formData.recommendationReason);
     }
-
 
     if (this.formData.attachment && this.formData.attachmentOriginalName) {
       const safeSuratNumber = this.formData.suratNumber.replace(/\//g, '-');
@@ -297,15 +401,24 @@ export class PengajuansuratPage implements OnInit {
       if (fileExtension) {
         baseOriginalName = this.formData.attachmentOriginalName.substring(0, this.formData.attachmentOriginalName.length - (fileExtension.length + 1));
       }
-      const newFileName = `${safeSuratNumber}-${baseOriginalName}.${fileExtension}`;
-      payload.append('attachment', this.formData.attachment, newFileName);
+      const newFileNameForUserUpload = `${safeSuratNumber}-USERUPLOAD-${baseOriginalName}.${fileExtension}`;
+      payload.append('user_uploaded_attachment', this.formData.attachment, newFileNameForUserUpload);
     }
 
-    const token = localStorage.getItem('token');
-    let headers = new HttpHeaders();
-    if (token) {
-      headers = headers.set('Authorization', `Bearer ${token}`);
+    let token = localStorage.getItem('token');
+    if (!token) {
+        const currentUserString = localStorage.getItem('currentUser');
+        if (currentUserString) {
+            try { token = JSON.parse(currentUserString).token; } catch(e){}
+        }
     }
+
+    if (!token) {
+        this.isLoading = false;
+        await this.presentAlert('Otentikasi Gagal', 'Token tidak ditemukan. Silakan login kembali.');
+        return;
+    }
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     this.http.post('https://simpap.my.id/public/api/pengajuan-surats', payload, { headers })
       .subscribe({
@@ -321,24 +434,35 @@ export class PengajuansuratPage implements OnInit {
           }
           await this.presentToast('Pengajuan surat berhasil dikirim!', 'success');
         },
-        error: async (error) => {
+        error: async (errorResponse: HttpErrorResponse) => {
           this.isLoading = false;
-          console.error('Error submitting form:', error);
+          console.error('Error submitting form:', errorResponse);
           let errorMessage = 'Terjadi kesalahan saat mengirim surat.';
-          if (error.error && typeof error.error.message === 'string') {
-            errorMessage = error.error.message;
-          } else if (typeof error.message === 'string') {
-            errorMessage = error.message;
+          if (errorResponse.status === 401) {
+            errorMessage = 'Otentikasi gagal. Silakan login kembali.';
+          } else if (errorResponse.error) {
+            if (typeof errorResponse.error.message === 'string') {
+                errorMessage = errorResponse.error.message;
+            } else if (typeof errorResponse.error === 'object' && errorResponse.error.errors) {
+                const validationErrors = errorResponse.error.errors;
+                const firstErrorKey = Object.keys(validationErrors)[0];
+                errorMessage = validationErrors[firstErrorKey][0];
+            }
+          } else if (errorResponse.message) {
+            errorMessage = errorResponse.message;
           }
           await this.presentAlert('Gagal Mengirim', errorMessage);
         }
       });
   }
 
-  // Fungsi untuk mereset field form saja, tanpa nama dan email
   resetFormFieldsOnly() {
+    const currentName = this.formData.name;
+    const currentEmail = this.formData.email;
+
     this.formData = {
-      ...this.formData, // pertahankan nama dan email
+      name: currentName,
+      email: currentEmail,
       suratNumber: '',
       attachment: null,
       attachmentOriginalName: '',
@@ -352,20 +476,34 @@ export class PengajuansuratPage implements OnInit {
       complaintCategory: '',
       complaintDescription: '',
       recommendedName: '',
-      // recommenderName biarkan karena diambil dari formData.name
+      recommenderName: currentName,
       recommenderPosition: '',
       recommendationReason: '',
     };
     this.minEndDate = this.todayDateString;
     if (this.fileInputRef && this.fileInputRef.nativeElement) {
-        this.fileInputRef.nativeElement.value = ''; // Reset input file
+        this.fileInputRef.nativeElement.value = '';
     }
   }
 
-
   resetForm() {
-    const currentEmail = this.formData.email;
-    const currentName = this.formData.name;
+    let currentEmail = '';
+    let currentName = '';
+    const currentUserString = localStorage.getItem('currentUser');
+    if (currentUserString) {
+        try {
+            const userData = JSON.parse(currentUserString);
+            currentEmail = userData.email || '';
+            currentName = userData.name || '';
+        } catch(e) {
+            console.error("Gagal parse currentUser saat resetForm:", e);
+            currentEmail = localStorage.getItem('email') || ''; // Fallback
+            currentName = localStorage.getItem('name') || localStorage.getItem('namaUser') || ''; // Fallback
+        }
+    } else {
+        currentEmail = localStorage.getItem('email') || ''; // Fallback
+        currentName = localStorage.getItem('name') || localStorage.getItem('namaUser') || ''; // Fallback
+    }
 
     this.formData = {
       suratNumber: '',
@@ -383,16 +521,15 @@ export class PengajuansuratPage implements OnInit {
       complaintCategory: '',
       complaintDescription: '',
       recommendedName: '',
-      recommenderName: '',
+      recommenderName: currentName,
       recommenderPosition: '',
       recommendationReason: '',
     };
     this.selectedTemplate = null;
     this.minEndDate = this.todayDateString;
-    this.isSubmissionPending = false; // Reset status pending
+    this.isSubmissionPending = false;
     this.pendingSubmissionMessage = '';
 
-    // Reset input file
     if (this.fileInputRef && this.fileInputRef.nativeElement) {
         this.fileInputRef.nativeElement.value = '';
     }
@@ -425,8 +562,137 @@ export class PengajuansuratPage implements OnInit {
     }
     this.formData.attachment = file;
     this.formData.attachmentOriginalName = file.name;
-
     await this.presentToast(`File "${file.name}" siap diunggah.`, 'medium');
+  }
+
+  preparePdfPayload(): any {
+    if (!this.selectedTemplate) {
+        this.presentToast('Pilih template surat terlebih dahulu.', 'warning');
+        return null;
+    }
+    if (!this.formData.name || !this.formData.email) {
+        this.presentToast('Data pengguna (nama/email) tidak lengkap. Muat ulang atau login kembali.', 'warning');
+        return null;
+    }
+    if (!this.formData.suratNumber && this.selectedTemplate) {
+        this.generateSuratNumber();
+    }
+     if (!this.formData.suratNumber && this.selectedTemplate) {
+        this.presentToast('Gagal membuat nomor surat untuk PDF. Coba lagi.', 'warning');
+        return null;
+    }
+
+    const payload: any = {
+        surat_number: this.formData.suratNumber || 'Belum Digenerate',
+        name: this.formData.name,
+        email: this.formData.email,
+        category: this.selectedTemplate.category,
+    };
+
+     switch (this.selectedTemplate.category) {
+        case 'Permohonan Cuti':
+            payload.start_date = this.formData.startDate;
+            payload.end_date = this.formData.endDate;
+            payload.reason = this.formData.reason;
+            break;
+        case 'Surat Keterangan Karyawan':
+            payload.position = this.formData.position;
+            payload.join_date = this.formData.joinDate;
+            payload.purpose = this.formData.purpose;
+            break;
+        case 'Pengajuan Keluhan':
+            payload.department = this.formData.department;
+            payload.complaint_category = this.formData.complaintCategory;
+            payload.complaint_description = this.formData.complaintDescription;
+            break;
+        case 'Surat Rekomendasi':
+            payload.recommended_name = this.formData.recommendedName;
+            payload.recommender_name = this.formData.name;
+            payload.recommender_position = this.formData.recommenderPosition;
+            payload.recommendation_reason = this.formData.recommendationReason;
+            break;
+    }
+    return payload;
+  }
+
+  async downloadPdfPreview() {
+    if (!await this.ensureUserDataIsLoaded()) {
+        this.isLoadingPdfPreview = false;
+        return;
+    }
+    if (!this.selectedTemplate) {
+        await this.presentAlert('Info', 'Pilih template surat terlebih dahulu untuk membuat PDF.');
+        return;
+    }
+
+    const payload = this.preparePdfPayload();
+    if (!payload) return;
+
+    this.isLoadingPdfPreview = true;
+    const loading = await this.loadingController.create({
+        message: 'Membuat pratinjau PDF...',
+        spinner: 'crescent'
+    });
+    await loading.present();
+
+    let token = localStorage.getItem('token');
+    if (!token) {
+        const currentUserString = localStorage.getItem('currentUser');
+        if (currentUserString) {
+            try { token = JSON.parse(currentUserString).token; } catch(e){}
+        }
+    }
+
+     if (!token) {
+        await loading.dismiss();
+        this.isLoadingPdfPreview = false;
+        await this.presentAlert('Otentikasi Gagal', 'Token tidak ditemukan untuk PDF. Silakan login kembali.');
+        return;
+    }
+    let httpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/pdf');
+
+    this.http.post('https://simpap.my.id/public/api/pengajuan-surats/generate-pdf', payload, {
+        headers: httpHeaders,
+        responseType: 'blob'
+    }).subscribe({
+        next: (blob: Blob) => {
+            loading.dismiss();
+            this.isLoadingPdfPreview = false;
+            try {
+                const titleSlug = this.selectedTemplate.title.toLowerCase().replace(/\s+/g, '_');
+                const nameSlug = (this.formData.name || 'pengguna').toLowerCase().replace(/\s+/g, '_');
+                const dateSlug = new Date().toISOString().split('T')[0];
+                const fileName = `pratinjau_${titleSlug}_${nameSlug}_${dateSlug}.pdf`;
+                saveAs(blob, fileName);
+                this.presentToast('PDF berhasil diunduh.', 'success');
+            } catch (e) {
+                console.error("Error saving file:", e);
+                this.presentAlert('Error Unduh', 'Gagal menyimpan file PDF. Pastikan browser Anda mengizinkan unduhan.');
+            }
+        },
+        error: async (errorResponse: HttpErrorResponse) => {
+            loading.dismiss();
+            this.isLoadingPdfPreview = false;
+            console.error('Error generating PDF preview:', errorResponse);
+            let errorMessage = 'Tidak dapat membuat pratinjau PDF saat ini.';
+             if (errorResponse.status === 401) {
+                errorMessage = 'Otentikasi gagal untuk PDF. Silakan login kembali.';
+            } else if (errorResponse.error instanceof Blob && errorResponse.error.type === "application/json") {
+                try {
+                    const errorText = await errorResponse.error.text();
+                    const errorJson = JSON.parse(errorText);
+                    if(errorJson.message) errorMessage = errorJson.message;
+                } catch (e) { /* Biarkan errorMessage default */ }
+            } else if (errorResponse.status === 0) {
+                errorMessage = 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
+            } else if (errorResponse.message) {
+                errorMessage = errorResponse.message;
+            } else if (errorResponse.error && typeof errorResponse.error.message === 'string') {
+                 errorMessage = errorResponse.error.message;
+            }
+            await this.presentAlert('Gagal Membuat PDF', errorMessage);
+        }
+    });
   }
 
   async presentToast(message: string, color: 'success' | 'danger' | 'warning' | 'medium' = 'medium') {
@@ -436,7 +702,7 @@ export class PengajuansuratPage implements OnInit {
       color: color,
       position: 'top'
     });
-    toast.present();
+    await toast.present();
   }
 
   async presentAlert(header: string, message: string) {
