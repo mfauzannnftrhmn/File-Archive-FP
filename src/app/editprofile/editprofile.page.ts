@@ -34,7 +34,7 @@ export class EditprofilePage implements OnInit {
   }
 
   downloadFile() {
-    this.http.get('https://your-laravel-api.com/api/export', {
+    this.http.get('https://simpap.my.id/public/api/', {
       responseType: 'blob'
     }).subscribe({
       next: (data: Blob) => {
