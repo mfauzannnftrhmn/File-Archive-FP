@@ -22,8 +22,8 @@
   
   <!-- Profile Info -->
   <div class="mt-20 text-center px-4">
-    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">Fauzan </h2>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Programmer</p>
+    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">{{ profileData.name }}</h2>
+    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ profileData.jabatan }}</p>
     <div class="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
       <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
       Aktif
@@ -61,19 +61,19 @@
     <div class="divide-y divide-gray-100 dark:divide-gray-700">
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">NIP</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">198705122010011002</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.nip }}</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal Lahir</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">12 Mei 1987</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.tanggal_lahir }}</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">Alamat</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Jl. Merdeka No. 123</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.address }}</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">No. Telepon</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">+62 812-3456-7890</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.phone_number }}</span>
       </div>
     </div>
   </div>
@@ -86,20 +86,20 @@
     
     <div class="divide-y divide-gray-100 dark:divide-gray-700">
       <div class="flex justify-between items-center px-4 py-3">
-        <span class="text-sm text-gray-500 dark:text-gray-400">Departemen</span>
+        <span class="text-sm text-gray-500 dark:text-gray-400">{{ profileData.departemen }}</span>
         <span class="text-sm font-medium text-gray-800 dark:text-gray-200">IT</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">Jabatan</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Programmer</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.jabatan }}</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal Bergabung</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">1 Januari 2010</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.tanggal_bergabung }}</span>
       </div>
       <div class="flex justify-between items-center px-4 py-3">
         <span class="text-sm text-gray-500 dark:text-gray-400">Status Karyawan</span>
-        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Tetap</span>
+        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.status_karyawan }}</span>
       </div>
     </div>
   </div>
