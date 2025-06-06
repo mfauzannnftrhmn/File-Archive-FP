@@ -8,77 +8,68 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  userName: string;
+  userName: string = ''; // Inisialisasi string kosong
   notificationCount: number = 0;
   showNotifications: boolean = false;
   notifications: any[] = [];
 
   constructor(private toastController: ToastController) {
-    // Ambil email dari localStorage
-    const storedEmail = localStorage.getItem('email');
-    if (storedEmail) {
-      // Ambil bagian depan email (sebelum simbol @)
-      const userEmailParts = storedEmail.split('@')[0];
-      this.userName = this.capitalizeFirstLetter(userEmailParts); // Capitalize nama depan
-    } else {
-      this.userName = 'Pengguna'; // Default name
-    }
+    this.setUserNameFromStorage();
   }
 
   ngOnInit() {
-    // Initialization code if needed
     this.loadNotifications();
   }
 
-  // Fungsi untuk capitalisasi huruf pertama
-  capitalizeFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  setUserNameFromStorage() {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (currentUserStr) {
+      const currentUser = JSON.parse(currentUserStr);
+      
+      // [PERBAIKAN UTAMA]
+      // Akses 'name' langsung dari objek currentUser, sesuai data dari login.
+      if (currentUser && currentUser.name) {
+        this.userName = currentUser.name;
+      } else {
+        this.userName = 'Pengguna'; // Fallback jika 'name' tidak ditemukan
+      }
+    } else {
+      this.userName = 'Pengguna'; // Fallback jika tidak ada data login
+    }
   }
 
-  // Fungsi untuk refresh halaman
   doRefresh(event: any) {
     console.log('Memulai operasi refresh');
-
-    // Simulasi loading data
     setTimeout(() => {
-      // Refresh data yang diperlukan
-      const storedEmail = localStorage.getItem('email');
-      if (storedEmail) {
-        const userEmailParts = storedEmail.split('@')[0];
-        this.userName = this.capitalizeFirstLetter(userEmailParts);
-      }
+      // Panggil fungsi yang sama untuk me-refresh nama
+      this.setUserNameFromStorage();
       
-      // Refresh notifikasi
       this.loadNotifications();
 
       console.log('Operasi refresh selesai');
       event.target.complete();
-    }, 2000);
+    }, 1500); // Durasi bisa dipercepat
   }
 
-  // Fungsi untuk memuat notifikasi
+  // ... Sisa fungsi lain tidak berubah ...
+
   loadNotifications() {
-    // Simulasi mendapatkan jumlah notifikasi dan data notifikasi
-    this.notificationCount = Math.floor(Math.random() * 5); // Random 0-4 notifikasi
-    
-    // Buat data notifikasi dummy
+    this.notificationCount = Math.floor(Math.random() * 5);
     this.notifications = [];
     for (let i = 0; i < this.notificationCount; i++) {
       this.notifications.push({
         title: `Notifikasi ${i + 1}`,
-        message: `Ini adalah pesan notifikasi ${i + 1}`,
+        message: `Ini adalah pesan notifikasi ${i + 1}.`,
         time: new Date().toLocaleTimeString(),
         read: false
       });
     }
   }
 
-  // Fungsi untuk toggle popup notifikasi
   toggleNotificationPopup() {
     this.showNotifications = !this.showNotifications;
   }
 
-  // Fungsi untuk menandai semua notifikasi sudah dibaca
   markAllAsRead() {
     this.notifications.forEach(notification => {
       notification.read = true;
@@ -86,29 +77,20 @@ export class DashboardPage implements OnInit {
     this.notificationCount = 0;
   }
 
-  // Fungsi untuk membuka notifikasi
   async openNotifications() {
-    if (this.notificationCount > 0) {
-      const toast = await this.toastController.create({
-        message: `Anda memiliki ${this.notificationCount} notifikasi baru`,
-        duration: 2000,
-        position: 'top',
-        color: 'primary'
-      });
-      await toast.present();
-      
-      // Reset notifikasi setelah dibuka
-      this.notificationCount = 0;
-    } else {
-      const toast = await this.toastController.create({
-        message: 'Tidak ada notifikasi baru',
-        duration: 2000,
-        position: 'top',
-        color: 'medium'
-      });
-      await toast.present();
-    }
+    const message = this.notificationCount > 0 
+      ? `Anda memiliki ${this.notificationCount} notifikasi baru` 
+      : 'Tidak ada notifikasi baru';
+    const color = this.notificationCount > 0 ? 'primary' : 'medium';
+
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+      color: color
+    });
+    await toast.present();
+    
+    this.notificationCount = 0;
   }
 }
-
-

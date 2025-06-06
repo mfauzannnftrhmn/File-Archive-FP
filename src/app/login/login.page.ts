@@ -60,7 +60,7 @@ export class LoginPage {
             this.authService.logout().subscribe();
             return;
           }
-          this.navCtrl.navigateRoot('/aktivitas', { animated: true, animationDirection: 'forward' });
+          this.navCtrl.navigateRoot('/dashboard', { animated: true, animationDirection: 'forward' });
         },
         error: async (error: Error) => {
           await loading.dismiss();
