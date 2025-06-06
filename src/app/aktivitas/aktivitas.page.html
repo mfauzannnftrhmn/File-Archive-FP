@@ -8,28 +8,23 @@
     </ion-refresher-content>
   </ion-refresher>
 
-
-<div class="px-4 sm:px-6 pt-4 pb-3 bg-gradient-to-r from-white to-[#FFF8F5] dark:from-gray-900 dark:to-gray-800 shadow-md border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-10">
-  <div class="flex items-center">
-    <div class="ml-2">
-      <h2 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-wide">
-        Aktivitas
-      </h2>
-      <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-        Akses layanan dan pantau aktivitas surat Anda
-      </p>
+  <div class="px-4 sm:px-6 pt-4 pb-3 bg-gradient-to-r from-white to-[#FFF8F5] dark:from-gray-900 dark:to-gray-800 shadow-md border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-10">
+    <div class="flex items-center">
+      <div class="ml-2">
+        <h2 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-wide">
+          Aktivitas
+        </h2>
+        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+          Akses layanan dan pantau aktivitas surat Anda
+        </p>
+      </div>
     </div>
   </div>
-</div>
 
-
-  <!-- Padding top untuk menghindari header fixed -->
   <div class="p-4 pt-16 sm:pt-20 max-w-5xl mx-auto">
     
     <div class="mt-4 animate-fadeIn">
-      <!-- Responsive service cards grid with elegant design -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
-        <!-- Ajukan Surat Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
           <div class="p-4 flex flex-col h-full">
             <div class="flex items-center mb-3">
@@ -40,7 +35,7 @@
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Buat pengajuan surat baru</p>
             <ion-button fill="clear" size="small" routerLink="/pengajuansurat" 
-                      class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
+                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
               <span class="flex items-center">
                 Ajukan
                 <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
@@ -49,7 +44,6 @@
           </div>
         </div>
         
-        <!-- Template Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
           <div class="p-4 flex flex-col h-full">
             <div class="flex items-center mb-3">
@@ -60,7 +54,7 @@
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Lihat template surat</p>
             <ion-button fill="clear" size="small" routerLink="/templatesurat" 
-                      class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
+                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
               <span class="flex items-center">
                 Lihat
                 <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
@@ -69,7 +63,6 @@
           </div>
         </div>
         
-        <!-- Status Card -->
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
           <div class="p-4 flex flex-col h-full">
             <div class="flex items-center mb-3">
@@ -80,7 +73,7 @@
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Pantau status pengajuan</p>
             <ion-button fill="clear" size="small" routerLink="/statuspengajuan" 
-                      class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
+                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
               <span class="flex items-center">
                 Status
                 <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
@@ -91,137 +84,75 @@
       </div>
     </div>
 
-    <!-- Recent Activity Section -->
     <div class="mt-6 mb-4">
       <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 px-4">Aktivitas Terbaru</h2>
       
-      <!-- Activity Timeline -->
       <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-5">
-        <div class="space-y-4">
-          <!-- Activity Item 1 -->
-          <div class="flex items-start space-x-3 animate-fadeInUp" style="animation-delay: 0.1s;">
-            <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center flex-shrink-0">
-              <ion-icon name="document-text" class="text-blue-600 dark:text-blue-400 text-lg"></ion-icon>
+        
+        <div *ngIf="isLoading" class="space-y-4">
+          <div *ngFor="let i of [1, 2, 3]" class="flex items-start space-x-3 animate-pulse">
+            <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
+            <div class="flex-1 space-y-2">
+              <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+              <div class="h-5 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mt-1"></div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isLoading && recentLetters.length > 0" class="space-y-4">
+          <div *ngFor="let letter of recentLetters; let i = index" class="flex items-start space-x-3 animate-fadeInUp" [style.animation-delay]="i * 0.1 + 's'">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" [ngClass]="getIconBgColor(letter.status)">
+              <ion-icon [name]="getStatusIcon(letter.status)" class="text-lg" [ngClass]="getIconColor(letter.status)"></ion-icon>
             </div>
             <div class="flex-1">
               <div class="flex justify-between items-start">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">Surat Permohonan Cuti</h4>
-                <span class="text-xs text-gray-500 dark:text-gray-400">2 jam lalu</span>
+                <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ letter.category }}</h4>
+                <span class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(letter.updated_at) }}</span>
               </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat telah memasuki tahap verifikasi</p>
+              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat dengan nomor {{ letter.surat_number }} telah diupdate.</p>
               <div class="mt-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                  Dalam Proses
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" [ngClass]="getStatusColor(letter.status)">
+                  {{ letter.status }}
                 </span>
               </div>
+             <!-- Tombol Download hanya muncul jika status adalah Disetujui -->
+<ion-button
+  *ngIf="letter.status === 'Disetujui' && letter.file_url"
+  expand="block"
+  fill="outline"
+  size="small"
+  (click)="downloadFile(letter.file_url, letter.download_name || 'file-download')"
+>
+  <ion-icon name="download" slot="start"></ion-icon>
+  Unduh Surat
+</ion-button>
+
+
+
             </div>
           </div>
-          
-          <!-- Activity Item 2 -->
-          <div class="flex items-start space-x-3 animate-fadeInUp" style="animation-delay: 0.2s;">
-            <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center flex-shrink-0">
-              <ion-icon name="checkmark-circle" class="text-green-600 dark:text-green-400 text-lg"></ion-icon>
-            </div>
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">Surat Rekomendasi</h4>
-                <span class="text-xs text-gray-500 dark:text-gray-400">Kemarin</span>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat telah selesai diproses dan siap dicetak</p>
-              <div class="mt-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
-                  Selesai
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Activity Item 3 -->
-          <div class="flex items-start space-x-3 animate-fadeInUp" style="animation-delay: 0.3s;">
-            <div class="w-10 h-10 rounded-full bg-yellow-100 dark:bg-yellow-900 flex items-center justify-center flex-shrink-0">
-              <ion-icon name="time" class="text-yellow-600 dark:text-yellow-400 text-lg"></ion-icon>
-            </div>
-            <div class="flex-1">
-              <div class="flex justify-between items-start">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">Surat Pengajuan Keluhan</h4>
-                <span class="text-xs text-gray-500 dark:text-gray-400">2 hari lalu</span>
-              </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Menunggu persetujuan dari kepala departemen</p>
-              <div class="mt-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
-                  Menunggu
-                </span>
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div *ngIf="!isLoading && recentLetters.length === 0" class="text-center py-4">
+          <ion-icon name="cloud-offline-outline" class="text-4xl text-gray-400 dark:text-gray-500 mb-2"></ion-icon>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Tidak ada aktivitas terbaru.</p>
+          <p class="text-xs text-gray-500 dark:text-gray-500">Coba ajukan surat atau refresh halaman.</p>
         </div>
         
         <div class="mt-4 text-center">
           <ion-button fill="clear" size="small" routerLink="/riwayatsurat" 
-                    class="text-xs font-medium text-[#BB3E00] dark:text-orange-400 group">
+                      class="text-xs font-medium text-[#BB3E00] dark:text-orange-400 group">
             <span class="flex items-center">
               Lihat Semua Aktivitas
               <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
             </span>
           </ion-button>
         </div>
-      </div>
-      
-      <!-- Quick Stats Section -->
-      <div class="grid grid-cols-2 gap-3 mb-5">
-        <!-- Stat Card 1 -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
-          <div class="flex flex-col items-center">
-            <div class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3D2B22] flex items-center justify-center mb-2">
-              <ion-icon name="document" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
-            </div>
-            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">3</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 text-center">Dokumen Aktif</p>
-          </div>
-        </div>
-        
-        <!-- Stat Card 2 -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow duration-300">
-          <div class="flex flex-col items-center">
-            <div class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3D2B22] flex items-center justify-center mb-2">
-              <ion-icon name="checkmark-done" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
-            </div>
-            <h4 class="text-lg font-bold text-gray-800 dark:text-gray-200">12</h4>
-            <p class="text-xs text-gray-500 dark:text-gray-400 text-center">Dokumen Selesai</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Tips & Reminders Card -->
-      <div class="bg-gradient-to-r from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] rounded-xl shadow-md p-4 mb-5">
-        <div class="flex items-start space-x-3">
-          <div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-            <ion-icon name="bulb" class="text-[#BB3E00] dark:text-orange-400 text-lg"></ion-icon>
-          </div>
-          <div>
-            <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">Tips Hari Ini</h4>
-            <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Pantau status pengajuan surat Anda secara berkala untuk memastikan prosesnya berjalan lancar.</p>
-            <div class="mt-2 flex">
-              <ion-button fill="clear" size="small" class="text-xs font-medium text-[#BB3E00] dark:text-orange-400 p-0 m-0">
-                Tips Lainnya
-              </ion-button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-  </div>
-</ion-content>
+      </div> </div> </div> </ion-content>
 
 <ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 h-16 shadow-lg">
-  <ion-tab-button
-    tab="dashboard"
-    routerLink="/dashboard"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs"
-  >
+  <ion-tab-button tab="dashboard" routerLink="/dashboard" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
     <div class="flex flex-col items-center justify-center">
       <div class="w-6 h-6 flex items-center justify-center mb-1">
         <ion-icon name="grid" class="text-xl"></ion-icon>
@@ -229,14 +160,7 @@
       <ion-label>Beranda</ion-label>
     </div>
   </ion-tab-button>
-
-  <ion-tab-button
-    tab="aktivitas"
-    routerLink="/aktivitas"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs"
-  >
+  <ion-tab-button tab="aktivitas" routerLink="/aktivitas" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
     <div class="flex flex-col items-center justify-center">
       <div class="w-6 h-6 flex items-center justify-center mb-1 relative">
         <ion-icon name="pulse" class="text-xl"></ion-icon>
@@ -244,14 +168,7 @@
       <ion-label>Aktivitas</ion-label>
     </div>
   </ion-tab-button>
-
-  <ion-tab-button
-    tab="riwayat"
-    routerLink="/riwayatsurat"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs"
-  >
+  <ion-tab-button tab="riwayat" routerLink="/riwayatsurat" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
     <div class="flex flex-col items-center justify-center">
       <div class="w-6 h-6 flex items-center justify-center mb-1">
         <ion-icon name="time" class="text-xl"></ion-icon>
@@ -259,14 +176,7 @@
       <ion-label>Riwayat</ion-label>
     </div>
   </ion-tab-button>
-
-  <ion-tab-button
-    tab="profile"
-    routerLink="/profile"
-    routerDirection="root"
-    routerLinkActive="tab-selected"
-    class="text-xs"
-  >
+  <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
     <div class="flex flex-col items-center justify-center">
       <div class="w-6 h-6 flex items-center justify-center mb-1">
         <ion-icon name="person" class="text-xl"></ion-icon>
