@@ -1,34 +1,28 @@
-
-
 <ion-content
   [fullscreen]="true"
   class="bg-gray-50 dark:bg-gray-900"
 >
   <div class="max-w-md mx-auto pb-20">
- <!-- Profile Photo Section -->
-<div class="flex flex-col items-center justify-center py-6 bg-white dark:bg-gray-800 shadow-sm mb-4" (click)="presentPhotoOptions()">
-  <div class="relative">
-    <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
-      <img [src]="imagePreview" alt="Profile Photo" class="w-full h-full object-cover" />
-    </div>
-    <div class="absolute bottom-0 right-0 bg-[#BB3E00] rounded-full p-1.5 shadow-lg">
-      <ion-icon name="camera" class="text-white text-lg"></ion-icon>
-    </div>
-  </div>
-  <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Tap untuk mengubah foto profil</p>
+    <div class="flex flex-col items-center justify-center py-6 bg-white dark:bg-gray-800 shadow-sm mb-4" (click)="presentPhotoOptions()">
+      <div class="relative">
+        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
+          <img [src]="imagePreview" alt="Profile Photo" class="w-full h-full object-cover" />
+        </div>
+        <div class="absolute bottom-0 right-0 bg-[#BB3E00] rounded-full p-1.5 shadow-lg">
+          <ion-icon name="camera" class="text-white text-lg"></ion-icon>
+        </div>
+      </div>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Tap untuk mengubah foto profil</p>
 
-  <!-- Input file tersembunyi -->
-  <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
-</div>
+      <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+    </div>
 
-    <!-- Form Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4">
       <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
         <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
       </div>
       
       <form class="p-4 space-y-4">
-        <!-- Name Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Nama Lengkap</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
@@ -41,7 +35,6 @@
           </div>
         </div>
         
-        <!-- Email Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Email</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
@@ -54,51 +47,48 @@
           </div>
         </div>
         
-        <!-- Birth Date Input -->
-<div class="space-y-1">
-  <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Tanggal Lahir</label>
-  <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
-    
-    <ion-input
-      type="date"
-      [(ngModel)]="profileData.tanggal_lahir"
-      name="tanggal_lahir"
-      class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
-    ></ion-input>
-
-  </div>
-</div>
-
+        <div class="space-y-1">
+          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Tanggal Lahir</label>
+          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+            <ion-input
+              type="date"
+              [(ngModel)]="profileData.tanggal_lahir"
+              name="tanggal_lahir"
+              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+            ></ion-input>
+          </div>
+        </div>
         
-        <!-- Address Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Alamat</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
             <ion-textarea
               rows="3"
-              [(ngModel)]="profileData.address" name="address"                     placeholder="Masukkan alamat lengkap"
+              [(ngModel)]="profileData.address" name="address"
+              placeholder="Masukkan alamat lengkap"
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
             ></ion-textarea>
           </div>
         </div>
         
-        <!-- Phone Input -->
-         <div class="space-y-1">
+        <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">No. Telepon</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
             <ion-input
               type="tel"
-              [(ngModel)]="profileData.phone_number" name="phone_number"                      placeholder="Masukkan nomor telepon"
+              [(ngModel)]="profileData.phone_number" name="phone_number"
+              placeholder="Masukkan nomor telepon"
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
             ></ion-input>
           </div>
         </div>
-         <div class="space-y-1">
+          <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Bio</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
             <ion-textarea
               rows="3"
-              [(ngModel)]="profileData.bio" name="bio"                     placeholder="Ceritakan sedikit tentang diri Anda..."
+              [(ngModel)]="profileData.bio" name="bio"
+              placeholder="Ceritakan sedikit tentang diri Anda..."
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
             ></ion-textarea>
           </div>
@@ -106,18 +96,16 @@
       </form>
     </div>
     
-    <!-- Password Change Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4 mt-4">
       <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
         <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Ubah Password</h3>
       </div>
       
       <form class="p-4 space-y-4">
-        <!-- Current Password Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Saat Ini</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
-            <ion-input
+            <ion-input [(ngModel)]="passwordData.current_password" name="current_password"
               type="password"
               placeholder="Masukkan password saat ini"
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
@@ -125,11 +113,10 @@
           </div>
         </div>
         
-        <!-- New Password Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Baru</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
-            <ion-input
+            <ion-input [(ngModel)]="passwordData.new_password" name="new_password"
               type="password"
               placeholder="Masukkan password baru"
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
@@ -137,11 +124,10 @@
           </div>
         </div>
         
-        <!-- Confirm New Password Input -->
         <div class="space-y-1">
           <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Konfirmasi Password Baru</label>
           <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
-            <ion-input
+            <ion-input [(ngModel)]="passwordData.new_password_confirmation" name="new_password_confirmation"
               type="password"
               placeholder="Konfirmasi password baru"
               class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
@@ -149,9 +135,8 @@
           </div>
         </div>
         
-        <!-- Password Change Button -->
         <div class="pt-2">
-          <ion-button
+          <ion-button (click)="submitChangePassword()"
             expand="block"
             size="small"
             class="m-0 h-10 text-sm font-medium"
@@ -164,7 +149,6 @@
       </form>
     </div>
     
-    <!-- Additional Information Section -->
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4 mt-4 mb-3">
       <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
         <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Tambahan</h3>
@@ -177,7 +161,6 @@
     </div>
   </div>
   
-  <!-- Fixed Action Buttons -->
   <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg mt-1 mx-4 mb-2 rounded-lg">
     <div class="flex space-x-3">
       <ion-button
@@ -194,8 +177,6 @@
         expand="block"
         class="flex-1 m-0 h-11 text-sm font-medium"
         style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
-        routerLink="/profile"
-        routerDirection="root"
         (click)="saveProfile()"
       >
         <ion-icon name="save-outline" slot="start"></ion-icon>

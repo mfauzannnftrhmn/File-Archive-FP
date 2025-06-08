@@ -220,4 +220,6 @@ export class ProfilePage implements OnInit, OnDestroy {
       await toast.present();
   }
 
+
+ 
 }

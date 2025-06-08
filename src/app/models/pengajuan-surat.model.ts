@@ -15,6 +15,7 @@ export interface PengajuanSurat {
   status: 'Disetujui' | 'Ditolak' | 'Proses' | 'Menunggu'; // Tipe spesifik untuk status
 file_url?: string;
 download_name?: string;
+remarks?: string;
   // Properti di bawah ini bisa jadi NULL di database, jadi kita tandai sebagai opsional
   // dengan tanda tanya (?) atau bisa juga dengan tipe `| null`.
   position?: string | null;

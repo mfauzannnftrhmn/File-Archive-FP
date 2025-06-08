@@ -110,6 +110,9 @@
                 <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ letter.category }}</h4>
                 <span class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(letter.updated_at) }}</span>
               </div>
+               <div *ngIf="letter.status === 'Ditolak' && letter.remarks" class="mt-2 p-2 bg-red-50 dark:bg-red-900 text-xs text-red-800 dark:text-red-200 rounded">
+        <strong>Alasan penolakan:</strong> {{ letter.remarks }}
+      </div>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat dengan nomor {{ letter.surat_number }} telah diupdate.</p>
               <div class="mt-2">
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" [ngClass]="getStatusColor(letter.status)">

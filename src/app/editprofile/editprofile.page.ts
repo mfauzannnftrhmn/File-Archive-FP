@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser'; // <-- Sudah benar diimpor
 
+
+
+
 @Component({
   standalone: false,
   selector: 'app-editprofile',
@@ -20,12 +23,16 @@ export class EditprofilePage implements OnInit {
     bio: '',
     tanggal_lahir: '',
   };
+  passwordData = {
+  current_password: '',
+  new_password: '',
+  new_password_confirmation: ''
+};
 
   // TIPE DIUBAH agar bisa menerima URL aman dari sanitizer
   imagePreview: string | SafeUrl | null = 'assets/default-avatar.png';
   private selectedFile: File | null = null;
   private laravelApiUrl = 'http://simpap.my.id/public/api';
-
   // Getter untuk token agar lebih rapi
   private get token(): string | null {
     const currentUser = localStorage.getItem('currentUser');
@@ -365,6 +372,68 @@ export class EditprofilePage implements OnInit {
       }
     });
   }
+   // DITAMBAHKAN: Metode helper untuk menampilkan toast agar tidak menulis kode berulang.
+  async showToast(message: string, color: 'success' | 'danger' | 'warning' = 'danger') {
+    const toast = await this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'top',
+      color,
+    });
+    await toast.present();
+  }
 
+  async changePassword(currentPassword: string, newPassword: string, confirmPassword: string) {
+ const token = this.token; 
+  if (!token) {
+    this.showToast('Sesi habis, silakan login ulang.', 'danger');
+    this.router.navigate(['/login']);
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    this.showToast('Konfirmasi password tidak cocok.', 'danger');
+    return;
+  }
+
+  const body = {
+    current_password: currentPassword,
+    new_password: newPassword,
+    new_password_confirmation: confirmPassword,
+  };
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+
+  const loading = await this.loadingController.create({ message: 'Mengubah password...' });
+  await loading.present();
+
+  this.http.post(`${this.laravelApiUrl}/profile/change-password`, body, { headers }).subscribe({
+    next: async (res: any) => {
+      await loading.dismiss();
+      this.showToast('Password berhasil diubah.', 'success');
+    },
+    error: async (err) => {
+      await loading.dismiss();
+      const msg = err.error?.message || 'Gagal mengubah password.';
+      this.showToast(msg, 'danger');
+    }
+  });
+}
+
+
+submitChangePassword() {
+  const { current_password, new_password, new_password_confirmation } = this.passwordData;
+
+  if (!current_password || !new_password || !new_password_confirmation) {
+    this.showToast('Semua kolom password wajib diisi.', 'danger');
+    return;
+  }
+
+  this.changePassword(current_password, new_password, new_password_confirmation);
+}
+
+  
 }
 
