@@ -8,8 +8,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // ✅ Import HTTP_INTERCEPTORS dan HttpClientModule
-import { AuthInterceptor } from './auth.interceptor'; // Tanpa './interceptors/'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
+
+// ❌ Hapus ini karena tidak digunakan lagi di Angular 17+
+// import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,10 +24,10 @@ import { AuthInterceptor } from './auth.interceptor'; // Tanpa './interceptors/'
     BrowserAnimationsModule,
     ButtonModule,
     HttpClientModule,
+    // ✅ Tidak perlu ImageCropperModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    // ✅ Daftarkan Interceptor Anda
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
