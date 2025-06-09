@@ -32,7 +32,7 @@ export class EditprofilePage implements OnInit {
   // TIPE DIUBAH agar bisa menerima URL aman dari sanitizer
   imagePreview: string | SafeUrl | null = 'assets/default-avatar.png';
   private selectedFile: File | null = null;
-  private laravelApiUrl = 'http://simpap.my.id/public/api';
+  private laravelApiUrl = 'https://simpap.my.id/public/api';
   // Getter untuk token agar lebih rapi
   private get token(): string | null {
     const currentUser = localStorage.getItem('currentUser');

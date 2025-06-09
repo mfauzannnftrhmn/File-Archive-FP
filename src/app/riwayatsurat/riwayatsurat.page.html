@@ -1,3 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="text-base font-medium text-gray-800 dark:text-gray-100">Riwayat Surat</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loadRiwayatSurat()">
+        <ion-icon name="refresh-outline"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" (click)="clearAllHistory()">
+        <ion-icon name="trash-bin-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <ion-toolbar class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <div class="flex flex-col p-3">
+      <ion-searchbar 
+        [(ngModel)]="searchTerm" 
+        (ionInput)="filterBySearch()" 
+        placeholder="Cari Judul Surat..."
+        mode="ios"
+        class="mb-3 custom-searchbar"
+        style="--background: var(--ion-color-light); --color: var(--ion-color-dark); --clear-button-color: var(--ion-color-medium);"
+      ></ion-searchbar>
+      
+      <div class="flex items-center justify-between gap-2 mb-3">
+        <div class="flex items-center">
+          <ion-icon name="funnel-outline" class="text-[#BB3E00] dark:text-[#FF8C5A] mr-2"></ion-icon>
+          <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Urutkan Berdasarkan:</span>
+        </div>
+        <div class="flex space-x-1">
+          <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
+            [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'all', 'text-gray-600 dark:text-gray-400': filterMode !== 'all'}"
+            (click)="setFilterMode('all')">
+            Semua
+          </ion-button>
+          <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
+            [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'newest', 'text-gray-600 dark:text-gray-400': filterMode !== 'newest'}"
+            (click)="setFilterMode('newest')">
+            Terbaru
+          </ion-button>
+          <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
+            [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'oldest', 'text-gray-600 dark:text-gray-400': filterMode !== 'oldest'}"
+            (click)="setFilterMode('oldest')">
+            Terlama
+          </ion-button>
+        </div>
+      </div>
+
+      <ion-item lines="none" class="bg-white dark:bg-gray-900 rounded-md shadow-inner text-gray-700 dark:text-gray-300">
+        <ion-label position="floating" class="text-xs">Filter Kategori</ion-label>
+        <ion-select
+          [(ngModel)]="selectedCategory"
+          (ionChange)="filterByCategory()"
+          placeholder="Pilih Kategori"
+          interface="popover"
+          class="text-sm font-medium"
+        >
+          <ion-select-option *ngFor="let category of availableCategories" [value]="category">
+            {{ category === 'all' ? 'Semua Kategori' : category }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content
   class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
   scrollEvents="true"
@@ -14,21 +83,7 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="px-4 sm:px-6 pt-4 pb-3 bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-10">
-    <div class="flex items-center">
-      <div class="ml-2">
-        <h2 class="text-base font-medium text-gray-800 dark:text-gray-100">
-          Riwayat Surat
-        </h2>
-        <p class="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
-          Lihat dan kelola riwayat pengajuan surat Anda
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23] min-h-screen p-4 pt-20">
-    <!-- Empty state when no letters exist -->
+  <div class="p-4 pt-2">
     <div *ngIf="riwayatSurat.length === 0" class="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
       <div class="w-24 h-24 bg-[#FFF0E6] dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
         <ion-icon name="document-outline" class="text-4xl text-[#BB3E00] dark:text-[#FF8C5A]"></ion-icon>
@@ -43,59 +98,25 @@
       </ion-button>
     </div>
 
-    <!-- Letters history list -->
     <div *ngIf="riwayatSurat.length > 0" class="space-y-3">
-      <!-- Filter and sort controls - fixed position -->
-      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 mb-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center">
-            <ion-icon name="funnel-outline" class="text-[#BB3E00] dark:text-[#FF8C5A] mr-2"></ion-icon>
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Filter</span>
-          </div>
-          <div class="flex space-x-1">
-            <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
-              [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'all', 'text-gray-600 dark:text-gray-400': filterMode !== 'all'}"
-              (click)="setFilterMode('all')">
-              Semua
-            </ion-button>
-            <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
-              [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'newest', 'text-gray-600 dark:text-gray-400': filterMode !== 'newest'}"
-              (click)="sortByNewest()">
-              Terbaru
-            </ion-button>
-            <ion-button size="small" fill="clear" class="text-xs h-8 rounded-md" 
-              [ngClass]="{'bg-[#FFF0E6] dark:bg-gray-700 text-[#BB3E00] dark:text-[#FF8C5A]': filterMode === 'oldest', 'text-gray-600 dark:text-gray-400': filterMode !== 'oldest'}"
-              (click)="sortByOldest()">
-              Terlama
-            </ion-button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Letters list with improved scroll behavior -->
       <div class="pb-3 space-y-3">
         <div *ngFor="let surat of riwayatSurat; let i = index" class="relative">
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md will-change-transform">
-            <!-- Status badge -->
             <div class="absolute top-0 right-0 mt-3 mr-3">
-              <!-- Disetujui -->
               <span *ngIf="surat.status === 'Disetujui'" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
                 <span class="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 mr-1"></span>
                 Disetujui
               </span>
-              <!-- Proses -->
               <span *ngIf="surat.status === 'Proses' || !surat.status" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
                 <span class="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 mr-1"></span>
                 Proses
               </span>
-              <!-- Ditolak -->
               <span *ngIf="surat.status === 'Ditolak'" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
                 <span class="w-2 h-2 rounded-full bg-red-500 dark:bg-red-400 mr-1"></span>
                 Ditolak
               </span>
             </div>
             
-            <!-- Letter content -->
             <div class="p-4">
               <div class="flex items-start mb-3">
                 <div class="w-10 h-10 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center flex-shrink-0">
@@ -106,12 +127,22 @@
                     <div>
                       <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ surat.title }}</h3>
                       <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ surat.suratNumber }}</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Kategori: {{ surat.category }}</p>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <!-- Timestamp with date and time -->
+              <div *ngIf="surat.status === 'Ditolak' && surat.remarks" class="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900 rounded-md p-2 mb-3">
+                <div class="flex items-center">
+                  <ion-icon name="warning-outline" class="text-red-600 dark:text-red-400 mr-2 text-sm"></ion-icon>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-medium text-red-700 dark:text-red-300">Alasan Penolakan:</span>
+                    <span class="text-xs text-red-600 dark:text-red-400 mt-0.5">{{ surat.remarks }}</span>
+                  </div>
+                </div>
+              </div>
+              
               <div class="bg-gray-50 dark:bg-gray-900 rounded-md p-2 mb-3">
                 <div class="flex items-center">
                   <ion-icon name="calendar-outline" class="text-[#BB3E00] dark:text-[#FF8C5A] mr-2 text-sm"></ion-icon>
@@ -126,16 +157,21 @@
                 </div>
               </div>
               
-              <!-- Action buttons -->
               <div class="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
                 <div class="flex space-x-2">
-                  <ion-button size="small" fill="clear" color="medium" class="text-xs dark:text-gray-300">
+                  <ion-button 
+                    size="small" 
+                    fill="clear" 
+                    color="medium" 
+                    class="text-xs dark:text-gray-300"
+                    (click)="downloadSurat(surat)"
+                    [disabled]="!surat.file_url || surat.status !== 'Disetujui'" >
                     <ion-icon name="download-outline" slot="start" size="small" class="dark:text-gray-300"></ion-icon>
                     <span class="hidden sm:inline">Unduh</span>
                   </ion-button>
                 </div>
                 <div class="flex space-x-1">
-                  <ion-button size="small" fill="outline" color="danger" class="text-xs" (click)="deleteSurat(i)">
+                  <ion-button size="small" fill="outline" color="danger" class="text-xs" (click)="deleteSurat(surat.id, i)">
                     <ion-icon name="trash-outline" slot="icon-only" size="small"></ion-icon>
                   </ion-button>
                 </div>
@@ -144,20 +180,6 @@
           </div>
         </div>
       </div>
-      
-      <!-- Clear history button -->
-      <div *ngIf="riwayatSurat.length > 0" class="mt-6 flex justify-center">
-        <ion-button 
-          color="medium" 
-          fill="outline"
-          (click)="clearAllHistory()" 
-          class="w-full max-w-xs text-sm dark:text-gray-300 dark:border-gray-600"
-        >
-          <ion-icon name="trash-outline" slot="start" class="dark:text-gray-300"></ion-icon>
-          Hapus Semua Riwayat
-        </ion-button>
-      </div>
-      
     </div>
   </div>
 </ion-content>

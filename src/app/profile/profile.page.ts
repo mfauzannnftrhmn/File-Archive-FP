@@ -62,7 +62,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     profilePicture: 'assets/default-avatar.png',
   };
 
-  private laravelApiUrl = 'http://simpap.my.id/public/api';
+  private laravelApiUrl = 'https://simpap.my.id/public/api';
   private profileSubscription: Subscription | undefined;
 
   constructor(

@@ -1,31 +1,55 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { ToastController, AlertController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router, RouterModule } from '@angular/router';
+import { ToastController, AlertController, IonicModule } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-// Definisikan tipe data untuk riwayat surat
 interface Surat {
+  id: number;
   title: string;
   suratNumber: string;
   date: string;
-  time?: string; // Menambahkan properti time yang opsional
-  status?: string; // Menambahkan properti status yang opsional
-  distribusiProgress?: number;
-  verifikasiProgress?: number;
-  cetakProgress?: number;
+  time?: string;
+  status?: string;
+  category: string;
+  remarks?: string;
+  file_url?: string; // <-- TAMBAHKAN BARIS INI
+  attachment_path?: string; 
 }
 
 @Component({
-  standalone: false,
   selector: 'app-riwayatsurat',
   templateUrl: './riwayatsurat.page.html',
   styleUrls: ['./riwayatsurat.page.scss'],
+  standalone: true,
+  imports: [
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    RouterModule
+  ]
 })
-export class RiwayatsuratPage {
-  // Menentukan tipe data untuk riwayatSurat
+export class RiwayatsuratPage implements OnInit {
   riwayatSurat: Surat[] = [];
-  filterMode: string = 'all'; // Default filter mode
+  originalRiwayatSurat: Surat[] = [];
+  filterMode: string = 'all';
+  selectedCategory: string = 'all';
+  searchTerm: string = '';
+
+  availableCategories: string[] = [
+    'all',
+    'Pengajuan Keluhan',
+    'Surat Rekomendasi',
+    'Permohonan Cuti',
+    'Surat Keterangan Karyawan'
+  ];
+
+  private apiUrl = environment.apiUrl;
 
   constructor(
+    private http: HttpClient,
     private router: Router,
     private toastController: ToastController,
     private alertController: AlertController
@@ -35,196 +59,229 @@ export class RiwayatsuratPage {
     this.loadRiwayatSurat();
   }
 
-  // Fungsi untuk memuat data riwayat surat
-  loadRiwayatSurat() {
-    // Mengambil data riwayat surat yang disimpan di localStorage
-    const storedSurat = localStorage.getItem('riwayatSurat');
-    this.riwayatSurat = storedSurat ? JSON.parse(storedSurat) : [];
-    
-    // Menambahkan waktu dan status jika belum ada
-    this.riwayatSurat = this.riwayatSurat.map(surat => {
-      if (!surat.time) {
-        surat.time = this.getJakartaTime();
-      }
-      if (!surat.status) {
-        surat.status = this.generateRandomStatus();
-      }
-      return surat;
-    });
-    
-    // Update localStorage dengan data yang sudah memiliki waktu dan status
-    localStorage.setItem('riwayatSurat', JSON.stringify(this.riwayatSurat));
-  }
-
-  // Fungsi untuk menghasilkan status acak untuk surat
-  generateRandomStatus(): string {
-    const statuses = ['Disetujui', 'Proses', 'Ditolak'];
-    const randomIndex = Math.floor(Math.random() * statuses.length);
-    return statuses[randomIndex];
-  }
-
-  // Fungsi untuk mendapatkan status berdasarkan progress
-  getStatusFromProgress(surat: Surat): string {
-    if (!surat.distribusiProgress || !surat.verifikasiProgress || !surat.cetakProgress) {
-      return this.generateRandomStatus();
+  downloadSurat(surat: Surat) {
+    if (surat.file_url) {
+      // Cara paling umum untuk mengunduh file dari URL
+      window.open(surat.file_url, '_blank');
+    } else {
+      this.presentToast('File tidak tersedia untuk diunduh.', 'warning');
     }
-    
-    const overallProgress = (surat.distribusiProgress + surat.verifikasiProgress + surat.cetakProgress) / 3;
-    
-    if (overallProgress < 0.3) return 'Ditolak';
-    if (overallProgress < 0.8) return 'Proses';
-    return 'Disetujui';
+  }
+  
+  loadRiwayatSurat(event?: any) {
+    this.http.get<{ data: Surat[] }>(`${this.apiUrl}/riwayat-surat`).subscribe({
+      next: (response) => {
+        // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
+        console.log('--- Original Data from API (on load) ---');
+        console.log(response.data);
+        // --- END DEBUGGING ---
+
+        this.originalRiwayatSurat = [...response.data];
+        this.filterMode = 'all';
+        this.selectedCategory = 'all';
+        this.searchTerm = '';
+        this.applyFilters();
+
+        if (event) {
+          event.target.complete();
+        }
+      },
+      error: (err) => {
+        console.error('Gagal mengambil data riwayat:', err);
+        this.presentToast('Gagal memuat data. Coba lagi nanti.', 'danger');
+        if (event) {
+          event.target.complete();
+        }
+      },
+    });
   }
 
-  // Fungsi untuk mengatur mode filter
   setFilterMode(mode: string) {
     this.filterMode = mode;
-    
-    // Jika mode adalah 'all', hanya muat ulang data tanpa sorting
-    if (mode === 'all') {
-      this.loadRiwayatSurat();
-    }
+    this.applyFilters();
   }
 
-  // Fungsi untuk mengurutkan surat berdasarkan yang terbaru
+  filterByCategory() {
+    // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
+    console.log('Filter by Category clicked. Selected Category:', this.selectedCategory);
+    // --- END DEBUGGING ---
+    this.applyFilters();
+  }
+
+  filterBySearch() {
+    // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
+    console.log('Search term entered:', this.searchTerm);
+    // --- END DEBUGGING ---
+    this.applyFilters();
+  }
+
+  applyFilters() {
+    let filteredData = [...this.originalRiwayatSurat];
+
+    // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
+    console.log('--- APPLYING FILTERS ---');
+    console.log('Initial data count:', filteredData.length);
+    console.log('Selected Category:', this.selectedCategory);
+    console.log('Search Term:', this.searchTerm);
+    console.log('Filter Mode:', this.filterMode);
+    // --- END DEBUGGING ---
+
+
+    // 1. Filter berdasarkan kategori
+     if (this.selectedCategory !== 'all') {
+      const lowerCaseSelectedCategory = this.normalizeString(this.selectedCategory);
+      console.log('Category filter active. Comparing with normalized:', `'${lowerCaseSelectedCategory}'`);
+
+      filteredData = filteredData.filter(surat => {
+        // --- INI YANG AKAN KITA FOKUSKAN ---
+        const suratCategoryProcessed = surat.category ? this.normalizeString(surat.category) : '';
+        const match = suratCategoryProcessed === lowerCaseSelectedCategory;
+
+        console.log(`  Item ID: ${surat.id}, Title: '${surat.title}', API Category: '${surat.category}', Normalized API Category: '${suratCategoryProcessed}', Filter Value: '${lowerCaseSelectedCategory}', Match: ${match}`);
+        // --- END FOKUS ---
+
+        return match;
+      });
+      console.log('After category filter, data count:', filteredData.length);
+    }
+
+    // 2. Filter berdasarkan teks pencarian (judul surat)
+    if (this.searchTerm && this.searchTerm.trim() !== '') {
+      const lowerCaseSearchTerm = this.normalizeString(this.searchTerm);
+
+      // --- DEBUGGING ---
+      console.log('Search filter active. Searching for normalized:', `'${lowerCaseSearchTerm}'`);
+      // --- END DEBUGGING ---
+
+      filteredData = filteredData.filter(surat => {
+        const suratTitleProcessed = surat.title ? this.normalizeString(surat.title) : '';
+        const match = suratTitleProcessed.includes(lowerCaseSearchTerm);
+
+        // --- DEBUGGING ---
+        // console.log(`  Item ID: ${surat.id || 'N/A'}, Title (API): '${surat.title}', Title (Normalized): '${suratTitleProcessed}', Match: ${match}`);
+        // --- END DEBUGGING ---
+        return match;
+      });
+
+      // --- DEBUGGING ---
+      console.log('After search filter, data count:', filteredData.length);
+      // --- END DEBUGGING ---
+    }
+
+    // 3. Urutkan berdasarkan mode waktu (setelah filtering)
+    if (this.filterMode === 'newest') {
+      filteredData.sort((a, b) => {
+        const dateA = new Date(`${a.date}T${a.time || '00:00:00'}`);
+        const dateB = new Date(`${b.date}T${b.time || '00:00:00'}`);
+        return dateB.getTime() - dateA.getTime();
+      });
+    } else if (this.filterMode === 'oldest') {
+      filteredData.sort((a, b) => {
+        const dateA = new Date(`${a.date}T${a.time || '00:00:00'}`);
+        const dateB = new Date(`${b.date}T${b.time || '00:00:00'}`);
+        return dateA.getTime() - dateB.getTime();
+      });
+    }
+
+    // --- DEBUGGING ---
+    console.log('Final data count to display:', filteredData.length);
+    console.log('Final data to display:', filteredData); // Lihat data yang akan ditampilkan
+    // --- END DEBUGGING ---
+
+    this.riwayatSurat = filteredData;
+  }
+
+  // --- Fungsi Baru: Normalisasi String ---
+  private normalizeString(str: string): string {
+    return str
+      .normalize('NFD') // Normalisasi Unicode (mengurai karakter seperti é menjadi e + ´)
+      .replace(/[\u0300-\u036f]/g, '') // Menghapus diacritics (tanda aksen, dll.)
+      .toLowerCase() // Mengubah ke huruf kecil
+      .replace(/\s+/g, ' ') // Mengganti satu atau lebih spasi dengan satu spasi tunggal
+      .trim(); // Menghapus spasi di awal/akhir
+  }
+
   sortByNewest() {
-    this.filterMode = 'newest';
-    this.riwayatSurat.sort((a, b) => {
-      // Konversi tanggal dan waktu ke format yang bisa dibandingkan
-      const dateA = new Date(`${a.date} ${a.time || '00:00'}`);
-      const dateB = new Date(`${b.date} ${b.time || '00:00'}`);
-      
-      // Urutkan dari yang terbaru (nilai terbesar) ke terlama
-      return dateB.getTime() - dateA.getTime();
-    });
+    this.setFilterMode('newest');
   }
 
-  // Fungsi untuk mengurutkan surat berdasarkan yang terlama
   sortByOldest() {
-    this.filterMode = 'oldest';
-    this.riwayatSurat.sort((a, b) => {
-      // Konversi tanggal dan waktu ke format yang bisa dibandingkan
-      const dateA = new Date(`${a.date} ${a.time || '00:00'}`);
-      const dateB = new Date(`${b.date} ${b.time || '00:00'}`);
-      
-      // Urutkan dari yang terlama (nilai terkecil) ke terbaru
-      return dateA.getTime() - dateB.getTime();
-    });
-    
-
+    this.setFilterMode('oldest');
   }
 
-  // Fungsi untuk refresh data
   doRefresh(event: any) {
-    setTimeout(() => {
-      // Muat ulang data riwayat surat
-      this.loadRiwayatSurat();
-      
-      // Refresh selesai tanpa notifikasi toast
-      
-      // Selesaikan event refresh
-      event.target.complete();
-    }, 1000);
+    this.loadRiwayatSurat(event);
   }
 
-  // Fungsi untuk mendapatkan waktu Jakarta (GMT+7)
-  getJakartaTime(): string {
-    const now = new Date();
-    
-    // Mengatur timezone ke Asia/Jakarta (GMT+7)
-    const jakartaTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
-    
-    // Format jam dan menit dengan leading zero jika perlu
-    const hours = jakartaTime.getUTCHours().toString().padStart(2, '0');
-    const minutes = jakartaTime.getUTCMinutes().toString().padStart(2, '0');
-    
-    return `${hours}:${minutes}`;
-  }
-
-  // Fungsi untuk mendapatkan warna berdasarkan status
-  getStatusColor(status: string): string {
-    switch(status) {
-      case 'Disetujui': return 'success';
-      case 'Proses': return 'primary';
-      case 'Ditolak': return 'danger';
-      default: return 'medium';
-    }
-  }
-
-  // Fungsi untuk melihat status atau detail surat
-  viewSuratDetails(surat: Surat) {
-    // Pindah ke halaman status pengajuan
-    this.router.navigate(['/statuspengajuan', { suratNumber: surat.suratNumber }]);
-  }
-
-  // Fungsi untuk menghapus surat tertentu berdasarkan index
-  async deleteSurat(index: number) {
-    // Tampilkan konfirmasi sebelum menghapus
+  async deleteSurat(suratId: number, index: number) {
     const alert = await this.alertController.create({
       header: 'Konfirmasi',
       message: 'Apakah Anda yakin ingin menghapus surat ini?',
       buttons: [
-        {
-          text: 'Batal',
-          role: 'cancel'
-        },
+        { text: 'Batal', role: 'cancel' },
         {
           text: 'Hapus',
-          handler: async () => {
-            // Hapus surat dari array berdasarkan index
-            this.riwayatSurat.splice(index, 1);
-            
-            // Update localStorage dengan data terbaru
-            localStorage.setItem('riwayatSurat', JSON.stringify(this.riwayatSurat));
-            
-            // Tampilkan toast konfirmasi
-            const toast = await this.toastController.create({
-              message: 'Surat berhasil dihapus',
-              duration: 2000,
-              color: 'success',
-              position: 'top'
-            });
-            await toast.present();
-          }
-        }
-      ]
+          handler: () => {
+            this.http
+              .delete(`${this.apiUrl}/riwayat-surat/${suratId}`)
+              .subscribe({
+                next: () => {
+                  this.originalRiwayatSurat = this.originalRiwayatSurat.filter(s => s.id !== suratId);
+                  this.presentToast('Surat berhasil dihapus', 'success');
+                  this.applyFilters();
+                },
+                error: (err) => {
+                  console.error('Gagal menghapus surat:', err);
+                  this.presentToast(
+                    err.error.message || 'Gagal menghapus surat.',
+                    'danger'
+                  );
+                },
+              });
+          },
+        },
+      ],
     });
-    
     await alert.present();
   }
 
-  // Fungsi untuk menghapus semua riwayat surat
   async clearAllHistory() {
-    // Tampilkan konfirmasi sebelum menghapus semua riwayat
     const alert = await this.alertController.create({
-      header: 'Konfirmasi',
-      message: 'Apakah Anda yakin ingin menghapus semua riwayat surat?',
+      header: 'Hapus Semua Riwayat',
+      message: 'Apakah Anda yakin ingin menghapus semua riwayat surat? Tindakan ini tidak dapat dibatalkan.',
       buttons: [
-        {
-          text: 'Batal',
-          role: 'cancel'
-        },
+        { text: 'Batal', role: 'cancel' },
         {
           text: 'Hapus Semua',
-          handler: async () => {
-            // Hapus data riwayat surat dari localStorage
-            localStorage.removeItem('riwayatSurat');
-            // Kosongkan array riwayatSurat
-            this.riwayatSurat = [];
-            
-            // Tampilkan toast konfirmasi
-            const toast = await this.toastController.create({
-              message: 'Semua riwayat surat berhasil dihapus',
-              duration: 2000,
-              color: 'success',
-              position: 'top'
+          cssClass: 'alert-button-danger',
+          handler: () => {
+            this.http.delete(`${this.apiUrl}/riwayat-surat/clear-all`).subscribe({
+              next: () => {
+                this.riwayatSurat = [];
+                this.originalRiwayatSurat = [];
+                this.selectedCategory = 'all';
+                this.searchTerm = '';
+                this.presentToast('Semua riwayat berhasil dihapus', 'success');
+              },
+              error: (err) => {
+                console.error('Gagal menghapus semua riwayat:', err);
+                this.presentToast('Gagal menghapus riwayat.', 'danger');
+              }
             });
-            await toast.present();
           }
         }
       ]
     });
-    
     await alert.present();
+  }
+
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2500,
+      color,
+      position: 'top',
+    });
+    await toast.present();
   }
 }

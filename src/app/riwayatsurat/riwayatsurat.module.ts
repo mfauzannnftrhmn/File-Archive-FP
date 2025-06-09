@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
 import { RiwayatsuratPageRoutingModule } from './riwayatsurat-routing.module';
 
-import { RiwayatsuratPage } from './riwayatsurat.page';
+// RiwayatsuratPage tidak diimpor di sini lagi karena tidak dideklarasikan
 
 @NgModule({
   imports: [
@@ -15,6 +13,6 @@ import { RiwayatsuratPage } from './riwayatsurat.page';
     IonicModule,
     RiwayatsuratPageRoutingModule
   ],
-  declarations: [RiwayatsuratPage]
+  // Hapus larik declarations sepenuhnya karena komponennya standalone
 })
 export class RiwayatsuratPageModule {}
