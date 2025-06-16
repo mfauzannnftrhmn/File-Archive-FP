@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
 import { LupapasswordPageRoutingModule } from './lupapassword-routing.module';
-
 import { LupapasswordPage } from './lupapassword.page';
 
 @NgModule({
@@ -13,8 +11,9 @@ import { LupapasswordPage } from './lupapassword.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    LupapasswordPageRoutingModule
-  ],
-  declarations: [LupapasswordPage]
+    LupapasswordPageRoutingModule,
+    LupapasswordPage // ✅ import komponen standalone
+  ]
 })
 export class LupapasswordPageModule {}
+

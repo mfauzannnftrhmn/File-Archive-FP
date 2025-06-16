@@ -1,58 +1,120 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { ApiService } from '../../services/api.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
-  standalone: false,
   selector: 'app-dashboard',
+  standalone: false,
   templateUrl: './dashboard.page.html',
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit {
-  userName: string = ''; // Inisialisasi string kosong
+  // --- Variabel untuk Data Pengguna ---
+  userName: string = '';
+
+  // --- Variabel untuk Statistik Surat ---
+  suratDiajukan: number = 0;
+  suratDisetujui: number = 0;
+  suratDitolak: number = 0;
+  isLoadingStats: boolean = true; // State loading khusus untuk statistik
+
+  // --- Variabel untuk Informasi Admin ---
+  adminInfo: any[] = [];
+  isInfoLoading: boolean = true; // State loading khusus untuk info admin
+
+  // --- Variabel untuk Notifikasi (Contoh) ---
   notificationCount: number = 0;
   showNotifications: boolean = false;
   notifications: any[] = [];
 
-  constructor(private toastController: ToastController) {
+  constructor(
+    private toastController: ToastController,
+    private apiService: ApiService,
+    private router: Router
+  ) {
     this.setUserNameFromStorage();
   }
 
   ngOnInit() {
-    this.loadNotifications();
+    this.loadAllData();
   }
 
+  // Fungsi untuk memuat semua data saat halaman dibuka atau di-refresh
+  loadAllData() {
+    this.isLoadingStats = true;
+    this.isInfoLoading = true;
+
+    forkJoin({
+      stats: this.apiService.getSuratStats(),
+      info: this.apiService.getAdminInfo()
+    }).subscribe({
+      next: ({ stats, info }) => {
+        // [PERBAIKAN] Mengakses data langsung dari objek 'stats'
+        if (stats) {
+          this.suratDiajukan = parseInt(stats.diajukan as any, 10) || 0;
+          this.suratDisetujui = parseInt(stats.disetujui as any, 10) || 0;
+          this.suratDitolak = parseInt(stats.ditolak as any, 10) || 0;
+        }
+
+        // [PERBAIKAN] Mengakses data dari 'info.data'
+        if (info?.success) {
+          this.adminInfo = info.data;
+        }
+
+        this.isLoadingStats = false;
+        this.isInfoLoading = false;
+      },
+      error: (err) => {
+        console.error('Gagal memuat data dashboard', err);
+        this.presentToast('Gagal memuat data dashboard.', 'danger');
+        this.isLoadingStats = false;
+        this.isInfoLoading = false;
+      }
+    });
+  }
+
+  // Fungsi refresh "pull-to-refresh"
+  doRefresh(event: any) {
+    console.log('Memulai operasi refresh');
+    this.loadAllData();
+
+    setTimeout(() => {
+      console.log('Operasi refresh selesai');
+      event.target.complete();
+    }, 1500);
+  }
+  
+  // Fungsi untuk menangani aksi klik pada item informasi
+  handleInfoClick(infoItem: any) {
+    console.log('Info item clicked:', infoItem);
+    this.presentToast(`Info: ${infoItem.judul}`, 'primary');
+  }
+
+  // Mengambil nama pengguna dari localStorage
   setUserNameFromStorage() {
     const currentUserStr = localStorage.getItem('currentUser');
     if (currentUserStr) {
       const currentUser = JSON.parse(currentUserStr);
-      
-      // [PERBAIKAN UTAMA]
-      // Akses 'name' langsung dari objek currentUser, sesuai data dari login.
-      if (currentUser && currentUser.name) {
-        this.userName = currentUser.name;
-      } else {
-        this.userName = 'Pengguna'; // Fallback jika 'name' tidak ditemukan
-      }
+      this.userName = currentUser?.name || 'Pengguna';
     } else {
-      this.userName = 'Pengguna'; // Fallback jika tidak ada data login
+      this.userName = 'Pengguna';
     }
   }
 
-  doRefresh(event: any) {
-    console.log('Memulai operasi refresh');
-    setTimeout(() => {
-      // Panggil fungsi yang sama untuk me-refresh nama
-      this.setUserNameFromStorage();
-      
-      this.loadNotifications();
-
-      console.log('Operasi refresh selesai');
-      event.target.complete();
-    }, 1500); // Durasi bisa dipercepat
+  // Menampilkan pesan toast
+  async presentToast(message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2500,
+      position: 'top',
+      color: color,
+    });
+    await toast.present();
   }
 
-  // ... Sisa fungsi lain tidak berubah ...
-
+  // --- Fungsi Notifikasi Dummy (Tidak berubah) ---
   loadNotifications() {
     this.notificationCount = Math.floor(Math.random() * 5);
     this.notifications = [];
@@ -71,26 +133,7 @@ export class DashboardPage implements OnInit {
   }
 
   markAllAsRead() {
-    this.notifications.forEach(notification => {
-      notification.read = true;
-    });
-    this.notificationCount = 0;
-  }
-
-  async openNotifications() {
-    const message = this.notificationCount > 0 
-      ? `Anda memiliki ${this.notificationCount} notifikasi baru` 
-      : 'Tidak ada notifikasi baru';
-    const color = this.notificationCount > 0 ? 'primary' : 'medium';
-
-    const toast = await this.toastController.create({
-      message: message,
-      duration: 2000,
-      position: 'top',
-      color: color
-    });
-    await toast.present();
-    
+    this.notifications.forEach(notification => notification.read = true);
     this.notificationCount = 0;
   }
 }

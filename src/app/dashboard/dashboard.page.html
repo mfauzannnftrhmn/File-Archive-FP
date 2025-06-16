@@ -84,53 +84,74 @@
   <!-- Main content with card layout -->
   <div class="px-4 sm:px-6 py-4">
     <!-- Quick Stats Cards -->
-    <div class="grid grid-cols-2 gap-3 mb-6">
-      <div
-        class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]"
-      >
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 dark:text-gray-300 text-xs">
-              Surat Diajukan
-            </p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
-              12
-            </h3>
-          </div>
-          <div
-            class="w-10 h-10 bg-[#FFF0E6] dark:bg-[#3E2A23] rounded-full flex items-center justify-center"
-          >
-            <ion-icon
-              name="document-text"
-              class="text-[#BB3E00] text-xl"
-            ></ion-icon>
-          </div>
-        </div>
-      </div>
+    <div class="p-4">
+  <!-- Tampilan Skeleton saat loading -->
+  <!-- Muncul ketika isLoading bernilai true -->
+  <div *ngIf="isLoadingStats" class="grid grid-cols-2 gap-3 mb-6 animate-pulse">
+    <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24"></div>
+    <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24"></div>
+    <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24"></div>
+  </div>
 
-      <div
-        class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-green-500"
-      >
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-gray-500 dark:text-gray-300 text-xs">
-              Surat Disetujui
-            </p>
-            <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
-              8
-            </h3>
-          </div>
-          <div
-            class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
-          >
-            <ion-icon
-              name="checkmark-circle"
-              class="text-green-600 dark:text-green-400 text-xl"
-            ></ion-icon>
-          </div>
+  <!-- Tampilan Data Utama -->
+  <!-- Muncul setelah loading selesai (isLoading bernilai false) -->
+  <div *ngIf="!isLoadingStats" class="grid grid-cols-2 gap-3 mb-6">
+    <!-- Card untuk Surat Di Proses (Sebelumnya Diajukan) -->
+    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-[#BB3E00]">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 dark:text-gray-300 text-xs">
+            Surat Di Proses
+          </p>
+          <!-- DATA BINDING: Mengambil nilai dari variabel suratDiajukan -->
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+            {{ suratDiajukan }}
+          </h3>
+        </div>
+        <div class="w-10 h-10 bg-[#FFF0E6] dark:bg-[#3E2A23] rounded-full flex items-center justify-center">
+          <ion-icon name="document-text" class="text-[#BB3E00] text-xl"></ion-icon>
         </div>
       </div>
     </div>
+
+    <!-- Card untuk Surat Disetujui -->
+    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 dark:text-gray-300 text-xs">
+            Surat Disetujui
+          </p>
+          <!-- DATA BINDING: Mengambil nilai dari variabel suratDisetujui -->
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+            {{ suratDisetujui }}
+          </h3>
+        </div>
+        <div class="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+          <ion-icon name="checkmark-circle" class="text-green-600 dark:text-green-400 text-xl"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card untuk Surat Ditolak (BARU) -->
+    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 border-l-4 border-red-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-gray-500 dark:text-gray-300 text-xs">
+            Surat Ditolak
+          </p>
+          <!-- DATA BINDING: Mengambil nilai dari variabel suratDitolak -->
+          <h3 class="text-2xl font-bold text-gray-800 dark:text-white mt-1">
+            {{ suratDitolak }}
+          </h3>
+        </div>
+        <div class="w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+          <ion-icon name="close-circle" class="text-red-600 dark:text-red-400 text-xl"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- Quick Actions -->
     <div class="mb-6">
@@ -210,66 +231,57 @@
         </div>
       </div>
     </div>
+<!-- ... bagian atas template ... -->
 
-    <!-- Popular Services -->
-    <div class="mb-6">
-      <h2
-        class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center"
-      >
-        <ion-icon name="star" class="mr-2 text-[#BB3E00]"></ion-icon>
-        Layanan Populer
-      </h2>
+<div class="p-4">
+    <!-- Statistik Surat -->
+    <div class="grid grid-cols-2 gap-3 mb-6">
+        <!-- [PERBAIKAN] Menggunakan isLoadingStats -->
+        <ng-container *ngIf="isLoadingStats">
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24 animate-pulse"></div>
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24 animate-pulse"></div>
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-24 animate-pulse"></div>
+        </ng-container>
 
-      <div class="space-y-3">
-        <!-- Service 1 -->
-        <div
-          class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 flex items-center"
-        >
-          <div
-            class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
-          >
-            <ion-icon
-              name="document-text"
-              class="text-[#BB3E00] text-xl"
-            ></ion-icon>
-          </div>
-          <div class="flex-1">
-            <h4 class="font-medium text-gray-800 dark:text-white">
-              Surat Keterangan
-            </h4>
-            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">
-              Dokumen umum untuk berbagai keperluan
-            </p>
-          </div>
-          <ion-button fill="clear" class="h-8 text-[#BB3E00]">
-            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
-          </ion-button>
-        </div>
-
-        <!-- Service 2 -->
-        <div
-          class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 flex items-center"
-        >
-          <div
-            class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4"
-          >
-            <ion-icon name="card" class="text-[#BB3E00] text-xl"></ion-icon>
-          </div>
-          <div class="flex-1">
-            <h4 class="font-medium text-gray-800 dark:text-white">
-              Kartu Identitas
-            </h4>
-            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">
-              Pembuatan & perpanjangan identitas
-            </p>
-          </div>
-          <ion-button fill="clear" class="h-8 text-[#BB3E00]">
-            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
-          </ion-button>
-        </div>
-      </div>
     </div>
 
+   
+    <!-- Informasi Admin -->
+    <div class="mb-6">
+        <h2 class="text-lg font-bold text-gray-800 dark:text-white mb-3 flex items-center">
+            <ion-icon name="star" class="mr-2 text-[#BB3E00]"></ion-icon>
+            Informasi Admin
+        </h2>
+
+        <!-- Tampilan Skeleton saat loading informasi -->
+        <div *ngIf="isInfoLoading" class="space-y-3 animate-pulse">
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-20 w-full"></div>
+            <div class="bg-gray-200 dark:bg-gray-600 rounded-xl h-20 w-full"></div>
+        </div>
+
+        <!-- Tampilan Data Utama Informasi -->
+        <div *ngIf="!isInfoLoading" class="space-y-3">
+            <!-- Looping untuk setiap item informasi -->
+            <div *ngFor="let info of adminInfo" class="bg-white dark:bg-gray-700 rounded-xl shadow-sm p-4 flex items-center" (click)="handleInfoClick(info)">
+                <div class="w-12 h-12 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center mr-4">
+                    <ion-icon name="information-circle" class="text-[#BB3E00] text-xl"></ion-icon>
+                </div>
+                <div class="flex-1">
+                    <h4 class="font-medium text-gray-800 dark:text-white">{{ info.judul }}</h4>
+                    <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">{{ info.caption }}</p>
+                </div>
+            </div>
+
+            <!-- Pesan jika tidak ada informasi -->
+            <div *ngIf="adminInfo.length === 0" class="text-center text-gray-500 dark:text-gray-400 py-4">
+                Tidak ada informasi saat ini.
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ... sisa template ... -->
+
+    
     <!-- Help & Support -->
     <div class="mb-8">
       <div
