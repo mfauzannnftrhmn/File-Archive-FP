@@ -19,7 +19,7 @@ export interface UserData {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl; // URL backend Laravel. Misal: 'https://simpap.my.id/public/api'
+  private apiUrl = environment.apiUrl; 
   private currentUserSubject: BehaviorSubject<UserData | null>;
   public currentUser: Observable<UserData | null>;
 

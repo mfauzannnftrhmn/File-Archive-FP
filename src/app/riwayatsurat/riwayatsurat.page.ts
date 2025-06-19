@@ -60,13 +60,9 @@ export class RiwayatsuratPage implements OnInit {
   }
 
   downloadSurat(surat: Surat) {
-    if (surat.file_url) {
-      // Cara paling umum untuk mengunduh file dari URL
-      window.open(surat.file_url, '_blank');
-    } else {
-      this.presentToast('File tidak tersedia untuk diunduh.', 'warning');
-    }
-  }
+  const newUrl = `https://simpap.my.id/storage/app/public/uploads/${surat.attachment_path}`;
+  window.open(newUrl, '_blank');
+}
   
   loadRiwayatSurat(event?: any) {
   const currentUser = localStorage.getItem('currentUser');
