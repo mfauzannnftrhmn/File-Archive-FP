@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 // Import-import penting untuk Standalone Component
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -54,6 +55,7 @@ export class EditprofilePage implements OnInit {
   }
 
   constructor(
+    private location: Location,
     private toastController: ToastController,
     private router: Router,
     private http: HttpClient,
@@ -61,6 +63,9 @@ export class EditprofilePage implements OnInit {
     private actionSheetController: ActionSheetController,
     private sanitizer: DomSanitizer,
   ) {}
+  goBack() {
+  this.location.back(); // atau window.history.back();
+}
 
   ngOnInit() {
     this.loadCurrentProfile();

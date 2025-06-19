@@ -7,26 +7,36 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ApiService {
-  // Ganti dengan URL base API Laravel Anda
-  private apiUrl = 'http://simpap.my.id/public/api'; 
+  private baseUrl = 'https://simpap.my.id/public/api'; // base URL saja
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Mengambil statistik jumlah surat dari backend Laravel.
+   * @param email Email pengguna
+   * @param name Nama pengguna
    */
-  getSuratStats(): Observable<any> {
-    return this.http.get<{ success: boolean, data: any }>(`${this.apiUrl}/dashboard/surat-stats`).pipe(
+  getSuratStats(email: string, name: string): Observable<any> {
+    const url = `${this.baseUrl}/dashboard/surat-stats?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+    return this.http.get<{ success: boolean, data: any }>(url).pipe(
       map(response => {
         if (response && response.success) {
           return response.data;
         }
-        // Kembalikan nilai default jika gagal
-        return { diajukan: 0, disetujui: 0 }; 
+        return { diajukan: 0, disetujui: 0, ditolak: 0 };
       })
     );
   }
-   getAdminInfo(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/admin-info`);
+
+  getNotifications(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/notifications`);
+  }
+
+  markNotificationsAsRead(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/notifications/mark-as-read`, {});
+  }
+
+  getAdminInfo(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/admin-info`);
   }
 }

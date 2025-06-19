@@ -21,11 +21,11 @@
     </div>
   </div>
 
-  <div class="p-4 pt-16 sm:pt-20 max-w-5xl mx-auto">
+  <div class="p-4 pt-20 sm:pt-24 max-w-5xl mx-auto">
     
     <div class="mt-4 animate-fadeIn">
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-items-center max-w-md mx-auto">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300 w-full">
           <div class="p-4 flex flex-col h-full">
             <div class="flex items-center mb-3">
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] flex items-center justify-center mr-3 shadow-sm">
@@ -44,38 +44,19 @@
           </div>
         </div>
         
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300 w-full">
           <div class="p-4 flex flex-col h-full">
             <div class="flex items-center mb-3">
               <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] flex items-center justify-center mr-3 shadow-sm">
                 <ion-icon name="copy-outline" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
               </div>
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200">Template</h3>
+              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200">Riwayat Surat</h3>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Lihat template surat</p>
-            <ion-button fill="clear" size="small" routerLink="/templatesurat" 
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Lihat riwayat surat</p>
+            <ion-button fill="clear" size="small" routerLink="/riwayatsurat" 
                         class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
               <span class="flex items-center">
                 Lihat
-                <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
-              </span>
-            </ion-button>
-          </div>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300">
-          <div class="p-4 flex flex-col h-full">
-            <div class="flex items-center mb-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] flex items-center justify-center mr-3 shadow-sm">
-                <ion-icon name="analytics-outline" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
-              </div>
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200">Status</h3>
-            </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Pantau status pengajuan</p>
-            <ion-button fill="clear" size="small" routerLink="/statuspengajuan" 
-                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
-              <span class="flex items-center">
-                Status
                 <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
               </span>
             </ion-button>
@@ -110,29 +91,26 @@
                 <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ letter.category }}</h4>
                 <span class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(letter.updated_at) }}</span>
               </div>
-               <div *ngIf="letter.status === 'Ditolak' && letter.remarks" class="mt-2 p-2 bg-red-50 dark:bg-red-900 text-xs text-red-800 dark:text-red-200 rounded">
-        <strong>Alasan penolakan:</strong> {{ letter.remarks }}
-      </div>
+                <div *ngIf="letter.status === 'Ditolak' && letter.remarks" class="mt-2 p-2 bg-red-50 dark:bg-red-900 text-xs text-red-800 dark:text-red-200 rounded">
+                <strong>Alasan penolakan:</strong> {{ letter.remarks }}
+              </div>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat dengan nomor {{ letter.surat_number }} telah diupdate.</p>
               <div class="mt-2">
                 <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" [ngClass]="getStatusColor(letter.status)">
                   {{ letter.status }}
                 </span>
               </div>
-             <!-- Tombol Download hanya muncul jika status adalah Disetujui -->
-<ion-button
-  *ngIf="letter.status === 'Disetujui' && letter.file_url"
-  expand="block"
-  fill="outline"
-  size="small"
-  (click)="downloadFile(letter.file_url, letter.download_name || 'file-download')"
->
-  <ion-icon name="download" slot="start"></ion-icon>
-  Unduh Surat
-</ion-button>
-
-
-
+              <ion-button
+                *ngIf="letter.status === 'Disetujui' && letter.file_url"
+                expand="block"
+                fill="outline"
+                size="small"
+                (click)="downloadFile(letter.file_url, letter.download_name || 'file-download')"
+                class="mt-3"
+              >
+                <ion-icon name="download" slot="start"></ion-icon>
+                Unduh Surat
+              </ion-button>
             </div>
           </div>
         </div>
@@ -152,7 +130,10 @@
             </span>
           </ion-button>
         </div>
-      </div> </div> </div> </ion-content>
+      </div>
+    </div>
+  </div>
+</ion-content>
 
 <ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 h-16 shadow-lg">
   <ion-tab-button tab="dashboard" routerLink="/dashboard" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">

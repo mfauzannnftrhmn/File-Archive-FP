@@ -69,32 +69,33 @@ export class RiwayatsuratPage implements OnInit {
   }
   
   loadRiwayatSurat(event?: any) {
-    this.http.get<{ data: Surat[] }>(`${this.apiUrl}/riwayat-surat`).subscribe({
-      next: (response) => {
-        // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
-        console.log('--- Original Data from API (on load) ---');
-        console.log(response.data);
-        // --- END DEBUGGING ---
+  const currentUser = localStorage.getItem('currentUser');
+  const user = currentUser ? JSON.parse(currentUser) : null;
+  const email = user?.email;
+  const name = user?.name;
 
-        this.originalRiwayatSurat = [...response.data];
-        this.filterMode = 'all';
-        this.selectedCategory = 'all';
-        this.searchTerm = '';
-        this.applyFilters();
-
-        if (event) {
-          event.target.complete();
-        }
-      },
-      error: (err) => {
-        console.error('Gagal mengambil data riwayat:', err);
-        this.presentToast('Gagal memuat data. Coba lagi nanti.', 'danger');
-        if (event) {
-          event.target.complete();
-        }
-      },
-    });
+  if (!email || !name) {
+    this.presentToast('Gagal mengambil data pengguna.', 'danger');
+    return;
   }
+
+  this.http.get<{ data: Surat[] }>(
+    `${this.apiUrl}/riwayat-surat?email=${email}&name=${encodeURIComponent(name)}`
+  ).subscribe({
+    next: (response) => {
+      this.originalRiwayatSurat = [...response.data];
+      this.applyFilters();
+      if (event) event.target.complete();
+    },
+    error: (err) => {
+      console.error('Gagal mengambil data riwayat:', err);
+      this.presentToast('Gagal memuat data. Coba lagi nanti.', 'danger');
+      if (event) event.target.complete();
+    }
+  });
+}
+
+
 
   setFilterMode(mode: string) {
     this.filterMode = mode;
@@ -102,9 +103,7 @@ export class RiwayatsuratPage implements OnInit {
   }
 
   filterByCategory() {
-    // --- DEBUGGING (bisa dihapus setelah masalah teratasi) ---
     console.log('Filter by Category clicked. Selected Category:', this.selectedCategory);
-    // --- END DEBUGGING ---
     this.applyFilters();
   }
 
@@ -144,28 +143,15 @@ export class RiwayatsuratPage implements OnInit {
       });
       console.log('After category filter, data count:', filteredData.length);
     }
-
-    // 2. Filter berdasarkan teks pencarian (judul surat)
     if (this.searchTerm && this.searchTerm.trim() !== '') {
       const lowerCaseSearchTerm = this.normalizeString(this.searchTerm);
-
-      // --- DEBUGGING ---
       console.log('Search filter active. Searching for normalized:', `'${lowerCaseSearchTerm}'`);
-      // --- END DEBUGGING ---
-
       filteredData = filteredData.filter(surat => {
         const suratTitleProcessed = surat.title ? this.normalizeString(surat.title) : '';
         const match = suratTitleProcessed.includes(lowerCaseSearchTerm);
-
-        // --- DEBUGGING ---
-        // console.log(`  Item ID: ${surat.id || 'N/A'}, Title (API): '${surat.title}', Title (Normalized): '${suratTitleProcessed}', Match: ${match}`);
-        // --- END DEBUGGING ---
         return match;
       });
-
-      // --- DEBUGGING ---
       console.log('After search filter, data count:', filteredData.length);
-      // --- END DEBUGGING ---
     }
 
     // 3. Urutkan berdasarkan mode waktu (setelah filtering)

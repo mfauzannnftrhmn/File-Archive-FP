@@ -1,5 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+
+import { APP_VERSION } from '../app-version';
 // ✅ Import RouterModule
 import { Router, RouterModule } from '@angular/router';
 import { AlertController, LoadingController, NavController, IonicModule } from '@ionic/angular';
@@ -28,6 +30,7 @@ export class LoginPage {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private authService: AuthService,
+    private http: HttpClient,
     private navCtrl: NavController
   ) {}
 

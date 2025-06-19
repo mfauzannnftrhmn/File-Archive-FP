@@ -247,17 +247,66 @@ export class PengajuansuratPage implements OnInit {
     this.formData.suratNumber = '';
   }
 
-  generateSuratNumber() {
-    if (this.selectedTemplate && !this.isSubmissionPending) {
-      const categoryCode = this.getCategoryCode(this.selectedTemplate.category);
-      const year = new Date().getFullYear();
-      let suratCounter = Number(localStorage.getItem(`suratCounter_${categoryCode}_${year}_next`) || 1);
-      const formattedCounter = suratCounter.toString().padStart(3, '0');
-      this.formData.suratNumber = `${formattedCounter}/GA-${categoryCode}/${this.getRomanMonth()}/${year}`;
-    } else if (!this.selectedTemplate) {
-        this.formData.suratNumber = '';
+generateSuratNumber() {
+  if (this.selectedTemplate && !this.isSubmissionPending) {
+    const category = this.selectedTemplate.category;
+    const categoryCode = this.getCategoryCode(category);
+    const year = new Date().getFullYear();
+    const monthRoman = this.getRomanMonth();
+
+    let token = localStorage.getItem('token');
+    if (!token) {
+      const currentUserString = localStorage.getItem('currentUser');
+      if (currentUserString) {
+        try {
+          const currentUserData = JSON.parse(currentUserString);
+          token = currentUserData.token;
+        } catch (e) {
+          console.error('Gagal parse token:', e);
+        }
+      }
     }
+
+    if (!token) {
+      this.presentToast('Token tidak ditemukan. Silakan login ulang.', 'danger');
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
+
+    const url = `https://simpap.my.id/public/api/pengajuan-surats/last-number`;
+
+    // Ganti GET ke POST dan kirim data category
+    this.http.post(url, { category: category }, { headers }).subscribe({
+      next: (response: any) => {
+        let nextNumber = 1;
+
+        if (response && response.last_number) {
+          const lastNumber = response.last_number; // contoh: "001/GA-PC/VI/2025"
+          const parts = lastNumber.split('/');
+          if (parts.length >= 1) {
+            const lastCounter = parseInt(parts[0], 10);
+            if (!isNaN(lastCounter)) {
+              nextNumber = lastCounter + 1;
+            }
+          }
+        }
+
+        const formattedCounter = nextNumber.toString().padStart(3, '0');
+        this.formData.suratNumber = `${formattedCounter}/GA-${categoryCode}/${monthRoman}/${year}`;
+      },
+      error: (err) => {
+        console.error('Gagal mengambil nomor surat terakhir:', err);
+        this.presentToast('Gagal mengambil nomor surat terakhir dari server.', 'danger');
+      }
+    });
   }
+}
+
+
 
   getCategoryCode(category: string): string {
     if (category.includes('Cuti')) return 'PC';
@@ -514,7 +563,7 @@ export class PengajuansuratPage implements OnInit {
       startDate: '',
       endDate: '',
       reason: '',
-      position: '',
+      position: '', 
       joinDate: '',
       purpose: '',
       department: '',

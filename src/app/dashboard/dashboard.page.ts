@@ -42,38 +42,51 @@ export class DashboardPage implements OnInit {
   }
 
   // Fungsi untuk memuat semua data saat halaman dibuka atau di-refresh
-  loadAllData() {
-    this.isLoadingStats = true;
-    this.isInfoLoading = true;
+ loadAllData() {
+  this.isLoadingStats = true;
+  this.isInfoLoading = true;
 
-    forkJoin({
-      stats: this.apiService.getSuratStats(),
-      info: this.apiService.getAdminInfo()
-    }).subscribe({
-      next: ({ stats, info }) => {
-        // [PERBAIKAN] Mengakses data langsung dari objek 'stats'
-        if (stats) {
-          this.suratDiajukan = parseInt(stats.diajukan as any, 10) || 0;
-          this.suratDisetujui = parseInt(stats.disetujui as any, 10) || 0;
-          this.suratDitolak = parseInt(stats.ditolak as any, 10) || 0;
-        }
+  // Ambil email dan nama dari localStorage
+  const currentUserStr = localStorage.getItem('currentUser');
+  const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
 
-        // [PERBAIKAN] Mengakses data dari 'info.data'
-        if (info?.success) {
-          this.adminInfo = info.data;
-        }
+  const email = currentUser?.email;
+  const name = currentUser?.name;
 
-        this.isLoadingStats = false;
-        this.isInfoLoading = false;
-      },
-      error: (err) => {
-        console.error('Gagal memuat data dashboard', err);
-        this.presentToast('Gagal memuat data dashboard.', 'danger');
-        this.isLoadingStats = false;
-        this.isInfoLoading = false;
-      }
-    });
+  if (!email || !name) {
+    console.error('Email atau nama tidak ditemukan di localStorage');
+    this.presentToast('Gagal memuat data: pengguna tidak ditemukan.', 'danger');
+    this.isLoadingStats = false;
+    this.isInfoLoading = false;
+    return;
   }
+
+  forkJoin({
+    stats: this.apiService.getSuratStats(email, name), // ✅ perbaiki ini
+    info: this.apiService.getAdminInfo()
+  }).subscribe({
+    next: ({ stats, info }) => {
+      if (stats) {
+        this.suratDiajukan = parseInt(stats.diajukan as any, 10) || 0;
+        this.suratDisetujui = parseInt(stats.disetujui as any, 10) || 0;
+        this.suratDitolak = parseInt(stats.ditolak as any, 10) || 0;
+      }
+
+      if (info?.success) {
+        this.adminInfo = info.data;
+      }
+
+      this.isLoadingStats = false;
+      this.isInfoLoading = false;
+    },
+    error: (err) => {
+      console.error('Gagal memuat data dashboard', err);
+      this.presentToast('Gagal memuat data dashboard.', 'danger');
+      this.isLoadingStats = false;
+      this.isInfoLoading = false;
+    }
+  });
+}
 
   // Fungsi refresh "pull-to-refresh"
   doRefresh(event: any) {

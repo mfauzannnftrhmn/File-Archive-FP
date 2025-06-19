@@ -1,0 +1,165 @@
+async submitForm() {
+    if (!await this.ensureUserDataIsLoaded()) {
+        this.isLoading = false;
+        return;
+    }
+    if (this.isSubmissionPending) {
+      await this.presentAlert('Pengajuan Diblokir', this.pendingSubmissionMessage);
+      return;
+    }
+
+    this.isLoading = true;
+
+    if (!this.formData.suratNumber && this.selectedTemplate) {
+      this.generateSuratNumber();
+    }
+    if (!this.formData.suratNumber && this.selectedTemplate) {
+      this.isLoading = false;
+      await this.presentAlert('Error Nomor Surat', 'Gagal membuat nomor surat. Silakan pilih template lagi.');
+      return;
+    }
+
+    const category = this.selectedTemplate?.category;
+    if (!category) {
+        this.isLoading = false;
+        await this.presentAlert('Error', 'Template tidak dipilih.');
+        return;
+    }
+    let requiredFields: string[] = ['name', 'email', 'suratNumber'];
+
+    switch (category) {
+      case 'Permohonan Cuti':
+        requiredFields.push('startDate', 'endDate', 'reason');
+        if (this.formData.startDate && this.formData.startDate < this.todayDateString) {
+          this.isLoading = false;
+          await this.presentAlert('Tanggal Tidak Valid', 'Tanggal mulai tidak boleh tanggal yang sudah berlalu.');
+          return;
+        }
+        if (this.formData.startDate && this.formData.endDate && this.formData.endDate < this.formData.startDate) {
+          this.isLoading = false;
+          await this.presentAlert('Tanggal Tidak Valid', 'Tanggal selesai tidak boleh sebelum tanggal mulai.');
+          return;
+        }
+        break;
+      case 'Surat Keterangan Karyawan':
+        requiredFields.push('position', 'joinDate', 'purpose');
+        if (this.formData.joinDate && this.formData.joinDate > this.todayDateString) {
+            this.isLoading = false;
+            await this.presentAlert('Tanggal Tidak Valid', 'Tanggal bergabung tidak boleh di masa depan.');
+            return;
+        }
+        break;
+      case 'Pengajuan Keluhan':
+        requiredFields.push('department', 'complaintCategory', 'complaintDescription');
+        break;
+      case 'Surat Rekomendasi':
+        requiredFields.push('recommendedName', 'recommenderPosition', 'recommendationReason');
+        break;
+      default:
+        this.isLoading = false;
+        await this.presentAlert('Template Tidak Valid', 'Kategori surat tidak dikenali.');
+        return;
+    }
+
+    const missingFields = requiredFields.filter(field => {
+      const value = this.formData[field];
+      return value === null || value === undefined || value.toString().trim() === '';
+    });
+
+    if (missingFields.length > 0) {
+      this.isLoading = false;
+      if (missingFields.includes('name') || missingFields.includes('email')) {
+        await this.presentAlert('Data Pengguna Tidak Lengkap', 'Nama atau email pengguna tidak terdeteksi. Silakan coba login ulang.');
+      } else {
+        await this.presentAlert('Form Belum Lengkap', `Mohon lengkapi field berikut: ${missingFields.join(', ')}.`);
+      }
+      return;
+    }
+
+    const payload = new FormData();
+    payload.append('surat_number', this.formData.suratNumber);
+    payload.append('name', this.formData.name);
+    payload.append('email', this.formData.email);
+    payload.append('category', category as string);
+    payload.append('status', 'Proses');
+
+    if (category === 'Permohonan Cuti') {
+        payload.append('start_date', this.formData.startDate);
+        payload.append('end_date', this.formData.endDate);
+        payload.append('reason', this.formData.reason);
+    } else if (category === 'Surat Keterangan Karyawan') {
+        payload.append('position', this.formData.position);
+        payload.append('join_date', this.formData.joinDate);
+        payload.append('purpose', this.formData.purpose);
+    } else if (category === 'Pengajuan Keluhan') {
+        payload.append('department', this.formData.department);
+        payload.append('complaint_category', this.formData.complaintCategory);
+        payload.append('complaint_description', this.formData.complaintDescription);
+    } else if (category === 'Surat Rekomendasi') {
+        payload.append('recommended_name', this.formData.recommendedName);
+        payload.append('recommender_name', this.formData.name);
+        payload.append('recommender_position', this.formData.recommenderPosition);
+        payload.append('recommendation_reason', this.formData.recommendationReason);
+    }
+
+    if (this.formData.attachment && this.formData.attachmentOriginalName) {
+      const safeSuratNumber = this.formData.suratNumber.replace(/\//g, '-');
+      const fileExtension = this.formData.attachmentOriginalName.split('.').pop();
+      let baseOriginalName = this.formData.attachmentOriginalName;
+      if (fileExtension) {
+        baseOriginalName = this.formData.attachmentOriginalName.substring(0, this.formData.attachmentOriginalName.length - (fileExtension.length + 1));
+      }
+      const newFileNameForUserUpload = `${safeSuratNumber}-USERUPLOAD-${baseOriginalName}.${fileExtension}`;
+      payload.append('user_uploaded_attachment', this.formData.attachment, newFileNameForUserUpload);
+    }
+
+    let token = localStorage.getItem('token');
+    if (!token) {
+        const currentUserString = localStorage.getItem('currentUser');
+        if (currentUserString) {
+            try { token = JSON.parse(currentUserString).token; } catch(e){}
+        }
+    }
+
+    if (!token) {
+        this.isLoading = false;
+        await this.presentAlert('Otentikasi Gagal', 'Token tidak ditemukan. Silakan login kembali.');
+        return;
+    }
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    this.http.post('https://simpap.my.id/public/api/pengajuan-surats', payload, { headers })
+      .subscribe({
+        next: async (response) => {
+          this.isLoading = false;
+          this.isSuccess = true;
+          if (this.selectedTemplate) {
+              const categoryCode = this.getCategoryCode(this.selectedTemplate.category);
+              const year = new Date().getFullYear();
+              let nextSuratCounter = Number(localStorage.getItem(`suratCounter_${categoryCode}_${year}_next`) || 1);
+              nextSuratCounter++;
+              localStorage.setItem(`suratCounter_${categoryCode}_${year}_next`, nextSuratCounter.toString());
+          }
+          await this.presentToast('Pengajuan surat berhasil dikirim!', 'success');
+        },
+        error: async (errorResponse: HttpErrorResponse) => {
+          this.isLoading = false;
+          console.error('Error submitting form:', errorResponse);
+          let errorMessage = 'Terjadi kesalahan saat mengirim surat.';
+          if (errorResponse.status === 401) {
+            errorMessage = 'Otentikasi gagal. Silakan login kembali.';
+          } else if (errorResponse.error) {
+            if (typeof errorResponse.error.message === 'string') {
+                errorMessage = errorResponse.error.message;
+            } else if (typeof errorResponse.error === 'object' && errorResponse.error.errors) {
+                const validationErrors = errorResponse.error.errors;
+                const firstErrorKey = Object.keys(validationErrors)[0];
+                errorMessage = validationErrors[firstErrorKey][0];
+            }
+          } else if (errorResponse.message) {
+            errorMessage = errorResponse.message;
+          }
+          await this.presentAlert('Gagal Mengirim', errorMessage);
+        }
+      });
+  }

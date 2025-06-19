@@ -18,36 +18,44 @@ export class AktivitasPage implements OnInit {
 
   constructor(private http: HttpClient) { }
 
+  getUserInfo() {
+  const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  return { email: user.email, name: user.name };
+}
+
+
   ngOnInit() {
     this.loadRecentLetters();
   }
 
   loadRecentLetters(event?: any) {
-    if (!event) {
-      this.isLoading = true;
-    }
-
-    // Ganti URL dengan endpoint API Anda untuk mendapatkan surat terbaru
-    // Misalnya, ambil 3 surat terakhir yang diupdate
-    this.http.get<PengajuanSurat[]>(this.apiUrl)
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-          if (event) {
-            event.target.complete();
-          }
-        })
-      )
-      .subscribe(
-        (response) => {
-          this.recentLetters = response;
-        },
-        (error) => {
-          console.error('Error fetching recent letters:', error);
-          // Tambahkan notifikasi error jika perlu, misal dengan ToastController
-        }
-      );
+  if (!event) {
+    this.isLoading = true;
   }
+
+  const { email, name } = this.getUserInfo();
+  const url = `${this.apiUrl}?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}`;
+
+  this.http.get<PengajuanSurat[]>(url)
+    .pipe(
+      finalize(() => {
+        this.isLoading = false;
+        if (event) {
+          event.target.complete();
+        }
+      })
+    )
+    .subscribe(
+      (response) => {
+        this.recentLetters = response;
+      },
+      (error) => {
+        console.error('Error fetching recent letters:', error);
+        // Tambahkan notifikasi error jika perlu
+      }
+    );
+}
+
 
   doRefresh(event: any) {
     this.loadRecentLetters(event);
