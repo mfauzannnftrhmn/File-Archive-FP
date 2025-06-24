@@ -8,11 +8,6 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="px-4 pt-4"> <ion-button expand="block" fill="outline" color="medium" (click)="copyProfileUrl()">
-      <ion-icon name="copy-outline" slot="start"></ion-icon>
-      Salin URL Profil
-    </ion-button>
-  </div>
 
   <div class="relative">
     <div class="h-40 bg-gradient-to-r from-amber-300 to-orange-700 dark:from-stone-900 dark:to-stone-950"></div>
@@ -65,6 +60,11 @@
         <ion-icon name="create-outline" slot="start" class="text-lg"></ion-icon>
         Edit Profil
       </ion-button>
+      <div class="px-4 pt-4"> <ion-button expand="block" fill="outline" color="medium" (click)="copyProfileUrl()">
+        <ion-icon name="copy-outline" slot="start"></ion-icon>
+        Salin URL Profil
+      </ion-button>
+    </div>
       <ion-button expand="block" class="m-0 h-12 text-base font-semibold custom-outline-button" (click)="confirmLogout()">
         <ion-icon name="log-out-outline" slot="start" class="text-lg"></ion-icon>
         Keluar
