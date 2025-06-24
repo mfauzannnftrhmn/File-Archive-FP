@@ -1,174 +1,195 @@
-<ion-content
-  [fullscreen]="true"
-  class="bg-gray-50 dark:bg-gray-900"
->
-  <div class="max-w-md mx-auto pb-20">
-   <ion-header>
-  <ion-toolbar color="primary">
+<ion-header>
+  <ion-toolbar class="bg-white dark:bg-stone-900 shadow-md border-b border-gray-100 dark:border-stone-800">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/profile"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/profile" class="text-gray-600 dark:text-gray-300"></ion-back-button>
     </ion-buttons>
-    <ion-title>Edit Profil</ion-title>
+    <ion-title class="text-lg font-bold text-gray-800 dark:text-gray-100">Edit Profil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-  <div *ngIf="imageChangedEvent" class="cropper-container p-4 flex flex-col items-center">
-    <h2 class="text-lg font-semibold mb-4 text-center dark:text-white">Sesuaikan Foto Profil Anda</h2>
-    <div class="w-full max-w-xs h-auto bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
-      <image-cropper
-        [imageChangedEvent]="imageChangedEvent"
-        [maintainAspectRatio]="true"
-        [aspectRatio]="1 / 1"
-        [resizeToWidth]="800"
-        format="png"
-        (imageCropped)="imageCropped($event)"
-        (imageLoaded)="imageLoaded()"
-        (cropperReady)="cropperReady()"
-        (loadImageFailed)="loadImageFailed()"
-      ></image-cropper>
-    </div>
+<ion-content
+  [fullscreen]="true"
+  class="bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-950 dark:via-brown-900 dark:to-brown-800"
+>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon=""
+      pullingText=""
+      refreshingSpinner="circles"
+      refreshingText="">
+    </ion-refresher-content>
+  </ion-refresher>
 
-    <div class="flex justify-center space-x-4 mt-6 w-full">
-      <ion-button (click)="cancelCrop()" color="danger" fill="outline">
-        <ion-icon name="close" slot="start"></ion-icon>
-        Batal
-      </ion-button>
-      <ion-button (click)="cropAndUpload()" color="success">
-        <ion-icon name="checkmark" slot="start"></ion-icon>
-        Simpan
-      </ion-button>
-    </div>
-  </div>
-
-  <div *ngIf="!imageChangedEvent">
-    <div class="flex flex-col items-center justify-center py-6" (click)="presentPhotoOptions()">
-      <div class="relative">
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-md">
-          <img [src]="imagePreview" alt="Profile Photo" class="w-full h-full object-cover" />
-        </div>
-        <div class="absolute bottom-0 right-0 bg-[#BB3E00] rounded-full p-1.5 shadow-lg">
-          <ion-icon name="camera" class="text-white text-lg"></ion-icon>
-        </div>
+  <div class="max-w-md mx-auto pb-8">
+    <div *ngIf="imageChangedEvent" class="cropper-container p-4 flex flex-col items-center bg-white dark:bg-stone-800 rounded-xl shadow-lg m-4">
+      <h2 class="text-xl font-bold mb-5 text-center text-gray-800 dark:text-white">Sesuaikan Foto Profil Anda</h2>
+      <div class="w-full max-w-xs h-auto bg-gray-100 dark:bg-stone-700 rounded-xl overflow-hidden border border-gray-200 dark:border-stone-600">
+        <image-cropper
+          [imageChangedEvent]="imageChangedEvent"
+          [maintainAspectRatio]="true"
+          [aspectRatio]="1 / 1"
+          [resizeToWidth]="800"
+          format="png"
+          (imageCropped)="imageCropped($event)"
+          (imageLoaded)="imageLoaded()"
+          (cropperReady)="cropperReady()"
+          (loadImageFailed)="loadImageFailed()"
+        ></image-cropper>
       </div>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-3">Tap untuk mengubah foto profil</p>
-      <input type="file" #fileInput id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
-    </div>
-  </div>
 
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4">
-      <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
+      <div class="flex justify-center space-x-4 mt-8 w-full">
+        <ion-button (click)="cancelCrop()" expand="block" class="flex-1 custom-outline-danger-button">
+          <ion-icon name="close" slot="start" class="text-lg"></ion-icon>
+          Batal
+        </ion-button>
+        <ion-button (click)="cropAndUpload()" expand="block" class="flex-1 custom-solid-button-success">
+          <ion-icon name="checkmark" slot="start" class="text-lg"></ion-icon>
+          Simpan
+        </ion-button>
+      </div>
+    </div>
+
+    <div *ngIf="!imageChangedEvent" class="bg-white dark:bg-stone-800 rounded-xl shadow-md overflow-hidden mx-4 mt-4 border border-gray-100 dark:border-stone-700">
+      <div class="flex flex-col items-center justify-center py-8" (click)="presentPhotoOptions()">
+        <div class="relative">
+          <div class="w-28 h-28 rounded-full overflow-hidden border-4 border-white dark:border-stone-700 shadow-lg">
+            <img [src]="imagePreview" alt="Profile Photo" class="w-full h-full object-cover" />
+          </div>
+          <div class="absolute bottom-0 right-0 bg-orange-600 dark:bg-amber-400 rounded-full p-2 shadow-xl border-2 border-white dark:border-stone-800">
+            <ion-icon name="camera" class="text-white text-xl"></ion-icon>
+          </div>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">Ketuk untuk mengubah foto profil</p>
+        <input type="file" #fileInput id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-stone-800 rounded-xl shadow-md overflow-hidden mx-4 mt-4 border border-gray-100 dark:border-stone-700">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-stone-700">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
       </div>
       
-      <form class="p-4 space-y-4">
+      <form class="p-5 space-y-4">
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Nama Lengkap</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Nama Lengkap</label>
+          <div class="relative custom-input-container">
             <ion-input
             [(ngModel)]="profileData.name" name="name"
               type="text"
-              value="Fauzan"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Nama lengkap Anda"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Email</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Email</label>
+          <div class="relative custom-input-container">
             <ion-input
               type="email"
-              value="fzn@example.com"
+              placeholder="Email Anda"
               [(ngModel)]="profileData.email" name="email"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              class="custom-input"
+            ></ion-input>
+          </div>
+        </div>
+        <div class="space-y-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">departemen</label>
+          <div class="relative custom-input-container">
+            <ion-input
+              type="departemen"
+              placeholder="departemen Anda"
+              [(ngModel)]="profileData.departemen" name="departemen"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Tanggal Lahir</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tanggal Lahir</label>
+          <div class="relative custom-input-container">
             <ion-input
               type="date"
               [(ngModel)]="profileData.tanggal_lahir"
               name="tanggal_lahir"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Alamat</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Alamat</label>
+          <div class="relative custom-input-container">
             <ion-textarea
               rows="3"
               [(ngModel)]="profileData.address" name="address"
-              placeholder="Masukkan alamat lengkap"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Masukkan alamat lengkap Anda"
+              class="custom-textarea"
             ></ion-textarea>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">No. Telepon</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">No. Telepon</label>
+          <div class="relative custom-input-container">
             <ion-input
               type="tel"
               [(ngModel)]="profileData.phone_number" name="phone_number"
-              placeholder="Masukkan nomor telepon"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Masukkan nomor telepon Anda"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
-          <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Bio</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+        
+        <div class="space-y-1">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Bio</label>
+          <div class="relative custom-input-container">
             <ion-textarea
               rows="3"
               [(ngModel)]="profileData.bio" name="bio"
               placeholder="Ceritakan sedikit tentang diri Anda..."
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              class="custom-textarea"
             ></ion-textarea>
           </div>
         </div>
       </form>
     </div>
     
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mx-4 mt-4">
-      <div class="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-        <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Ubah Password</h3>
+    <div class="bg-white dark:bg-stone-800 rounded-xl shadow-md overflow-hidden mx-4 mt-4 border border-gray-100 dark:border-stone-700">
+      <div class="px-5 py-4 border-b border-gray-100 dark:border-stone-700">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">Ubah Kata Sandi</h3>
       </div>
       
-      <form class="p-4 space-y-4">
+      <form class="p-5 space-y-4">
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Saat Ini</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Kata Sandi Saat Ini</label>
+          <div class="relative custom-input-container">
             <ion-input [(ngModel)]="passwordData.current_password" name="current_password"
               type="password"
-              placeholder="Masukkan password saat ini"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Masukkan kata sandi saat ini"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Password Baru</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Kata Sandi Baru</label>
+          <div class="relative custom-input-container">
             <ion-input [(ngModel)]="passwordData.new_password" name="new_password"
               type="password"
-              placeholder="Masukkan password baru"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Masukkan kata sandi baru"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
         
         <div class="space-y-1">
-          <label class="text-xs font-medium text-gray-600 dark:text-gray-300">Konfirmasi Password Baru</label>
-          <div class="relative bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-600">
+          <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Konfirmasi Kata Sandi Baru</label>
+          <div class="relative custom-input-container">
             <ion-input [(ngModel)]="passwordData.new_password_confirmation" name="new_password_confirmation"
               type="password"
-              placeholder="Konfirmasi password baru"
-              class="w-full py-2.5 px-3 text-gray-700 dark:text-gray-200 focus:outline-none transition-all duration-200 bg-transparent"
+              placeholder="Konfirmasi kata sandi baru"
+              class="custom-input"
             ></ion-input>
           </div>
         </div>
@@ -176,12 +197,10 @@
         <div class="pt-2">
           <ion-button (click)="submitChangePassword()"
             expand="block"
-            size="small"
-            class="m-0 h-10 text-sm font-medium"
-            style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
+            class="custom-solid-button"
           >
-            <ion-icon name="key-outline" slot="start"></ion-icon>
-            Ubah Password
+            <ion-icon name="key-outline" slot="start" class="text-lg"></ion-icon>
+            Ubah Kata Sandi
           </ion-button>
         </div>
       </form>
@@ -189,27 +208,182 @@
     
   </div>
   
-  <div class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg mt-1 mx-4 mb-2 rounded-lg">
-    <div class="flex space-x-3">
+  <div class="sticky bottom-0 w-full bg-white dark:bg-stone-900 border-t border-gray-200 dark:border-stone-700 p-4 shadow-lg">
+    <div class="max-w-md mx-auto flex space-x-3">
       <ion-button
-  expand="block"
-  fill="outline"
-  color="medium"
-  class="flex-1 m-0 h-11 text-sm font-medium"
-  (click)="goBack()"
->
-  Batal
-</ion-button>
+        expand="block"
+        fill="outline"
+        color="medium"
+        class="flex-1 custom-outline-button"
+        (click)="goBack()"
+      >
+        Batal
+      </ion-button>
 
       <ion-button
         expand="block"
-        class="flex-1 m-0 h-11 text-sm font-medium"
-        style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
+        class="flex-1 custom-solid-button"
         (click)="saveProfile()"
       >
-        <ion-icon name="save-outline" slot="start"></ion-icon>
+        <ion-icon name="save-outline" slot="start" class="text-lg"></ion-icon>
         Simpan
       </ion-button>
     </div>
   </div>
 </ion-content>
+
+<style>
+  /* Base input/textarea styling */
+  .custom-input-container {
+    background-color: var(--ion-color-light-shade); /* Light gray background */
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    border: 1px solid var(--ion-color-medium-tint); /* Light border */
+  }
+
+  .custom-input-container:focus-within {
+    border-color: transparent; /* Hide border when ring is active */
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-tertiary-rgb), 0.5); /* Custom focus ring */
+  }
+
+  .custom-input,
+  .custom-textarea {
+    --background: transparent; /* Use container background */
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    font-size: 0.95rem; /* Slightly larger font */
+    color: var(--ion-color-dark);
+    --placeholder-color: var(--ion-color-medium);
+    --placeholder-opacity: 0.8;
+  }
+
+  /* Dark mode adjustments for inputs and textareas */
+  .dark .custom-input-container {
+    background-color: var(--ion-color-dark-shade);
+    border-color: var(--ion-color-dark-tint);
+  }
+
+  .dark .custom-input-container:focus-within {
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-tertiary-rgb), 0.5); /* Dark mode focus ring */
+  }
+
+  .dark .custom-input,
+  .dark .custom-textarea {
+    color: var(--ion-color-light);
+    --placeholder-color: var(--ion-color-medium);
+  }
+
+  /* Custom button styles */
+  .custom-solid-button {
+    --background: var(--ion-color-tertiary); /* Use primary brown/orange color */
+    --color: white;
+    --background-activated: var(--ion-color-tertiary-shade);
+    --background-focused: var(--ion-color-tertiary-tint);
+    --background-hover: var(--ion-color-tertiary-tint);
+    --border-radius: 12px; /* More rounded */
+    height: 48px; /* Consistent height */
+    font-weight: 600; /* Semibold */
+    font-size: 0.95rem; /* Slightly larger font */
+  }
+
+  /* Specific style for success button (crop & upload) */
+  .custom-solid-button-success {
+    --background: var(--ion-color-success);
+    --color: white;
+    --background-activated: var(--ion-color-success-shade);
+    --background-focused: var(--ion-color-success-tint);
+    --background-hover: var(--ion-color-success-tint);
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .custom-outline-button {
+    --background: transparent;
+    --color: var(--ion-color-medium); /* Use medium gray for outline text */
+    --border-color: var(--ion-color-medium-tint); /* Use light gray border */
+    --border-width: 1.5px; /* Slightly thicker border for visibility */
+    --background-activated: var(--ion-color-light-shade); /* Light background on press */
+    --background-focused: var(--ion-color-light-shade);
+    --background-hover: var(--ion-color-light-shade);
+    --border-radius: 12px;
+    height: 48px; /* Consistent height */
+    font-weight: 600; /* Semibold */
+    font-size: 0.95rem;
+  }
+
+  .dark .custom-outline-button {
+    --color: var(--ion-color-medium); /* Dark mode specific medium gray */
+    --border-color: var(--ion-color-dark-tint); /* Dark mode specific dark tint border */
+    --background-activated: var(--ion-color-dark-tint);
+    --background-focused: var(--ion-color-dark-tint);
+    --background-hover: var(--ion-color-dark-tint);
+  }
+
+  .custom-outline-danger-button {
+    --background: transparent;
+    --color: var(--ion-color-danger);
+    --border-color: var(--ion-color-danger);
+    --border-width: 1.5px;
+    --background-activated: var(--ion-color-danger-contrast);
+    --background-focused: var(--ion-color-danger-contrast);
+    --background-hover: var(--ion-color-danger-contrast);
+    --border-radius: 12px;
+    height: 48px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  /* Define custom color variables for consistency */
+  :root {
+    --ion-color-light: #ffffff;
+    --ion-color-light-shade: #f3f4f6; /* gray-100 for light elements */
+    --ion-color-medium: #6b7280; /* gray-500 */
+    --ion-color-medium-tint: #d1d5db; /* gray-300 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #ea580c; /* A vibrant orange for actions in light mode */
+    --ion-color-tertiary-rgb: 234, 88, 12; /* RGB for shadow */
+    --ion-color-tertiary-shade: #c2410c; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fb923c; /* Lighter tint of tertiary */
+
+    --ion-color-danger: #ef4444; /* Red for danger */
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #fee2e2; /* Light red for hover on outline */
+
+    --ion-color-success: #22c55e; /* Green for success */
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+  }
+
+  .dark {
+    --ion-color-light: #f9fafb; /* gray-50 */
+    --ion-color-light-shade: #374151; /* gray-700 for dark elements */
+    --ion-color-medium: #9ca3af; /* gray-400 */
+    --ion-color-medium-tint: #4b5563; /* gray-600 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #4b5563; /* gray-600 */
+
+    --ion-color-tertiary: #d97706; /* Amber for actions in dark mode */
+    --ion-color-tertiary-rgb: 217, 119, 6; /* RGB for shadow */
+    --ion-color-tertiary-shade: #b45309;
+    --ion-color-tertiary-tint: #fcd34d;
+
+    --ion-color-danger: #ef4444;
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #7f1d1d;
+
+    --ion-color-success: #22c55e;
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+  }
+</style>

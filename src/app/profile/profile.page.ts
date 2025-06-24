@@ -15,7 +15,6 @@ interface UserProfileData {
   nip: string;
   tanggal_lahir: string;
   departemen: string;
-  jabatan: string;
   tanggal_bergabung: string;
   status_karyawan: string;
   profilePicture?: string | SafeUrl | null;
@@ -31,7 +30,6 @@ interface ApiProfileResponse {
     nip?: string;
     tanggal_lahir?: string;
     departemen?: string;
-    jabatan?: string;
     tanggal_bergabung?: string;
     status_karyawan?: string;
     profile_picture_path?: string;
@@ -56,10 +54,9 @@ export class ProfilePage implements OnInit, OnDestroy {
     nip: '',
     tanggal_lahir: '',
     departemen: '',
-    jabatan: '',
     tanggal_bergabung: '',
     status_karyawan: '',
-    profilePicture: 'assets/default-avatar.png',
+    profilePicture: 'https://s6.imgcdn.dev/YcXKdt.png',
   };
 
   private laravelApiUrl = 'https://simpap.my.id/public/api';
@@ -131,7 +128,6 @@ export class ProfilePage implements OnInit, OnDestroy {
             this.profileData.nip = response.profile.nip || '';
             this.profileData.tanggal_lahir = response.profile.tanggal_lahir || '';
             this.profileData.departemen = response.profile.departemen || '';
-            this.profileData.jabatan = response.profile.jabatan || '';
             this.profileData.tanggal_bergabung = response.profile.tanggal_bergabung || '';
             this.profileData.status_karyawan = response.profile.status_karyawan || '';
 
@@ -139,7 +135,7 @@ export class ProfilePage implements OnInit, OnDestroy {
             if (response.profile.profile_picture_path) {
               this.loadProfileImage(); // Panggil fungsi terpisah untuk mengambil file gambar
             } else {
-              this.profileData.profilePicture = 'assets/default-avatar.png';
+              this.profileData.profilePicture = 'https://s6.imgcdn.dev/YcXKdt.png';
             }
           }
         }
@@ -151,6 +147,32 @@ export class ProfilePage implements OnInit, OnDestroy {
       }
     });
   }
+
+copyProfileUrl() {
+  const token = this.getToken(); // Ambil token dari localStorage
+
+  this.http.get<{ url: string }>('https://simpap.my.id/public/api/profile/url', {
+    headers: new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    })
+  }).subscribe({
+    next: (res) => {
+      const profileUrl = res.url;
+
+      // Salin ke clipboard menggunakan Clipboard API Web
+      navigator.clipboard.writeText(profileUrl).then(() => {
+        this.showToast('URL profil berhasil disalin!', 'success');
+      }).catch(() => {
+        this.showToast('Gagal menyalin URL profil.', 'danger');
+      });
+    },
+    error: (err) => {
+      console.error('Gagal mendapatkan URL profil:', err);
+      this.showToast('Gagal mengambil URL profil dari server.', 'danger');
+    }
+  });
+}
+
 
   // Fungsi untuk mengambil file gambar dari controller sebagai blob
   loadProfileImage() {
@@ -169,7 +191,7 @@ export class ProfilePage implements OnInit, OnDestroy {
         },
         error: (error) => {
             console.error('Gagal memuat gambar profil:', error);
-            this.profileData.profilePicture = 'assets/default-avatar.png'; // Tampilkan gambar default jika gagal
+            this.profileData.profilePicture = 'https://s6.imgcdn.dev/YcXKdt.png'; // Tampilkan gambar default jika gagal
         }
     });
   }

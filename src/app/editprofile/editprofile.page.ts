@@ -31,6 +31,7 @@ export class EditprofilePage implements OnInit {
   profileData = {
     name: '',
     email: '',
+    departemen: '',
     phone_number: '',
     address: '',
     bio: '',
@@ -43,7 +44,7 @@ export class EditprofilePage implements OnInit {
   };
 
   // === IMAGE & CROPPER PROPERTIES ===
-  imagePreview: string | SafeUrl = 'assets/default-avatar.png';
+  imagePreview: string | SafeUrl = 'https://s6.imgcdn.dev/YcXKdt.png';
   imageChangedEvent: any = ''; // Menyimpan event untuk diumpan ke cropper
   croppedImage: Blob | null = null; // Menyimpan hasil gambar yang di-crop
 
@@ -93,6 +94,7 @@ export class EditprofilePage implements OnInit {
         this.profileData = {
           name: res.name || '',
           email: res.email || '',
+          departemen: res.departemen || '',
           phone_number: res.profile?.phone_number || '',
           address: res.profile?.address || '',
           bio: res.profile?.bio || '',
@@ -122,7 +124,7 @@ export class EditprofilePage implements OnInit {
       },
       error: (err) => {
         console.error('Gagal memuat gambar profil:', err);
-        this.imagePreview = 'assets/default-avatar.png'; // Fallback
+        this.imagePreview = 'https://s6.imgcdn.dev/YcXKdt.png'; // Fallback
       }
     });
   }
@@ -246,6 +248,13 @@ export class EditprofilePage implements OnInit {
         this.cancelCrop(); // Kembali ke tampilan utama meskipun gagal
       }
     });
+  }
+
+   async doRefresh(event: any) {
+    console.log('Refreshing profile data...');
+    await this.loadCurrentProfile(); // Memuat ulang data profil
+    event.detail.complete(); // Menghentikan animasi refresh
+    console.log('Refresh complete.');
   }
 
   // ===============================================

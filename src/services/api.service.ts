@@ -1,16 +1,26 @@
+// services/api.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators'; // Import map dan delay
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://simpap.my.id/public/api'; // base URL saja
+  private baseUrl = 'https://simpap.my.id/public/api'; 
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
+private getAuthHeaders(): HttpHeaders {
+    const currentUserStr = localStorage.getItem('currentUser');
+    const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+    const token = currentUser?.token;
 
+    if (token) {
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    throw new Error('No authentication token found.');
+  }
   /**
    * Mengambil statistik jumlah surat dari backend Laravel.
    * @param email Email pengguna
@@ -28,15 +38,32 @@ export class ApiService {
     );
   }
 
-  getNotifications(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/notifications`);
+    getUserNotifications(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.baseUrl}/notifications/user`, { headers });
   }
 
-  markNotificationsAsRead(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/notifications/mark-as-read`, {});
+  markNotificationAsRead(notificationId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.patch(`${this.baseUrl}/notifications/${notificationId}/read`, {}, { headers });
   }
 
   getAdminInfo(): Observable<any> {
     return this.http.get(`${this.baseUrl}/admin-info`);
   }
+
+ getLatestAppVersion() {
+  const versionUrl = 'https://simpap.my.id/public/api/check-update';
+  return this.http.get(versionUrl);
+}
+
+sendUserAppVersion(email: string, name: string, version: string) {
+  return this.http.post('https://simpap.my.id/public/api/user-app-version', {
+    email,
+    name,
+    app_version: version
+  });
+}
+
+
 }

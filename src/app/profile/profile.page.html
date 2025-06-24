@@ -1,6 +1,4 @@
-
-
-<ion-content [fullscreen]="true" class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]">
+<ion-content [fullscreen]="true" class="bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-950 dark:via-brown-900 dark:to-brown-800">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon=""
@@ -10,82 +8,85 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <!-- Profile Header with Cover Image -->
+  <div class="px-4 pt-4"> <ion-button expand="block" fill="outline" color="medium" (click)="copyProfileUrl()">
+      <ion-icon name="copy-outline" slot="start"></ion-icon>
+      Salin URL Profil
+    </ion-button>
+  </div>
+
   <div class="relative">
-    <div class="h-32 bg-gradient-to-r from-[#BB3E00] to-[#A03500] dark:from-[#FF8C5A] dark:to-[#BB3E00]"></div>
+    <div class="h-40 bg-gradient-to-r from-amber-300 to-orange-700 dark:from-stone-900 dark:to-stone-950"></div>
     <div class="absolute left-0 right-0 -bottom-16 flex justify-center">
-      <div class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 bg-white dark:bg-gray-700 overflow-hidden shadow-lg">
+      <div class="w-32 h-32 rounded-full border-4 border-white dark:border-stone-800 bg-white dark:bg-stone-700 overflow-hidden shadow-xl">
         <img [src]="profileData.profilePicture" alt="Profile" class="w-full h-full object-cover">
       </div>
     </div>
   </div>
-  
-  <!-- Profile Info -->
+
   <div class="mt-20 text-center px-4">
-    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">{{ profileData.name }}</h2>
-    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ profileData.jabatan }}</p>
-    <div class="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-      <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ profileData.name }}</h2>
+    <div class="mt-3 inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+      <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
       Aktif
     </div>
   </div>
 
-  <!-- Personal Information -->
-  <div class="mx-4 mt-4 bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
-    <div class="px-4 py-3 flex items-center justify-between border-b border-gray-100 dark:border-gray-700">
-      <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
+  <div class="mx-4 mt-6 bg-white dark:bg-stone-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-stone-700">
+    <div class="px-5 py-4 flex items-center justify-between border-b border-gray-100 dark:border-stone-700">
+      <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100">Informasi Pribadi</h3>
     </div>
-    
-    <div class="divide-y divide-gray-100 dark:divide-gray-700">
-      <div class="flex justify-between items-center px-4 py-3">
-        <span class="text-sm text-gray-500 dark:text-gray-400">Email</span>
+
+    <div class="divide-y divide-gray-100 dark:divide-stone-700">
+      <div class="flex justify-between items-center px-5 py-3.5">
+        <span class="text-sm text-gray-600 dark:text-gray-400">Email</span>
         <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.email }}</span>
       </div>
-      <div class="flex justify-between items-center px-4 py-3">
-        <span class="text-sm text-gray-500 dark:text-gray-400">Tanggal Lahir</span>
+      <div class="flex justify-between items-center px-5 py-3.5">
+        <span class="text-sm text-gray-600 dark:text-gray-400">Departemen</span> <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.departemen }}</span>
+      </div>
+      <div class="flex justify-between items-center px-5 py-3.5">
+        <span class="text-sm text-gray-600 dark:text-gray-400">Tanggal Lahir</span>
         <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.tanggal_lahir }}</span>
       </div>
-      <div class="flex justify-between items-center px-4 py-3">
-        <span class="text-sm text-gray-500 dark:text-gray-400">Alamat</span>
+      <div class="flex justify-between items-center px-5 py-3.5">
+        <span class="text-sm text-gray-600 dark:text-gray-400">Alamat</span>
         <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.address }}</span>
       </div>
-      <div class="flex justify-between items-center px-4 py-3">
-        <span class="text-sm text-gray-500 dark:text-gray-400">No. Telepon</span>
+      <div class="flex justify-between items-center px-5 py-3.5">
+        <span class="text-sm text-gray-600 dark:text-gray-400">No. Telepon</span>
         <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ profileData.phone_number }}</span>
       </div>
     </div>
   </div>
 
-
-  <!-- Action Buttons -->
-  <div class="px-6 py-6 mt-2">
-    <div class="grid grid-cols-1 gap-3">
-      <ion-button expand="block" class="m-0 h-11 text-sm font-medium" style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;" routerLink="/editprofile" routerDirection="forward">
-        <ion-icon name="create-outline" slot="start"></ion-icon>
+  <div class="px-6 py-8">
+    <div class="grid grid-cols-1 gap-4">
+      <ion-button expand="block" class="m-0 h-12 text-base font-semibold custom-solid-button" routerLink="/editprofile" routerDirection="forward">
+        <ion-icon name="create-outline" slot="start" class="text-lg"></ion-icon>
         Edit Profil
       </ion-button>
-      <ion-button expand="block" class="m-0 h-11 text-sm font-medium" fill="outline" color="medium" (click)="confirmLogout()">
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+      <ion-button expand="block" class="m-0 h-12 text-base font-semibold custom-outline-button" (click)="confirmLogout()">
+        <ion-icon name="log-out-outline" slot="start" class="text-lg"></ion-icon>
         Keluar
       </ion-button>
     </div>
   </div>
-  
+
 </ion-content>
 
-<ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16">
+<ion-tab-bar slot="bottom" class="bg-white dark:bg-stone-900 border-t border-gray-100 dark:border-stone-700 h-18 py-2 shadow-lg">
   <ion-tab-button
     tab="dashboard"
     routerLink="/dashboard"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="grid" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="grid" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Beranda</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Beranda</ion-label>
     </div>
   </ion-tab-button>
 
@@ -94,13 +95,13 @@
     routerLink="/aktivitas"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="pulse" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="pulse" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Aktivitas</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Aktivitas</ion-label>
     </div>
   </ion-tab-button>
 
@@ -109,13 +110,13 @@
     routerLink="/riwayatsurat"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="time" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="time" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Riwayat</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Riwayat</ion-label>
     </div>
   </ion-tab-button>
 
@@ -124,13 +125,114 @@
     routerLink="/profile"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="person" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="person" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Profil</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Profil</ion-label>
     </div>
   </ion-tab-button>
 </ion-tab-bar>
+
+<style>
+  /* Custom button styles for consistency */
+  .custom-solid-button {
+    --background: var(--ion-color-tertiary);
+    --color: white;
+    --background-activated: var(--ion-color-tertiary-shade);
+    --background-focused: var(--ion-color-tertiary-tint);
+    --background-hover: var(--ion-color-tertiary-tint);
+    --border-radius: 12px;
+    height: 48px; /* Consistent height */
+  }
+
+  .custom-outline-button {
+    --background: transparent;
+    --color: var(--ion-color-medium); /* Use medium gray for outline text */
+    --border-color: var(--ion-color-medium-tint); /* Use light gray border */
+    --border-width: 1.5px; /* Slightly thicker border for visibility */
+    --background-activated: var(--ion-color-light-shade); /* Light background on press */
+    --background-focused: var(--ion-color-light-shade);
+    --background-hover: var(--ion-color-light-shade);
+    --border-radius: 12px;
+    height: 48px; /* Consistent height */
+  }
+
+  .dark .custom-outline-button {
+    --color: var(--ion-color-medium); /* Dark mode specific medium gray */
+    --border-color: var(--ion-color-dark-tint); /* Dark mode specific dark tint border */
+    --background-activated: var(--ion-color-dark-tint);
+    --background-focused: var(--ion-color-dark-tint);
+    --background-hover: var(--ion-color-dark-tint);
+  }
+
+  /* Define custom color variables for consistency (copied from previous sections) */
+  :root {
+    --ion-color-light: #ffffff;
+    --ion-color-light-shade: #f8f8f8; /* Slightly off-white for elements */
+    --ion-color-medium: #9ca3af; /* gray-400 */
+    --ion-color-medium-tint: #e5e7eb; /* gray-200 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #ea580c; /* A vibrant orange for actions in light mode */
+    --ion-color-tertiary-shade: #c2410c; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fb923c; /* Lighter tint of tertiary */
+    --ion-color-tertiary-contrast: #fef3c7; /* Light yellow for hover on outline button */
+
+    --ion-color-danger: #ef4444; /* Red for danger */
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #fee2e2; /* Light red for hover on outline */
+
+    --ion-color-success: #22c55e; /* Green for success */
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6; /* Blue for process */
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  .dark {
+    --ion-color-light: #1f2937; /* gray-800 */
+    --ion-color-light-shade: #2d3748; /* Darker shade for elements */
+    --ion-color-medium: #6b7280; /* gray-500 */
+    --ion-color-medium-tint: #4b5563; /* gray-600 */
+    --ion-color-dark: #f9fafb; /* gray-50 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #d97706; /* Amber for actions in dark mode */
+    --ion-color-tertiary-shade: #b45309;
+    --ion-color-tertiary-tint: #fcd34d;
+    --ion-color-tertiary-contrast: #291a0c;
+
+    --ion-color-danger: #ef4444;
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #7f1d1d;
+
+    --ion-color-success: #22c55e;
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6;
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  /* Custom styles for selected tab button (copied from dashboard for consistency) */
+  ion-tab-bar ion-tab-button.tab-selected ion-icon {
+    color: var(--ion-color-tertiary); /* Use a vibrant accent color for selected icon */
+    transition: color 0.2s ease-in-out;
+  }
+
+  ion-tab-bar ion-tab-button.tab-selected ion-label {
+    color: var(--ion-color-tertiary); /* Use a vibrant accent color for selected label */
+    transition: color 0.2s ease-in-out;
+  }
+</style>

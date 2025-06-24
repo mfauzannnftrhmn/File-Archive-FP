@@ -1,6 +1,6 @@
 {
   "name": "SampleApk",
-  "version": "0.0.1",
+  "version": "1.2.16",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -9,7 +9,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prebuild": "ts-node scripts/set-version.ts",
+    "precap": "ts-node scripts/increment-version.ts",
+    "cap": "ionic cap sync"
   },
   "private": true,
   "dependencies": {
@@ -21,17 +24,21 @@
     "@angular/platform-browser": "^19.2.13",
     "@angular/platform-browser-dynamic": "^19.2.13",
     "@angular/router": "^19.2.13",
+    "@awesome-cordova-plugins/app-version": "^8.0.2",
+    "@awesome-cordova-plugins/local-notifications": "^8.0.2",
     "@capacitor/android": "7.2.0",
-    "@capacitor/app": "7.0.1",
+    "@capacitor/app": "^7.0.1",
     "@capacitor/browser": "^7.0.1",
     "@capacitor/core": "7.2.0",
+    "@capacitor/filesystem": "^7.1.1",
     "@capacitor/haptics": "7.0.1",
     "@capacitor/keyboard": "7.0.1",
-    "@capacitor/status-bar": "7.0.1",
-    "@ionic-native/app-version": "^5.36.0",
+    "@capacitor/local-notifications": "^7.0.1",
+    "@capacitor/status-bar": "^7.0.1",
     "@ionic/angular": "^8.0.0",
     "@ionic/storage-angular": "^4.0.0",
     "cordova-plugin-app-version": "^0.1.14",
+    "cordova-plugin-local-notification": "^1.1.9",
     "date-fns": "^4.1.0",
     "file-saver": "^2.0.5",
     "framework7": "^8.3.4",
@@ -58,6 +65,7 @@
     "@types/date-fns": "^2.5.3",
     "@types/file-saver": "^2.0.7",
     "@types/jasmine": "~5.1.0",
+    "@types/node": "^24.0.3",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "autoprefixer": "^10.4.21",
@@ -74,6 +82,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "description": "An Ionic project"

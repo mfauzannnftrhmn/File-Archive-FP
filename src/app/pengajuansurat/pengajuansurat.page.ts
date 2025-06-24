@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LoadingController, ToastController, AlertController } from '@ionic/angular';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http'; // Import HttpErrorResponse
 import { saveAs } from 'file-saver';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: false,
@@ -52,6 +53,7 @@ export class PengajuansuratPage implements OnInit {
   public minEndDate: string;
 
   constructor(
+     private router: Router,
     private toastController: ToastController,
     private loadingController: LoadingController,
     private alertController: AlertController,
@@ -246,6 +248,18 @@ export class PengajuansuratPage implements OnInit {
     this.resetFormFieldsOnly();
     this.formData.suratNumber = '';
   }
+isAppLatest(): boolean {
+    return true; // Replace with your actual logic
+}
+
+  goToFormSurat() {
+  if (!this.isAppLatest()) {
+    this.presentToast('Silakan update aplikasi terlebih dahulu.', 'danger');
+    return;
+  }
+
+  this.router.navigate(['/form-surat']);
+}
 
 generateSuratNumber() {
   if (this.selectedTemplate && !this.isSubmissionPending) {

@@ -11,6 +11,9 @@ import { ButtonModule } from 'primeng/button';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 
+// ✅ Tambahkan ini
+import { IonicStorageModule } from '@ionic/storage-angular';
+
 // ❌ Hapus ini karena tidak digunakan lagi di Angular 17+
 // import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -24,6 +27,9 @@ import { AuthInterceptor } from './auth.interceptor';
     BrowserAnimationsModule,
     ButtonModule,
     HttpClientModule,
+    
+    // ✅ Inisialisasi storage
+    IonicStorageModule.forRoot()
     // ✅ Tidak perlu ImageCropperModule
   ],
   providers: [

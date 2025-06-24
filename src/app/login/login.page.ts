@@ -1,13 +1,12 @@
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-
 import { APP_VERSION } from '../app-version';
-// ✅ Import RouterModule
 import { Router, RouterModule } from '@angular/router';
 import { AlertController, LoadingController, NavController, IonicModule } from '@ionic/angular';
 import { AuthService, UserData } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Storage } from '@ionic/storage-angular';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +17,7 @@ import { FormsModule } from '@angular/forms';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule // ✅ TAMBAHKAN RouterModule DI SINI
+    RouterModule
   ]
 })
 export class LoginPage {
@@ -31,8 +30,15 @@ export class LoginPage {
     private loadingController: LoadingController,
     private authService: AuthService,
     private http: HttpClient,
-    private navCtrl: NavController
-  ) {}
+    private navCtrl: NavController,
+    private storage: Storage // ✅ Tambahkan storage
+  ) {
+    this.initStorage(); // ✅ Inisialisasi saat konstruktor dipanggil
+  }
+
+  async initStorage() {
+    await this.storage.create();
+  }
 
   async doSubmit() {
     if (!this.email || !this.password) {
@@ -63,6 +69,11 @@ export class LoginPage {
             this.authService.logout().subscribe();
             return;
           }
+
+          // ✅ Simpan status login ke storage
+          await this.storage.set('isLoggedIn', true);
+          await this.storage.set('userData', userData);
+
           this.navCtrl.navigateRoot('/dashboard', { animated: true, animationDirection: 'forward' });
         },
         error: async (error: Error) => {

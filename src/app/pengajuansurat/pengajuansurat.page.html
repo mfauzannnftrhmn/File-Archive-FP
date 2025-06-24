@@ -1,13 +1,13 @@
-<div class="pt-4 pb-3 bg-white dark:bg-gray-900 shadow-md border-b border-gray-200 dark:border-gray-800">
+<div class="pt-4 pb-3 bg-white dark:bg-stone-900 shadow-md border-b border-gray-100 dark:border-stone-800">
   <div class="flex items-center px-4 sm:px-6">
     <ion-button fill="clear" class="text-gray-700 dark:text-gray-300 p-0 m-0" routerLink="/aktivitas">
-      <ion-icon name="arrow-back-outline" class="text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+      <ion-icon name="arrow-back-outline" class="text-orange-600 dark:text-amber-400 text-xl"></ion-icon>
     </ion-button>
-    <div class="ml-2">
-      <h2 class="text-base font-semibold text-gray-800 dark:text-gray-100">
+    <div class="ml-3">
+      <h2 class="text-lg font-bold text-gray-800 dark:text-gray-100">
         Pengajuan Surat
       </h2>
-      <p class="text-gray-500 dark:text-gray-400 text-xs mt-0.5">
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-0.5">
         Isi formulir pengajuan surat berdasarkan template
       </p>
     </div>
@@ -15,116 +15,119 @@
 </div>
 
 <ion-content class="ion-no-padding">
-  <div class="bg-gradient-to-br from-orange-50 via-white to-amber-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 h-full flex flex-col overflow-hidden">
+  <div class="bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-950 dark:via-brown-900 dark:to-brown-800 h-full flex flex-col overflow-hidden">
 
-    <div *ngIf="!selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 mb-3 flex-shrink-0 mx-4 mt-3">
-      <div class="flex flex-col items-center justify-center">
-        <div class="w-12 h-12 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-3">
-          <ion-icon name="document-text-outline" class="text-xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+    <div *ngIf="!selectedTemplate" class="bg-white dark:bg-stone-800 rounded-xl shadow-lg p-6 mb-4 flex-shrink-0 mx-4 mt-4 border border-gray-200 dark:border-stone-700">
+      <div class="flex flex-col items-center justify-center text-center">
+        <div class="w-14 h-14 bg-orange-100 dark:bg-amber-900 rounded-full flex items-center justify-center mb-4 shadow-inner">
+          <ion-icon name="document-text-outline" class="text-2xl text-orange-600 dark:text-amber-400"></ion-icon>
         </div>
-        <h3 class="text-base font-semibold text-gray-800 dark:text-gray-100 mb-1">Pilih Template Surat</h3>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 max-w-md text-center">
-          Silakan pilih template surat yang sesuai dengan kebutuhan Anda di bawah ini.
+        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Pilih Template Surat</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-5 max-w-md">
+          Silakan pilih template surat yang sesuai dengan kebutuhan Anda di bawah ini untuk memulai pengajuan.
         </p>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-md">
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full max-w-lg">
+          <div class="bg-orange-100 dark:bg-amber-900 p-3 rounded-lg text-left transition-all duration-200 hover:bg-orange-200 dark:hover:bg-amber-800 shadow-sm border border-orange-200 dark:border-amber-800">
             <div class="flex items-center">
-              <ion-icon name="checkmark-circle" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
-              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Mudah</span>
+              <ion-icon name="checkmark-circle" class="text-orange-600 dark:text-amber-400 mr-2 text-base"></ion-icon>
+              <span class="text-sm font-semibold text-orange-700 dark:text-amber-300">Mudah</span>
             </div>
-            <p class="text-[10px] text-gray-600 dark:text-gray-400">Form yang simpel</p>
+            <p class="text-xs text-gray-700 dark:text-gray-300 mt-1">Formulir yang simpel</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+          <div class="bg-orange-100 dark:bg-amber-900 p-3 rounded-lg text-left transition-all duration-200 hover:bg-orange-200 dark:hover:bg-amber-800 shadow-sm border border-orange-200 dark:border-amber-800">
             <div class="flex items-center">
-              <ion-icon name="time" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
-              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Cepat</span>
+              <ion-icon name="time" class="text-orange-600 dark:text-amber-400 mr-2 text-base"></ion-icon>
+              <span class="text-sm font-semibold text-orange-700 dark:text-amber-300">Cepat</span>
             </div>
-            <p class="text-[10px] text-gray-600 dark:text-gray-400">Proses instan</p>
+            <p class="text-xs text-gray-700 dark:text-gray-300 mt-1">Proses pengajuan instan</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+          <div class="bg-orange-100 dark:bg-amber-900 p-3 rounded-lg text-left transition-all duration-200 hover:bg-orange-200 dark:hover:bg-amber-800 shadow-sm border border-orange-200 dark:border-amber-800">
             <div class="flex items-center">
-              <ion-icon name="shield-checkmark" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
-              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Aman</span>
+              <ion-icon name="shield-checkmark" class="text-orange-600 dark:text-amber-400 mr-2 text-base"></ion-icon>
+              <span class="text-sm font-semibold text-orange-700 dark:text-amber-300">Aman</span>
             </div>
-            <p class="text-[10px] text-gray-600 dark:text-gray-400">Data terlindungi</p>
+            <p class="text-xs text-gray-700 dark:text-gray-300 mt-1">Data Anda terlindungi</p>
           </div>
-          <div class="bg-[#FFF0E6] dark:bg-[#3D1500] p-2 rounded-lg text-left transition-all duration-200 hover:bg-[#FFDBC1] dark:hover:bg-[#592200] shadow-sm">
+          <div class="bg-orange-100 dark:bg-amber-900 p-3 rounded-lg text-left transition-all duration-200 hover:bg-orange-200 dark:hover:bg-amber-800 shadow-sm border border-orange-200 dark:border-amber-800">
             <div class="flex items-center">
-              <ion-icon name="file-tray-full" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-1 text-sm"></ion-icon>
-              <span class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B]">Terarsip</span>
+              <ion-icon name="file-tray-full" class="text-orange-600 dark:text-amber-400 mr-2 text-base"></ion-icon>
+              <span class="text-sm font-semibold text-orange-700 dark:text-amber-300">Terarsip</span>
             </div>
-            <p class="text-[10px] text-gray-600 dark:text-gray-400">Riwayat tersimpan</p>
+            <p class="text-xs text-gray-700 dark:text-gray-300 mt-1">Riwayat surat tersimpan</p>
           </div>
         </div>
       </div>
     </div>
 
     <div *ngIf="!selectedTemplate" class="flex-1 overflow-auto px-4 pb-4">
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         <div
           *ngFor="let template of suratTemplates"
-          class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-transparent hover:border-[#BB3E00] dark:hover:border-[#FF6B2B]"
+          class="bg-white dark:bg-stone-800 rounded-xl shadow-md p-5 cursor-pointer hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-stone-700 hover:border-orange-500 dark:hover:border-amber-500"
           (click)="selectTemplate(template)"
           [class.opacity-50]="isCheckingStatus"
-          [class.pointer-events-none]="isCheckingStatus">
+          [class.pointer-events-none]="isCheckingStatus"
+        >
           <div class="flex flex-col items-center">
-            <div class="w-12 h-12 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-full flex items-center justify-center mb-3">
+            <div class="w-14 h-14 bg-orange-100 dark:bg-amber-900 rounded-full flex items-center justify-center mb-3 shadow-inner">
               <ion-icon
                 [name]="template.category.includes('Keterangan') ? 'person-outline' :
-                        template.category.includes('Keluhan') ? 'chatbox-outline' :
-                        template.category.includes('Cuti') ? 'calendar-outline' :
-                        template.category.includes('Rekomendasi') ? 'ribbon-outline' : 'document-outline'"
-                class="text-xl text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+                                template.category.includes('Keluhan') ? 'chatbox-outline' :
+                                template.category.includes('Cuti') ? 'calendar-outline' :
+                                template.category.includes('Rekomendasi') ? 'ribbon-outline' : 'document-outline'"
+                class="text-2xl text-orange-600 dark:text-amber-400"
+              ></ion-icon>
             </div>
-            <span class="text-xs font-medium text-gray-700 dark:text-gray-300 text-center">{{ template.category }}</span>
+            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300 text-center">{{ template.category }}</span>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="selectedTemplate" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg h-full flex flex-col overflow-hidden mx-4 my-4">
-      <div class="flex justify-between items-center p-5 flex-shrink-0 border-b border-gray-200 dark:border-gray-700">
+
+    <div *ngIf="selectedTemplate" class="bg-white dark:bg-stone-800 rounded-xl shadow-lg h-full flex flex-col overflow-hidden mx-4 my-4 border border-gray-200 dark:border-stone-700">
+      <div class="flex justify-between items-center p-5 flex-shrink-0 border-b border-gray-200 dark:border-stone-700">
         <div class="flex items-center">
-          <ion-button fill="clear" class="p-0 h-8 w-8 mr-2" (click)="deselectTemplate()">
-            <ion-icon name="arrow-back-outline" slot="icon-only" class="text-lg text-[#BB3E00] dark:text-[#FF6B2B]"></ion-icon>
+          <ion-button fill="clear" class="p-0 h-10 w-10 mr-2" (click)="deselectTemplate()">
+            <ion-icon name="arrow-back-outline" slot="icon-only" class="text-xl text-orange-600 dark:text-amber-400"></ion-icon>
           </ion-button>
           <div>
-            <h2 class="text-base font-semibold text-[#BB3E00] dark:text-[#FF6B2B]">{{ selectedTemplate.title }}</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400">{{ selectedTemplate.category }}</p>
+            <h2 class="text-lg font-bold text-orange-700 dark:text-amber-400">{{ selectedTemplate.title }}</h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400">{{ selectedTemplate.category }}</p>
           </div>
         </div>
       </div>
 
       <div *ngIf="isSubmissionPending" class="px-5 py-4">
-        <div class="bg-yellow-100 dark:bg-yellow-800 border-l-4 border-yellow-500 dark:border-yellow-400 text-yellow-700 dark:text-yellow-200 p-4 rounded-md shadow" role="alert">
-          <div class="flex items-center">
-            <ion-icon name="warning-outline" class="text-yellow-600 dark:text-yellow-300 text-xl mr-3"></ion-icon>
+        <div class="bg-amber-100 dark:bg-amber-800 border-l-4 border-amber-500 dark:border-amber-400 text-amber-800 dark:text-amber-200 p-4 rounded-md shadow" role="alert">
+          <div class="flex items-start">
+            <ion-icon name="warning-outline" class="text-amber-600 dark:text-amber-300 text-xl mr-3 flex-shrink-0 mt-0.5"></ion-icon>
             <div>
               <p class="font-bold text-sm">Informasi Pengajuan</p>
-              <p class="text-xs">{{ pendingSubmissionMessage }}</p>
+              <p class="text-xs mt-1">{{ pendingSubmissionMessage }}</p>
             </div>
           </div>
         </div>
       </div>
 
       <ng-container *ngIf="!isSubmissionPending">
-        <div class="mx-5 mt-4 mb-4 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3 flex items-center shadow-sm flex-shrink-0">
-          <ion-icon name="document-text-outline" class="text-[#BB3E00] dark:text-[#FF6B2B] mr-3 text-lg"></ion-icon>
+        <div class="mx-5 mt-4 mb-4 bg-orange-100 dark:bg-amber-900 rounded-lg p-4 flex items-center shadow-sm border border-orange-200 dark:border-amber-800 flex-shrink-0">
+          <ion-icon name="document-text-outline" class="text-orange-600 dark:text-amber-400 mr-3 text-2xl"></ion-icon>
           <div class="flex-1">
-            <div class="text-xs text-[#BB3E00] dark:text-[#FF6B2B]">Nomor Surat</div>
-            <div class="text-sm font-medium text-[#BB3E00] dark:text-[#FF6B2B]">{{ formData.suratNumber || 'Akan digenerate' }}</div>
+            <div class="text-xs text-orange-700 dark:text-amber-300 font-medium">Nomor Surat</div>
+            <div class="text-base font-bold text-orange-800 dark:text-amber-200">{{ formData.suratNumber || 'Akan digenerate' }}</div>
           </div>
         </div>
 
         <div class="flex-1 overflow-auto px-5 pb-2">
-          <div class="space-y-4">
+          <div class="space-y-5">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama Lengkap</label>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Nama Lengkap</label>
                 <ion-input [(ngModel)]="formData.name" placeholder="Nama lengkap Anda" class="custom-input" readonly></ion-input>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Email</label>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Email</label>
                 <ion-input [(ngModel)]="formData.email" type="email" placeholder="Email Anda" class="custom-input" readonly></ion-input>
               </div>
             </div>
@@ -132,7 +135,7 @@
             <div *ngIf="selectedTemplate.category === 'Permohonan Cuti'" class="space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Mulai Cuti <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tanggal Mulai Cuti <span class="text-red-500">*</span></label>
                   <ion-input
                     [(ngModel)]="formData.startDate"
                     type="date"
@@ -143,7 +146,7 @@
                   ></ion-input>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Selesai Cuti <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tanggal Selesai Cuti <span class="text-red-500">*</span></label>
                   <ion-input
                     [(ngModel)]="formData.endDate"
                     type="date"
@@ -154,37 +157,37 @@
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Alasan Cuti <span class="text-red-500">*</span></label>
-                <ion-textarea [(ngModel)]="formData.reason" placeholder="Jelaskan alasan cuti Anda" rows="3" class="custom-textarea" required></ion-textarea>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Alasan Cuti <span class="text-red-500">*</span></label>
+                <ion-textarea [(ngModel)]="formData.reason" placeholder="Jelaskan alasan cuti Anda" rows="4" class="custom-textarea" required></ion-textarea>
               </div>
             </div>
 
             <div *ngIf="selectedTemplate.category === 'Surat Keterangan Karyawan'" class="space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Jabatan Saat Ini <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Jabatan Saat Ini <span class="text-red-500">*</span></label>
                   <ion-input [(ngModel)]="formData.position" placeholder="Contoh: Staff Marketing" class="custom-input" required></ion-input>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tanggal Bergabung <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tanggal Bergabung <span class="text-red-500">*</span></label>
                   <ion-input [(ngModel)]="formData.joinDate" type="date" [max]="todayDateString" class="custom-input" required></ion-input>
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Tujuan Pembuatan Surat <span class="text-red-500">*</span></label>
-                <ion-textarea [(ngModel)]="formData.purpose" placeholder="Contoh: Untuk pengajuan KPR" rows="3" class="custom-textarea" required></ion-textarea>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Tujuan Pembuatan Surat <span class="text-red-500">*</span></label>
+                <ion-textarea [(ngModel)]="formData.purpose" placeholder="Contoh: Untuk pengajuan KPR" rows="4" class="custom-textarea" required></ion-textarea>
               </div>
             </div>
 
             <div *ngIf="selectedTemplate.category === 'Pengajuan Keluhan'" class="space-y-4">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Departemen Terkait <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Departemen Terkait <span class="text-red-500">*</span></label>
                   <ion-input [(ngModel)]="formData.department" placeholder="Contoh: HRD, IT, Fasilitas" class="custom-input" required></ion-input>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Kategori Keluhan <span class="text-red-500">*</span></label>
-                  <div class="relative">
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Kategori Keluhan <span class="text-red-500">*</span></label>
+                  <div class="relative custom-select-wrapper">
                     <ion-select [(ngModel)]="formData.complaintCategory" placeholder="Pilih kategori" class="custom-select" required>
                       <ion-select-option value="Fasilitas">Fasilitas</ion-select-option>
                       <ion-select-option value="Lingkungan Kerja">Lingkungan Kerja</ion-select-option>
@@ -193,72 +196,46 @@
                       <ion-select-option value="Lainnya">Lainnya</ion-select-option>
                     </ion-select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-700 dark:text-gray-300">
-                      <ion-icon name="chevron-down-outline" class="h-4 w-4"></ion-icon>
+                      <ion-icon name="chevron-down-outline" class="h-5 w-5"></ion-icon>
                     </div>
                   </div>
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Deskripsi Keluhan <span class="text-red-500">*</span></label>
-                <ion-textarea [(ngModel)]="formData.complaintDescription" placeholder="Jelaskan keluhan Anda secara detail" rows="3" class="custom-textarea" required></ion-textarea>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Deskripsi Keluhan <span class="text-red-500">*</span></label>
+                <ion-textarea [(ngModel)]="formData.complaintDescription" placeholder="Jelaskan keluhan Anda secara detail" rows="4" class="custom-textarea" required></ion-textarea>
               </div>
             </div>
 
             <div *ngIf="selectedTemplate.category === 'Surat Rekomendasi'" class="space-y-4">
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama yang Direkomendasikan <span class="text-red-500">*</span></label>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Nama yang Direkomendasikan <span class="text-red-500">*</span></label>
                 <ion-input [(ngModel)]="formData.recommendedName" placeholder="Nama lengkap orang yang Anda rekomendasikan" class="custom-input" required></ion-input>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Nama Pemberi Rekomendasi</label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Nama Pemberi Rekomendasi</label>
                   <ion-input [(ngModel)]="formData.name" class="custom-input" readonly></ion-input>
                 </div>
                 <div>
-                  <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Jabatan Pemberi Rekomendasi <span class="text-red-500">*</span></label>
+                  <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Jabatan Pemberi Rekomendasi <span class="text-red-500">*</span></label>
                   <ion-input [(ngModel)]="formData.recommenderPosition" placeholder="Jabatan Anda saat ini" class="custom-input" required></ion-input>
                 </div>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-700 dark:text-gray-300 mb-1 block">Alasan Memberikan Rekomendasi <span class="text-red-500">*</span></label>
-                <ion-textarea [(ngModel)]="formData.recommendationReason" placeholder="Jelaskan mengapa Anda merekomendasikan orang tersebut" rows="3" class="custom-textarea" required></ion-textarea>
+                <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">Alasan Memberikan Rekomendasi <span class="text-red-500">*</span></label>
+                <ion-textarea [(ngModel)]="formData.recommendationReason" placeholder="Jelaskan mengapa Anda merekomendasikan orang tersebut" rows="4" class="custom-textarea" required></ion-textarea>
               </div>
             </div>
 
-            <!-- <div class="mt-3 bg-[#FFF0E6] dark:bg-[#3D1500] rounded-lg p-3">
-              <label class="text-xs font-medium text-[#BB3E00] dark:text-[#FF6B2B] mb-2 block">Lampiran (opsional, PDF maks. 2MB)</label>
-              <div class="flex items-center">
-                <input type="file" accept="application/pdf" #fileInput hidden (change)="handleFileInput($event)" />
-                <ion-button fill="outline" size="small" class="h-9 text-xs border-[#BB3E00] text-[#BB3E00] dark:border-[#FF6B2B] dark:text-[#FF6B2B] hover:bg-[#FFDBC1] dark:hover:bg-[#592200]" (click)="fileInput.click()">
-                  <ion-icon name="attach-outline" slot="start" class="text-sm"></ion-icon>
-                  Pilih File
-                </ion-button>
-                <span *ngIf="formData.attachmentOriginalName" class="ml-3 text-xs text-gray-600 dark:text-gray-400 truncate max-w-[150px] sm:max-w-[200px]" [title]="formData.attachmentOriginalName">
-                  {{ formData.attachmentOriginalName }}
-                </span>
-              </div>
-               <p *ngIf="formData.attachmentOriginalName" class="text-xs text-gray-500 dark:text-gray-400 mt-1">File: {{ formData.attachmentOriginalName }}</p>
-            </div> -->
-          </div>
+            </div>
         </div>
 
-        <div class="px-5 py-4 flex-shrink-0 border-t border-gray-200 dark:border-gray-700 mt-auto">
-          <!-- <ion-button
-            expand="block"
-            fill="outline"
-            [disabled]="isLoadingPdfPreview || !selectedTemplate || isSubmissionPending"
-            class="font-semibold mb-2 pdf-preview-button"
-            (click)="downloadPdfPreview()"
-          >
-            <ion-spinner *ngIf="isLoadingPdfPreview" name="crescent" slot="start" class="w-4 h-4"></ion-spinner>
-            <ion-icon *ngIf="!isLoadingPdfPreview" name="document-text-outline" slot="start"></ion-icon>
-            {{ isLoadingPdfPreview ? 'Membuat PDF...' : 'Unduh Pratinjau PDF' }}
-          </ion-button> -->
-
+        <div class="px-5 py-4 flex-shrink-0 border-t border-gray-200 dark:border-stone-700 mt-auto">
           <ion-button
             expand="block"
             [disabled]="isLoading || isSubmissionPending || isLoadingPdfPreview"
-            class="font-semibold main-action-button"
+            class="font-semibold custom-solid-button"
             (click)="submitForm()"
           >
             <ion-spinner *ngIf="isLoading" name="crescent" slot="start" class="w-4 h-4"></ion-spinner>
@@ -268,23 +245,25 @@
         </div>
       </ng-container>
     </div>
-    </div> <div *ngIf="isCheckingStatus && !selectedTemplate" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-xl flex flex-col items-center">
-      <ion-spinner name="circles" class="w-10 h-10 text-[#BB3E00] dark:text-[#FF6B2B]"></ion-spinner>
-      <p class="mt-3 text-gray-700 dark:text-gray-300 font-medium">Memeriksa status...</p>
+  </div>
+
+  <div *ngIf="isCheckingStatus && !selectedTemplate" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-white dark:bg-stone-800 rounded-xl p-6 shadow-xl flex flex-col items-center">
+      <ion-spinner name="circles" class="w-12 h-12 text-orange-600 dark:text-amber-400"></ion-spinner>
+      <p class="mt-4 text-gray-700 dark:text-gray-300 font-medium text-base">Memeriksa status...</p>
     </div>
   </div>
 
   <div *ngIf="isSuccess" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50 p-4">
-    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-xl flex flex-col items-center max-w-sm w-full">
-      <div class="w-16 h-16 bg-green-100 dark:bg-green-700 rounded-full flex items-center justify-center mb-4">
-        <ion-icon name="checkmark-circle" class="text-4xl text-green-600 dark:text-green-300"></ion-icon>
+    <div class="bg-white dark:bg-stone-800 rounded-xl p-8 shadow-xl flex flex-col items-center max-w-sm w-full">
+      <div class="w-20 h-20 bg-green-100 dark:bg-green-700 rounded-full flex items-center justify-center mb-5">
+        <ion-icon name="checkmark-circle" class="text-5xl text-green-600 dark:text-green-300"></ion-icon>
       </div>
-      <p class="text-lg text-gray-800 dark:text-gray-100 font-semibold">Pengajuan Berhasil!</p>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1 mb-5 text-center">Surat Anda telah berhasil diajukan dan sedang dalam proses peninjauan.</p>
+      <p class="text-xl text-gray-800 dark:text-gray-100 font-bold mb-2">Pengajuan Berhasil!</p>
+      <p class="text-base text-gray-600 dark:text-gray-400 mt-1 mb-6 text-center">Surat Anda telah berhasil diajukan dan sedang dalam proses peninjauan.</p>
       <ion-button
         expand="block"
-        class="font-semibold main-action-button w-full"
+        class="font-semibold custom-solid-button w-full"
         (click)="dismissSuccess()"
       >
         Selesai
@@ -292,3 +271,102 @@
     </div>
   </div>
 </ion-content>
+
+<style>
+  .custom-input,
+  .custom-textarea {
+    --background: var(--ion-color-light); /* Or a custom light background color */
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    border: 1px solid var(--ion-color-medium-tint); /* Light border */
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--ion-color-dark);
+    --placeholder-color: var(--ion-color-medium);
+  }
+
+  .custom-select {
+    --background: var(--ion-color-light);
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 10px;
+    --padding-bottom: 10px;
+    border: 1px solid var(--ion-color-medium-tint);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--ion-color-dark);
+  }
+
+  /* Dark mode adjustments for inputs and textareas */
+  .dark .custom-input,
+  .dark .custom-textarea,
+  .dark .custom-select {
+    --background: var(--ion-color-dark-shade); /* Darker background */
+    --border-color: var(--ion-color-dark-tint); /* Lighter border in dark mode */
+    color: var(--ion-color-light);
+    --placeholder-color: var(--ion-color-medium);
+  }
+
+  .custom-select-wrapper {
+    position: relative;
+  }
+
+  .custom-select-wrapper ion-select {
+    /* Hide default arrow if needed */
+    --padding-end: 40px; /* Make space for custom arrow */
+  }
+
+  .custom-solid-button {
+    --background: var(--ion-color-tertiary); /* Use primary brown/orange color */
+    --color: white;
+    --background-activated: var(--ion-color-tertiary-shade);
+    --background-focused: var(--ion-color-tertiary-tint);
+    --background-hover: var(--ion-color-tertiary-tint);
+    --border-radius: 12px; /* More rounded */
+    height: 48px; /* Taller button */
+  }
+
+  /* Custom outline button for PDF preview (if uncommented) */
+  .custom-outline-button {
+    --background: transparent;
+    --color: var(--ion-color-tertiary);
+    --border-color: var(--ion-color-tertiary);
+    --border-width: 2px;
+    --background-activated: var(--ion-color-tertiary-contrast);
+    --background-focused: var(--ion-color-tertiary-contrast);
+    --background-hover: var(--ion-color-tertiary-contrast);
+    --border-radius: 12px;
+    height: 48px;
+  }
+
+  /* Define custom color variables for consistency */
+  :root {
+    --ion-color-light: #ffffff;
+    --ion-color-medium: #9ca3af; /* gray-400 */
+    --ion-color-medium-tint: #e5e7eb; /* gray-200 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #ea580c; /* A vibrant orange for actions in light mode */
+    --ion-color-tertiary-shade: #c2410c; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fb923c; /* Lighter tint of tertiary */
+    --ion-color-tertiary-contrast: #fef3c7; /* Light yellow for hover on outline button */
+  }
+
+  .dark {
+    --ion-color-light: #1f2937; /* gray-800 */
+    --ion-color-medium: #6b7280; /* gray-500 */
+    --ion-color-medium-tint: #4b5563; /* gray-600 */
+    --ion-color-dark: #f9fafb; /* gray-50 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #d97706; /* Amber for actions in dark mode */
+    --ion-color-tertiary-shade: #b45309; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fcd34d; /* Lighter tint of tertiary */
+    --ion-color-tertiary-contrast: #291a0c; /* Dark brown for hover on outline button */
+  }
+</style>

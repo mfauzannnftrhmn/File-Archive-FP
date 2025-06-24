@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="bg-gradient-to-br from-gray-50 to-[#FFF8F5] dark:from-gray-900 dark:to-gray-800">
+<ion-content [fullscreen]="true" class="bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-950 dark:via-brown-900 dark:to-brown-800">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon=""
@@ -8,56 +8,56 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <div class="px-4 sm:px-6 pt-4 pb-3 bg-gradient-to-r from-white to-[#FFF8F5] dark:from-gray-900 dark:to-gray-800 shadow-md border-b border-gray-200 dark:border-gray-800 fixed top-0 left-0 right-0 z-10">
+  <div class="px-4 sm:px-6 pt-6 pb-4 bg-white dark:bg-stone-900 shadow-md border-b border-gray-100 dark:border-stone-800 fixed top-0 left-0 right-0 z-10">
     <div class="flex items-center">
       <div class="ml-2">
-        <h2 class="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-100 tracking-wide">
+        <h2 class="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 tracking-wide">
           Aktivitas
         </h2>
-        <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
           Akses layanan dan pantau aktivitas surat Anda
         </p>
       </div>
     </div>
   </div>
 
-  <div class="p-4 pt-20 sm:pt-24 max-w-5xl mx-auto">
+  <div class="p-4 pt-24 sm:pt-28 max-w-5xl mx-auto">
     
     <div class="mt-4 animate-fadeIn">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-items-center max-w-md mx-auto">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300 w-full">
-          <div class="p-4 flex flex-col h-full">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md mx-auto">
+        <div class="bg-white dark:bg-stone-800 rounded-xl shadow-lg border-l-4 border-orange-500 dark:border-amber-500 overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 w-full border border-gray-100 dark:border-stone-700">
+          <div class="p-5 flex flex-col h-full">
             <div class="flex items-center mb-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] flex items-center justify-center mr-3 shadow-sm">
-                <ion-icon name="document-text-outline" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
+              <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-amber-900 flex items-center justify-center mr-4 shadow-inner">
+                <ion-icon name="document-text-outline" class="text-xl text-orange-600 dark:text-amber-400"></ion-icon>
               </div>
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200">Ajukan Surat</h3>
+              <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Ajukan Surat</h3>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Buat pengajuan surat baru</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-1">Buat pengajuan surat baru dengan mudah dan cepat.</p>
             <ion-button fill="clear" size="small" routerLink="/pengajuansurat" 
-                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
+                        class="m-0 p-0 h-9 text-sm font-semibold text-orange-600 dark:text-amber-400 self-start mt-auto group custom-clear-button">
               <span class="flex items-center">
-                Ajukan
-                <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
+                Ajukan Sekarang
+                <ion-icon name="arrow-forward" class="ml-2 text-base transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
               </span>
             </ion-button>
           </div>
         </div>
         
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border-l-4 border-[#BB3E00] dark:border-orange-500 overflow-hidden hover:translate-y-[-2px] transition-all duration-300 w-full">
-          <div class="p-4 flex flex-col h-full">
+        <div class="bg-white dark:bg-stone-800 rounded-xl shadow-lg border-l-4 border-orange-500 dark:border-amber-500 overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 w-full border border-gray-100 dark:border-stone-700">
+          <div class="p-5 flex flex-col h-full">
             <div class="flex items-center mb-3">
-              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#FFF0E6] to-[#FFE0D0] dark:from-[#3D2B22] dark:to-[#2A1D17] flex items-center justify-center mr-3 shadow-sm">
-                <ion-icon name="copy-outline" class="text-[#BB3E00] dark:text-orange-400 text-xl"></ion-icon>
+              <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-amber-900 flex items-center justify-center mr-4 shadow-inner">
+                <ion-icon name="copy-outline" class="text-xl text-orange-600 dark:text-amber-400"></ion-icon>
               </div>
-              <h3 class="font-semibold text-sm text-gray-800 dark:text-gray-200">Riwayat Surat</h3>
+              <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Riwayat Surat</h3>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Lihat riwayat surat</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-1">Lihat status dan detail semua riwayat pengajuan surat Anda.</p>
             <ion-button fill="clear" size="small" routerLink="/riwayatsurat" 
-                        class="m-0 p-0 h-7 text-xs font-medium text-[#BB3E00] dark:text-orange-400 self-start mt-auto group">
+                        class="m-0 p-0 h-9 text-sm font-semibold text-orange-600 dark:text-amber-400 self-start mt-auto group custom-clear-button">
               <span class="flex items-center">
-                Lihat
-                <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
+                Lihat Riwayat
+                <ion-icon name="arrow-forward" class="ml-2 text-base transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
               </span>
             </ion-button>
           </div>
@@ -65,38 +65,38 @@
       </div>
     </div>
 
-    <div class="mt-6 mb-4">
-      <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 px-4">Aktivitas Terbaru</h2>
+    <div class="mt-8 mb-4">
+      <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 px-4">Aktivitas Terbaru</h2>
       
-      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-5">
+      <div class="bg-white dark:bg-stone-800 rounded-xl shadow-md p-5 border border-gray-100 dark:border-stone-700">
         
         <div *ngIf="isLoading" class="space-y-4">
-          <div *ngFor="let i of [1, 2, 3]" class="flex items-start space-x-3 animate-pulse">
-            <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
+          <div *ngFor="let i of [1, 2, 3]" class="flex items-start space-x-4 animate-pulse">
+            <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-stone-700 flex-shrink-0"></div>
             <div class="flex-1 space-y-2">
-              <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-              <div class="h-5 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mt-1"></div>
+              <div class="h-4 bg-gray-200 dark:bg-stone-700 rounded w-3/4"></div>
+              <div class="h-3 bg-gray-200 dark:bg-stone-700 rounded w-full"></div>
+              <div class="h-5 bg-gray-200 dark:bg-stone-700 rounded w-1/4 mt-1"></div>
             </div>
           </div>
         </div>
 
-        <div *ngIf="!isLoading && recentLetters.length > 0" class="space-y-4">
-          <div *ngFor="let letter of recentLetters; let i = index" class="flex items-start space-x-3 animate-fadeInUp" [style.animation-delay]="i * 0.1 + 's'">
-            <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" [ngClass]="getIconBgColor(letter.status)">
-              <ion-icon [name]="getStatusIcon(letter.status)" class="text-lg" [ngClass]="getIconColor(letter.status)"></ion-icon>
+        <div *ngIf="!isLoading && recentLetters.length > 0" class="space-y-5">
+          <div *ngFor="let letter of recentLetters; let i = index" class="flex items-start space-x-4 animate-fadeInUp" [style.animation-delay]="i * 0.1 + 's'">
+            <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-inner" [ngClass]="getIconBgColor(letter.status)">
+              <ion-icon [name]="getStatusIcon(letter.status)" class="text-xl" [ngClass]="getIconColor(letter.status)"></ion-icon>
             </div>
             <div class="flex-1">
               <div class="flex justify-between items-start">
-                <h4 class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ letter.category }}</h4>
+                <h4 class="text-base font-semibold text-gray-800 dark:text-gray-200 leading-tight">{{ letter.category }}</h4>
                 <span class="text-xs text-gray-500 dark:text-gray-400">{{ getRelativeTime(letter.updated_at) }}</span>
               </div>
-                <div *ngIf="letter.status === 'Ditolak' && letter.remarks" class="mt-2 p-2 bg-red-50 dark:bg-red-900 text-xs text-red-800 dark:text-red-200 rounded">
+                <div *ngIf="letter.status === 'Ditolak' && letter.remarks" class="mt-2 p-2.5 bg-red-50 dark:bg-red-950 text-xs text-red-800 dark:text-red-200 rounded-md border border-red-100 dark:border-red-900">
                 <strong>Alasan penolakan:</strong> {{ letter.remarks }}
               </div>
-              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Surat dengan nomor {{ letter.surat_number }} telah diupdate.</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Surat dengan nomor <span class="font-medium">{{ letter.surat_number }}</span> telah diupdate.</p>
               <div class="mt-2">
-                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium" [ngClass]="getStatusColor(letter.status)">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded text-sm font-semibold" [ngClass]="getStatusColor(letter.status)">
                   {{ letter.status }}
                 </span>
               </div>
@@ -105,28 +105,28 @@
                 expand="block"
                 fill="outline"
                 size="small"
-                (click)="downloadFile(letter.file_url, letter.download_name || 'file-download')"
-                class="mt-3"
+               (click)="downloadApprovedLetter(letter)" class="mt-4 custom-outline-button-small"
+                class="mt-4 custom-outline-button-small"
               >
-                <ion-icon name="download" slot="start"></ion-icon>
+                <ion-icon name="download" slot="start" class="text-base"></ion-icon>
                 Unduh Surat
               </ion-button>
             </div>
           </div>
         </div>
 
-        <div *ngIf="!isLoading && recentLetters.length === 0" class="text-center py-4">
-          <ion-icon name="cloud-offline-outline" class="text-4xl text-gray-400 dark:text-gray-500 mb-2"></ion-icon>
-          <p class="text-sm text-gray-600 dark:text-gray-400">Tidak ada aktivitas terbaru.</p>
-          <p class="text-xs text-gray-500 dark:text-gray-500">Coba ajukan surat atau refresh halaman.</p>
+        <div *ngIf="!isLoading && recentLetters.length === 0" class="text-center py-6">
+          <ion-icon name="cloud-offline-outline" class="text-5xl text-gray-400 dark:text-gray-500 mb-3"></ion-icon>
+          <p class="text-base text-gray-600 dark:text-gray-400 font-medium">Tidak ada aktivitas terbaru.</p>
+          <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Coba ajukan surat baru atau tarik ke bawah untuk me-refresh.</p>
         </div>
         
-        <div class="mt-4 text-center">
-          <ion-button fill="clear" size="small" routerLink="/riwayatsurat" 
-                      class="text-xs font-medium text-[#BB3E00] dark:text-orange-400 group">
+        <div class="mt-6 text-center">
+          <ion-button fill="clear" size="default" routerLink="/riwayatsurat" 
+                      class="text-sm font-semibold text-orange-600 dark:text-amber-400 group custom-clear-button">
             <span class="flex items-center">
               Lihat Semua Aktivitas
-              <ion-icon name="arrow-forward" class="ml-1 text-xs transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
+              <ion-icon name="arrow-forward" class="ml-2 text-base transform group-hover:translate-x-1 transition-transform duration-200"></ion-icon>
             </span>
           </ion-button>
         </div>
@@ -135,37 +135,196 @@
   </div>
 </ion-content>
 
-<ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 h-16 shadow-lg">
-  <ion-tab-button tab="dashboard" routerLink="/dashboard" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
+<ion-tab-bar slot="bottom" class="bg-white dark:bg-stone-900 border-t border-gray-100 dark:border-stone-700 h-18 py-2 shadow-lg">
+  <ion-tab-button
+    tab="dashboard"
+    routerLink="/dashboard"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs transition-colors duration-200"
+  >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="grid" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="grid" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Beranda</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Beranda</ion-label>
     </div>
   </ion-tab-button>
-  <ion-tab-button tab="aktivitas" routerLink="/aktivitas" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
+
+  <ion-tab-button
+    tab="aktivitas"
+    routerLink="/aktivitas"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs transition-colors duration-200"
+  >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1 relative">
-        <ion-icon name="pulse" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="pulse" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Aktivitas</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Aktivitas</ion-label>
     </div>
   </ion-tab-button>
-  <ion-tab-button tab="riwayat" routerLink="/riwayatsurat" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
+
+  <ion-tab-button
+    tab="riwayat"
+    routerLink="/riwayatsurat"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs transition-colors duration-200"
+  >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="time" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="time" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Riwayat</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Riwayat</ion-label>
     </div>
   </ion-tab-button>
-  <ion-tab-button tab="profile" routerLink="/profile" routerDirection="root" routerLinkActive="tab-selected" class="text-xs">
+
+  <ion-tab-button
+    tab="profile"
+    routerLink="/profile"
+    routerDirection="root"
+    routerLinkActive="tab-selected"
+    class="text-xs transition-colors duration-200"
+  >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="person" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="person" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Profil</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Profil</ion-label>
     </div>
   </ion-tab-button>
 </ion-tab-bar>
+
+<style>
+  /* Custom styles for clear buttons */
+  .custom-clear-button {
+    --color: var(--ion-color-tertiary);
+    --color-activated: var(--ion-color-tertiary-shade);
+    --color-focused: var(--ion-color-tertiary-tint);
+    --color-hover: var(--ion-color-tertiary-tint);
+    --padding-start: 0;
+    --padding-end: 0;
+    height: auto; /* Allow content to dictate height */
+  }
+
+  /* Custom outline button for small size */
+  .custom-outline-button-small {
+    --background: transparent;
+    --color: var(--ion-color-medium);
+    --border-color: var(--ion-color-medium-tint);
+    --border-width: 1.5px;
+    --background-activated: var(--ion-color-light-shade);
+    --background-focused: var(--ion-color-light-shade);
+    --background-hover: var(--ion-color-light-shade);
+    --border-radius: 8px; /* Slightly less rounded than large buttons */
+    height: 36px; /* Smaller height for compact view */
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .dark .custom-outline-button-small {
+    --color: var(--ion-color-medium);
+    --border-color: var(--ion-color-dark-tint);
+    --background-activated: var(--ion-color-dark-tint);
+    --background-focused: var(--ion-color-dark-tint);
+    --background-hover: var(--ion-color-dark-tint);
+  }
+
+  /* Define custom color variables for consistency */
+  :root {
+    --ion-color-light: #ffffff;
+    --ion-color-light-shade: #f3f4f6; /* gray-100 for light elements */
+    --ion-color-medium: #6b7280; /* gray-500 */
+    --ion-color-medium-tint: #d1d5db; /* gray-300 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #ea580c; /* A vibrant orange for actions in light mode */
+    --ion-color-tertiary-rgb: 234, 88, 12; /* RGB for shadow */
+    --ion-color-tertiary-shade: #c2410c; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fb923c; /* Lighter tint of tertiary */
+
+    --ion-color-danger: #ef4444; /* Red for danger */
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #fee2e2; /* Light red for hover on outline */
+
+    --ion-color-success: #22c55e; /* Green for success */
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6; /* Blue for process */
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  .dark {
+    --ion-color-light: #f9fafb; /* gray-50 */
+    --ion-color-light-shade: #374151; /* gray-700 for dark elements */
+    --ion-color-medium: #9ca3af; /* gray-400 */
+    --ion-color-medium-tint: #4b5563; /* gray-600 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #4b5563; /* gray-600 */
+
+    --ion-color-tertiary: #d97706; /* Amber for actions in dark mode */
+    --ion-color-tertiary-rgb: 217, 119, 6; /* RGB for shadow */
+    --ion-color-tertiary-shade: #b45309;
+    --ion-color-tertiary-tint: #fcd34d;
+
+    --ion-color-danger: #ef4444;
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #7f1d1d;
+
+    --ion-color-success: #22c55e;
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6;
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  /* Helper functions for dynamic classes (add these to your component.ts) */
+  /*
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'Disetujui': return 'checkmark-circle';
+      case 'Proses': return 'hourglass';
+      case 'Ditolak': return 'close-circle';
+      default: return 'document';
+    }
+  }
+
+  getIconBgColor(status: string): string {
+    switch (status) {
+      case 'Disetujui': return 'bg-green-100 dark:bg-green-900';
+      case 'Proses': return 'bg-blue-100 dark:bg-blue-900';
+      case 'Ditolak': return 'bg-red-100 dark:bg-red-900';
+      default: return 'bg-orange-100 dark:bg-amber-900'; // Default for general documents/initial
+    }
+  }
+
+  getIconColor(status: string): string {
+    switch (status) {
+      case 'Disetujui': return 'text-green-600 dark:text-green-400';
+      case 'Proses': return 'text-blue-600 dark:text-blue-400';
+      case 'Ditolak': return 'text-red-600 dark:text-red-400';
+      default: return 'text-orange-600 dark:text-amber-400';
+    }
+  }
+
+  getStatusColor(status: string): string {
+    switch (status) {
+      case 'Disetujui': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'Proses': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'Ditolak': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
+  }
+  */
+</style>

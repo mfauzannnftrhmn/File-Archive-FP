@@ -1,38 +1,39 @@
 <ion-header [translucent]="true">
-  <ion-toolbar class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
+  <ion-toolbar class="bg-white dark:bg-stone-900 shadow-md border-b border-gray-100 dark:border-stone-800">
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button class="text-gray-600 dark:text-gray-300"></ion-menu-button>
     </ion-buttons>
-    <ion-title class="text-base font-medium text-gray-800 dark:text-gray-100">Riwayat Surat</ion-title>
+    <ion-title class="text-lg font-bold text-gray-800 dark:text-gray-100">Riwayat Surat</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="loadRiwayatSurat()">
-        <ion-icon name="refresh-outline"></ion-icon>
+      <ion-button (click)="loadRiwayatSurat()" class="text-orange-600 dark:text-amber-400">
+        <ion-icon name="refresh-outline" class="text-xl"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-toolbar class="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800">
-    <div class="flex flex-col p-3">
-      <ion-item lines="none" class="bg-white dark:bg-gray-900 rounded-md shadow-inner text-gray-700 dark:text-gray-300">
-        <ion-label position="floating" class="text-xs">Filter Kategori</ion-label>
+  <ion-toolbar class="bg-white dark:bg-stone-900 shadow-sm border-b border-gray-100 dark:border-stone-800">
+    <div class="flex flex-col p-4">
+      <ion-item lines="none" class="bg-gray-50 dark:bg-stone-800 rounded-lg shadow-inner text-gray-700 dark:text-gray-300 custom-select-item">
+        <ion-label position="floating" class="text-sm text-gray-600 dark:text-gray-400 font-medium">Filter Kategori</ion-label>
         <ion-select
           [(ngModel)]="selectedCategory"
           (ionChange)="filterByCategory()"
           placeholder="Pilih Kategori"
           interface="popover"
-          class="text-sm font-medium"
+          class="text-base font-semibold text-gray-800 dark:text-gray-100 custom-select-control"
         >
           <ion-select-option *ngFor="let category of availableCategories" [value]="category">
             {{ category === 'all' ? 'Semua Kategori' : category }}
           </ion-select-option>
         </ion-select>
+        <ion-icon name="chevron-down-outline" slot="end" class="text-gray-500 dark:text-gray-400"></ion-icon>
       </ion-item>
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content
-  class="bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
+  class="bg-gradient-to-br from-yellow-50 via-white to-orange-100 dark:from-gray-950 dark:via-brown-900 dark:to-brown-800"
   scrollEvents="true"
   [scrollY]="true"
   forceOverscroll="true"
@@ -49,96 +50,90 @@
 
   <div class="p-4 pt-2">
     <div *ngIf="riwayatSurat.length === 0" class="flex flex-col items-center justify-center min-h-[70vh] px-4 text-center">
-      <div class="w-24 h-24 bg-[#FFF0E6] dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
-        <ion-icon name="document-outline" class="text-4xl text-[#BB3E00] dark:text-[#FF8C5A]"></ion-icon>
+      <div class="w-28 h-28 bg-orange-100 dark:bg-amber-900 rounded-full flex items-center justify-center mb-6 shadow-inner">
+        <ion-icon name="document-outline" class="text-5xl text-orange-600 dark:text-amber-400"></ion-icon>
       </div>
-      <h3 class="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Belum Ada Riwayat</h3>
-      <p class="text-sm text-gray-500 dark:text-gray-400 max-w-md mb-6">
-        Anda belum memiliki riwayat pengajuan surat. Silakan buat surat baru melalui menu Aktivitas.
+      <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-3">Belum Ada Riwayat Surat</h3>
+      <p class="text-base text-gray-600 dark:text-gray-400 max-w-md mb-8">
+        Anda belum memiliki riwayat pengajuan surat apapun. Mulai ajukan surat baru sekarang!
       </p>
-      <ion-button color="primary" routerLink="/pengajuansurat" expand="block" class="w-full max-w-xs" style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;">
-        <ion-icon name="add-outline" slot="start"></ion-icon>
+      <ion-button routerLink="/pengajuansurat" expand="block" class="w-full max-w-xs custom-solid-button">
+        <ion-icon name="add-outline" slot="start" class="text-lg"></ion-icon>
         Buat Surat Baru
       </ion-button>
     </div>
 
-    <div *ngIf="riwayatSurat.length > 0" class="space-y-3">
-      <div class="pb-3 space-y-3">
-        <div *ngFor="let surat of riwayatSurat; let i = index" class="relative">
-          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transform transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md will-change-transform">
-            <div class="absolute top-0 right-0 mt-3 mr-3">
-              <span *ngIf="surat.status === 'Disetujui'" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                <span class="w-2 h-2 rounded-full bg-green-500 dark:bg-green-400 mr-1"></span>
-                Disetujui
-              </span>
-              <span *ngIf="surat.status === 'Proses' || !surat.status" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                <span class="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 mr-1"></span>
-                Proses
-              </span>
-              <span *ngIf="surat.status === 'Ditolak'" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
-                <span class="w-2 h-2 rounded-full bg-red-500 dark:bg-red-400 mr-1"></span>
-                Ditolak
-              </span>
+    <div *ngIf="riwayatSurat.length > 0" class="space-y-4">
+      <div *ngFor="let surat of riwayatSurat; let i = index" class="relative">
+        <div class="bg-white dark:bg-stone-800 rounded-xl shadow-md border border-gray-100 dark:border-stone-700 overflow-hidden transform transition-all duration-200 hover:translate-y-[-4px] hover:shadow-lg will-change-transform">
+          <div class="absolute top-0 right-0 mt-4 mr-4 z-10">
+            <span *ngIf="surat.status === 'Disetujui'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-500 dark:bg-green-400 mr-1.5"></span>
+              Disetujui
+            </span>
+            <span *ngIf="surat.status === 'Proses' || !surat.status" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500 dark:bg-blue-400 mr-1.5"></span>
+              Proses
+            </span>
+            <span *ngIf="surat.status === 'Ditolak'" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200">
+              <span class="w-2.5 h-2.5 rounded-full bg-red-500 dark:bg-red-400 mr-1.5"></span>
+              Ditolak
+            </span>
+          </div>
+          
+          <div class="p-5">
+            <div class="flex items-start mb-4">
+              <div class="w-12 h-12 rounded-full bg-orange-100 dark:bg-amber-900 flex items-center justify-center flex-shrink-0 shadow-inner">
+                <ion-icon name="document-text-outline" class="text-xl text-orange-600 dark:text-amber-400"></ion-icon>
+              </div>
+              <div class="ml-4 flex-1">
+                <h3 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-1 leading-tight">{{ surat.title }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">{{ surat.suratNumber }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">Kategori: <span class="font-medium">{{ surat.category }}</span></p>
+              </div>
             </div>
             
-            <div class="p-4">
-              <div class="flex items-start mb-3">
-                <div class="w-10 h-10 rounded-full bg-[#FFF0E6] dark:bg-[#3E2A23] flex items-center justify-center flex-shrink-0">
-                  <ion-icon name="document-text-outline" class="text-[#BB3E00] dark:text-[#FF8C5A] text-lg"></ion-icon>
+            <div *ngIf="surat.status === 'Ditolak' && surat.remarks" class="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900 rounded-lg p-3 mb-4">
+              <div class="flex items-start">
+                <ion-icon name="warning-outline" class="text-red-600 dark:text-red-400 mr-3 text-lg flex-shrink-0 mt-0.5"></ion-icon>
+                <div class="flex flex-col flex-1">
+                  <span class="text-sm font-semibold text-red-700 dark:text-red-300">Alasan Penolakan:</span>
+                  <span class="text-sm text-red-600 dark:text-red-400 mt-1">{{ surat.remarks }}</span>
                 </div>
-                <div class="ml-3 flex-1">
-                  <div class="flex justify-between items-start">
-                    <div>
-                      <h3 class="text-sm font-semibold text-gray-800 dark:text-gray-100">{{ surat.title }}</h3>
-                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ surat.suratNumber }}</p>
-                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Kategori: {{ surat.category }}</p>
-                    </div>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 dark:bg-stone-900 rounded-lg p-3 mb-4 border border-gray-100 dark:border-stone-700">
+              <div class="flex items-center">
+                <ion-icon name="calendar-outline" class="text-orange-600 dark:text-amber-400 mr-3 text-lg"></ion-icon>
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Diajukan pada:</span>
+                  <div class="flex items-center mt-0.5">
+                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ surat.formatted_date }}</span>
+                    <span class="mx-1.5 text-gray-400 dark:text-gray-500">•</span>
+                    <span class="text-sm text-gray-600 dark:text-gray-400">{{ surat.formatted_time }} WIB</span>
                   </div>
                 </div>
               </div>
-              
-              <div *ngIf="surat.status === 'Ditolak' && surat.remarks" class="bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900 rounded-md p-2 mb-3">
-                <div class="flex items-center">
-                  <ion-icon name="warning-outline" class="text-red-600 dark:text-red-400 mr-2 text-sm"></ion-icon>
-                  <div class="flex flex-col">
-                    <span class="text-xs font-medium text-red-700 dark:text-red-300">Alasan Penolakan:</span>
-                    <span class="text-xs text-red-600 dark:text-red-400 mt-0.5">{{ surat.remarks }}</span>
-                  </div>
-                </div>
+            </div>
+            
+            <div class="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-stone-700">
+              <div>
+                <ion-button 
+                  size="small" 
+                  fill="clear" 
+                  color="medium" 
+                  class="text-sm dark:text-gray-300 custom-clear-button"
+                  (click)="downloadSurat(surat)"
+                  [disabled]="!surat.file_url || surat.status !== 'Disetujui'" >
+                  <ion-icon name="download-outline" slot="start" class="text-lg"></ion-icon>
+                  <span>Unduh Surat</span>
+                </ion-button>
               </div>
-              
-              <div class="bg-gray-50 dark:bg-gray-900 rounded-md p-2 mb-3">
-                <div class="flex items-center">
-                  <ion-icon name="calendar-outline" class="text-[#BB3E00] dark:text-[#FF8C5A] mr-2 text-sm"></ion-icon>
-                  <div class="flex flex-col">
-                    <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Diajukan pada:</span>
-                    <div class="flex items-center mt-0.5">
-                      <span class="text-xs text-gray-600 dark:text-gray-400">{{ surat.date }}</span>
-                      <span class="mx-1 text-gray-400 dark:text-gray-500">•</span>
-                      <span class="text-xs text-gray-600 dark:text-gray-400">{{ surat.time || '14:30' }} WIB</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="flex justify-between items-center pt-3 border-t border-gray-100 dark:border-gray-700">
-                <div class="flex space-x-2">
-                  <ion-button 
-                    size="small" 
-                    fill="clear" 
-                    color="medium" 
-                    class="text-xs dark:text-gray-300"
-                    (click)="downloadSurat(surat)"
-                    [disabled]="!surat.file_url || surat.status !== 'Disetujui'" >
-                    <ion-icon name="download-outline" slot="start" size="small" class="dark:text-gray-300"></ion-icon>
-                    <span class="hidden sm:inline">Unduh</span>
-                  </ion-button>
-                </div>
-                <div class="flex space-x-1">
-                  <ion-button size="small" fill="outline" color="danger" class="text-xs" (click)="deleteSurat(surat.id, i)">
-                    <ion-icon name="trash-outline" slot="icon-only" size="small"></ion-icon>
-                  </ion-button>
-                </div>
+              <div>
+                <ion-button size="small" fill="outline" color="danger" class="custom-outline-danger-button" (click)="deleteSurat(surat.id, i)">
+                  <ion-icon name="trash-outline" slot="icon-only" class="text-lg"></ion-icon>
+                </ion-button>
               </div>
             </div>
           </div>
@@ -148,19 +143,19 @@
   </div>
 </ion-content>
 
-<ion-tab-bar slot="bottom" class="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 h-16">
+<ion-tab-bar slot="bottom" class="bg-white dark:bg-stone-900 border-t border-gray-100 dark:border-stone-700 h-18 py-2 shadow-lg">
   <ion-tab-button
     tab="dashboard"
     routerLink="/dashboard"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="grid" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="grid" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Beranda</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Beranda</ion-label>
     </div>
   </ion-tab-button>
 
@@ -169,13 +164,13 @@
     routerLink="/aktivitas"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="pulse" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="pulse" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Aktivitas</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Aktivitas</ion-label>
     </div>
   </ion-tab-button>
 
@@ -184,13 +179,13 @@
     routerLink="/riwayatsurat"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="time" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="time" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Riwayat</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Riwayat</ion-label>
     </div>
   </ion-tab-button>
 
@@ -199,13 +194,143 @@
     routerLink="/profile"
     routerDirection="root"
     routerLinkActive="tab-selected"
-    class="text-xs"
+    class="text-xs transition-colors duration-200"
   >
     <div class="flex flex-col items-center justify-center">
-      <div class="w-6 h-6 flex items-center justify-center mb-1">
-        <ion-icon name="person" class="text-xl"></ion-icon>
+      <div class="w-7 h-7 flex items-center justify-center mb-1">
+        <ion-icon name="person" class="text-xl text-gray-500 dark:text-gray-400"></ion-icon>
       </div>
-      <ion-label>Profil</ion-label>
+      <ion-label class="text-gray-500 dark:text-gray-400 font-medium">Profil</ion-label>
     </div>
   </ion-tab-button>
 </ion-tab-bar>
+
+<style>
+  /* Custom styles for ion-select */
+  .custom-select-item {
+    --background: var(--ion-color-light-shade); /* Lighter background for select item */
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --inner-padding-end: 0; /* Remove default inner padding to control arrow manually */
+    border-radius: 12px; /* More rounded */
+    border: 1px solid var(--ion-color-medium-tint); /* Light border */
+  }
+
+  .dark .custom-select-item {
+    --background: var(--ion-color-dark-shade);
+    border: 1px solid var(--ion-color-dark-tint);
+  }
+
+  .custom-select-item .item-native {
+    padding-inline-end: 0 !important; /* Ensure no extra space from native ion-select arrow */
+  }
+
+  .custom-select-control {
+    --padding-start: 0;
+    --padding-end: 0;
+    --placeholder-color: var(--ion-color-medium);
+    --placeholder-opacity: 0.7;
+  }
+
+  /* Custom buttons */
+  .custom-solid-button {
+    --background: var(--ion-color-tertiary);
+    --color: white;
+    --background-activated: var(--ion-color-tertiary-shade);
+    --background-focused: var(--ion-color-tertiary-tint);
+    --background-hover: var(--ion-color-tertiary-tint);
+    --border-radius: 12px;
+    height: 48px;
+  }
+
+  .custom-clear-button {
+    --color: var(--ion-color-medium);
+    --color-activated: var(--ion-color-medium-tint);
+    --color-focused: var(--ion-color-tertiary); /* Highlight on focus/hover */
+    --color-hover: var(--ion-color-tertiary);
+    --padding-start: 8px;
+    --padding-end: 8px;
+    height: 40px;
+  }
+
+  .custom-outline-danger-button {
+    --background: transparent;
+    --color: var(--ion-color-danger);
+    --border-color: var(--ion-color-danger);
+    --border-width: 1.5px;
+    --background-activated: var(--ion-color-danger-contrast);
+    --background-focused: var(--ion-color-danger-contrast);
+    --background-hover: var(--ion-color-danger-contrast);
+    --border-radius: 12px;
+    height: 40px;
+    width: 40px; /* Make it square for icon-only */
+  }
+
+  /* Custom color variables for consistency */
+  :root {
+    --ion-color-light: #ffffff;
+    --ion-color-light-shade: #f8f8f8; /* Slightly off-white for elements */
+    --ion-color-medium: #9ca3af; /* gray-400 */
+    --ion-color-medium-tint: #e5e7eb; /* gray-200 */
+    --ion-color-dark: #1f2937; /* gray-800 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #ea580c; /* A vibrant orange for actions in light mode */
+    --ion-color-tertiary-shade: #c2410c; /* Darker shade of tertiary */
+    --ion-color-tertiary-tint: #fb923c; /* Lighter tint of tertiary */
+    --ion-color-tertiary-contrast: #fef3c7; /* Light yellow for hover on outline button */
+
+    --ion-color-danger: #ef4444; /* Red for danger */
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #fee2e2; /* Light red for hover on outline */
+
+    --ion-color-success: #22c55e; /* Green for success */
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6; /* Blue for process */
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  .dark {
+    --ion-color-light: #1f2937; /* gray-800 */
+    --ion-color-light-shade: #2d3748; /* Darker shade for elements */
+    --ion-color-medium: #6b7280; /* gray-500 */
+    --ion-color-medium-tint: #4b5563; /* gray-600 */
+    --ion-color-dark: #f9fafb; /* gray-50 */
+    --ion-color-dark-shade: #111827; /* gray-900 */
+    --ion-color-dark-tint: #374151; /* gray-700 */
+
+    --ion-color-tertiary: #d97706; /* Amber for actions in dark mode */
+    --ion-color-tertiary-shade: #b45309;
+    --ion-color-tertiary-tint: #fcd34d;
+    --ion-color-tertiary-contrast: #291a0c;
+
+    --ion-color-danger: #ef4444;
+    --ion-color-danger-shade: #dc2626;
+    --ion-color-danger-tint: #fca5a5;
+    --ion-color-danger-contrast: #7f1d1d;
+
+    --ion-color-success: #22c55e;
+    --ion-color-success-shade: #16a34a;
+    --ion-color-success-tint: #86efac;
+
+    --ion-color-primary: #3b82f6;
+    --ion-color-primary-shade: #2563eb;
+    --ion-color-primary-tint: #93c5fd;
+  }
+
+  /* Custom styles for selected tab button (copied from dashboard for consistency) */
+  ion-tab-bar ion-tab-button.tab-selected ion-icon {
+    color: var(--ion-color-tertiary); /* Use a vibrant accent color for selected icon */
+    transition: color 0.2s ease-in-out;
+  }
+  
+  ion-tab-bar ion-tab-button.tab-selected ion-label {
+    color: var(--ion-color-tertiary); /* Use a vibrant accent color for selected label */
+    transition: color 0.2s ease-in-out;
+  }
+</style>
