@@ -2,7 +2,6 @@
   [fullscreen]="true"
   class="flex items-center justify-center h-full bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
 >
-  <!-- Decorative elements -->
   <div class="absolute top-0 left-0 w-full overflow-hidden">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full h-auto opacity-75">
       <path fill="rgba(187, 62, 0, 0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
@@ -21,7 +20,7 @@
     id="container"
     class="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl mx-auto my-4 sm:my-0 relative z-10 border border-gray-100 dark:border-gray-700"
   >
-    <!-- Logo decoration -->
+ 
     <div class="flex justify-center -mt-16 mb-6">
       <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-[#BB3E00]/20">
         <img
@@ -38,7 +37,7 @@
     </div>
     
     <form class="space-y-5" (ngSubmit)="doSubmit()">
-      <!-- Email Input -->
+
       <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
           <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
@@ -59,7 +58,6 @@
         </div>
       </div>
 
-      <!-- Password Input -->
       <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
           <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
@@ -80,14 +78,12 @@
         </div>
       </div>
 
-      <!-- Remember me and Forgot password -->
       <div class="flex justify-between items-center text-sm">
         <div class="flex items-center space-x-2">
         </div>
         <a [routerLink]="['/lupapassword']" class="text-[#BB3E00] dark:text-[#FF8C5A] font-medium hover:underline transition-colors">Lupa password?</a>
       </div>
 
-      <!-- Login Button -->
       <ion-button
         expand="block"
         class="mt-8 font-medium text-white tracking-wide overflow-hidden"
@@ -98,8 +94,7 @@
         <ion-icon name="log-in-outline" slot="start"></ion-icon>
         Masuk
       </ion-button>
-      
-      <!-- Additional help text -->
+
       <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
         Butuh bantuan? <a href="#" class="text-[#BB3E00] dark:text-[#FF8C5A] hover:underline">Hubungi kami</a>
       </p>
