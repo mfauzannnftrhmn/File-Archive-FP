@@ -1,6 +1,6 @@
 {
   "name": "SampleApk",
-  "version": "1.2.20",
+  "version": "1.2.41",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -24,9 +24,10 @@
     "@angular/platform-browser": "^19.2.13",
     "@angular/platform-browser-dynamic": "^19.2.13",
     "@angular/router": "^19.2.13",
+    "@awesome-cordova-plugins/android-permissions": "^8.0.2",
     "@awesome-cordova-plugins/app-version": "^8.0.2",
     "@awesome-cordova-plugins/local-notifications": "^8.0.2",
-    "@capacitor/android": "7.2.0",
+    "@capacitor/android": "^7.2.0",
     "@capacitor/app": "^7.0.1",
     "@capacitor/browser": "^7.0.1",
     "@capacitor/core": "7.2.0",
@@ -39,6 +40,7 @@
     "@capacitor/status-bar": "^7.0.1",
     "@ionic/angular": "^8.0.0",
     "@ionic/storage-angular": "^4.0.0",
+    "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-app-version": "^0.1.14",
     "cordova-plugin-local-notification": "^1.1.9",
     "date-fns": "^4.1.0",

@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 // ✅ Tambahkan ini
 import { IonicStorageModule } from '@ionic/storage-angular';
@@ -32,7 +33,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     IonicStorageModule.forRoot()
     // ✅ Tidak perlu ImageCropperModule
   ],
-  providers: [
+  providers: [AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],

@@ -87,9 +87,16 @@
                 <ion-icon name="document-text-outline" class="text-xl text-orange-600 dark:text-amber-400"></ion-icon>
               </div>
               <div class="ml-4 flex-1">
-                <h3 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-1 leading-tight">{{ surat.title }}</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400">{{ surat.suratNumber }}</p>
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">Kategori: <span class="font-medium">{{ surat.category }}</span></p>
+                <h3 class="text-base font-bold text-gray-800 dark:text-gray-100 mb-1 leading-tight">
+  {{ surat.jenis_surat || 'Surat Tidak Diketahui' }}
+</h3>
+<p class="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
+  Keterangan: <span class="font-medium">{{ surat.keterangan || '-' }}</span>
+</p>
+<p class="text-sm text-gray-500 italic mt-1" *ngIf="surat.source === 'arsip'">
+  Dibagikan oleh Admin
+</p>
+
               </div>
             </div>
             
@@ -116,25 +123,32 @@
                 </div>
               </div>
             </div>
+            <div class="flex items-start mb-4" [ngClass]="{
+  'border-l-4 border-amber-400 pl-2': surat.source === 'arsip'
+}"></div>
+
             
             <div class="flex justify-between items-center pt-4 border-t border-gray-100 dark:border-stone-700">
               <div>
                 <ion-button 
-                  size="small" 
-                  fill="clear" 
-                  color="medium" 
-                  class="text-sm dark:text-gray-300 custom-clear-button"
-                  (click)="downloadSurat(surat)"
-                  [disabled]="!surat.file_url || surat.status !== 'Disetujui'" >
-                  <ion-icon name="download-outline" slot="start" class="text-lg"></ion-icon>
-                  <span>Unduh Surat</span>
-                </ion-button>
+  size="small" 
+  fill="clear" 
+  color="medium" 
+  class="text-sm dark:text-gray-300 custom-clear-button"
+  (click)="downloadSurat(surat)"
+  [disabled]="!surat.file_url">
+  <ion-icon name="download-outline" slot="start" class="text-lg"></ion-icon>
+  <span>Unduh Surat</span>
+</ion-button>
+
+
               </div>
-              <div>
-                <ion-button size="small" fill="outline" color="danger" class="custom-outline-danger-button" (click)="deleteSurat(surat.id, i)">
-                  <ion-icon name="trash-outline" slot="icon-only" class="text-lg"></ion-icon>
-                </ion-button>
-              </div>
+             <div *ngIf="surat.category !== 'Arsip'">
+  <ion-button size="small" fill="outline" color="danger" class="custom-outline-danger-button" (click)="deleteSurat(surat.id, i)">
+    <ion-icon name="trash-outline" slot="icon-only" class="text-lg"></ion-icon>
+  </ion-button>
+</div>
+
             </div>
           </div>
         </div>
