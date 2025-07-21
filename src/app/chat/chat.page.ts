@@ -1,0 +1,236 @@
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { IonicModule, ToastController } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
+import { Keyboard } from '@capacitor/keyboard';
+import { NavController } from '@ionic/angular';
+
+@Component({
+  selector: 'app-chat',
+  templateUrl: './chat.page.html',
+  styleUrls: ['./chat.page.scss'],
+  standalone: true,
+  imports: [IonicModule, CommonModule, FormsModule, SafeHtmlPipe],
+})
+export class ChatPage implements OnInit, OnDestroy {
+  messageText = '';
+  isLoggedIn = false;
+  messages: { text: string; sentBy: string; time: string; isWelcome?: boolean }[] = [];
+  isLoading = false;
+
+  constructor(
+    private toastController: ToastController, 
+    private navCtrl: NavController
+  ) {
+    this.checkLoginAndShowWelcome();
+  }
+
+checkLoginAndShowWelcome() {
+  const userStr = localStorage.getItem('currentUser');
+  let user;
+
+  try {
+    user = userStr ? JSON.parse(userStr) : null;
+  } catch (e) {
+    console.error('Gagal parse currentUser dari localStorage:', e);
+    user = null;
+  }
+
+  if (!user || !user.token) {
+    console.log('❌ User belum login atau sudah logout, tampilkan welcome message');
+
+    // ✅ Bersihkan data user & chat history saat logout
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('chatHistory');
+    localStorage.removeItem('lastGreet');
+    this.messages = []; // Kosongkan chat UI
+
+    this.isLoggedIn = false;
+    this.showWelcomeMessage();
+  } else {
+    console.log('✅ User sudah login, cek ucapan selamat datang untuk', user.name);
+    this.isLoggedIn = true;
+    this.loadChatHistory(user.id);
+    this.greetUserOncePerDay(user.id, user.name);
+  }
+}
+
+
+  greetUserOncePerDay(userId: string, userName: string) {
+    const lastGreetKey = `lastGreet_${userId}`;
+    const lastGreetDate = localStorage.getItem(lastGreetKey);
+    const today = new Date().toISOString().slice(0, 10); // Format YYYY-MM-DD
+
+    if (lastGreetDate === today) {
+      console.log('✅ Ucapan selamat datang sudah dikirim hari ini');
+      return;
+    }
+
+    this.showHelloMessage(userName);
+    localStorage.setItem(lastGreetKey, today);
+  }
+
+  loadChatHistory(userId: string) {
+    const savedChats = localStorage.getItem(`chatHistory_${userId}`);
+    if (savedChats) {
+      try {
+        this.messages = JSON.parse(savedChats);
+        console.log('✅ Chat history dimuat:', this.messages);
+      } catch (e) {
+        console.error('❌ Gagal parse chat history:', e);
+        this.messages = [];
+      }
+    }
+  }
+
+  saveChatHistory() {
+    if (this.isLoggedIn) {
+      const userStr = localStorage.getItem('currentUser');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        localStorage.setItem(`chatHistory_${user.id}`, JSON.stringify(this.messages));
+        console.log('💾 Chat history disimpan untuk user:', user.id);
+      }
+    }
+  }
+
+  showHelloMessage(userName: string) {
+    const helloText = `👋 Halo <b>${userName}</b>! Selamat datang kembali di <b>SIMPAP Application</b> 🌟<br><br>
+Saya adalah <b>Chatky</b>. Ketik pesan untuk memulai percakapan.`;
+
+    const helloMessage = {
+      text: helloText,
+      sentBy: 'chatky',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isWelcome: true,
+    };
+    this.messages.push(helloMessage);
+    this.saveChatHistory();
+  }
+
+  ngOnInit() {
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const footer = document.querySelector('.chat-footer') as HTMLElement;
+      footer.style.bottom = `${info.keyboardHeight}px`;
+    });
+
+    Keyboard.addListener('keyboardWillHide', () => {
+      const footer = document.querySelector('.chat-footer') as HTMLElement;
+      footer.style.bottom = '0px';
+    });
+  }
+
+  ngOnDestroy() {
+    Keyboard.removeAllListeners();
+  }
+
+
+
+  showWelcomeMessage() {
+    const formatText = `👋 Halo! Selamat datang di <b>SIMPAP Application</b> 🌟<br><br>
+Saya adalah <b>Chatky</b> yang akan menjadi pemandu kamu.<br><br>
+Jika kamu ingin menggunakan aplikasi ini tetapi belum daftar, silakan ketik:<br><br>
+<code>!daftar</code><br>
+<code>Nama lengkap = (nama lengkap kamu)</code><br>
+<code>Email = (email kamu)</code><br>
+<code>Password = (password baru minimal 1 huruf kapital & minimal 6 karakter)</code><br><br>
+📩 Lalu tunggu balasan disini apakah akunmu sudah terdaftar atau belum.`;
+
+    const welcomeMessage = {
+      text: formatText,
+      sentBy: 'bot',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isWelcome: true,
+    };
+    this.messages.push(welcomeMessage);
+  }
+
+  async copyFormat() {
+    try {
+      const format = `!daftar
+Nama lengkap = (nama lengkap kamu)
+Email = (email kamu)
+Password = (password baru minimal 1 huruf kapital & minimal 6 karakter)`;
+
+      await navigator.clipboard.writeText(format);
+
+      const toast = await this.toastController.create({
+        message: '✅ Format berhasil disalin ke clipboard!',
+        duration: 2000,
+        color: 'success',
+      });
+      await toast.present();
+    } catch (err) {
+      console.error('Clipboard Error: ', err);
+      const toast = await this.toastController.create({
+        message: '❌ Gagal menyalin format!',
+        duration: 2000,
+        color: 'danger',
+      });
+      await toast.present();
+    }
+  }
+
+  async sendMessage() {
+    if (this.messageText.trim().length === 0) return;
+
+    const userMessage = {
+      text: this.messageText,
+      sentBy: 'user',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    };
+    this.messages.push(userMessage);
+    this.saveChatHistory();
+
+    const currentMessage = this.messageText;
+    this.messageText = '';
+    this.isLoading = true;
+
+    try {
+      const response = await fetch('https://simpap.my.id/public/api/chat/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: currentMessage }),
+      });
+
+      const data = await response.json();
+      const botReply = data.success
+        ? data.reply
+        : 'Plana tidak mengerti maksudnya 🥲';
+
+      this.messages.push({
+        text: botReply,
+        sentBy: 'bot',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      });
+      this.saveChatHistory();
+    } catch (error) {
+      console.error('API Error: ', error);
+      this.messages.push({
+        text: '⚠️ Tidak bisa terhubung ke server. Coba lagi nanti.',
+        sentBy: 'bot',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      });
+      this.saveChatHistory();
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // ✅ Fungsi untuk menghapus chat history
+  clearChatHistory() {
+    if (this.isLoggedIn) {
+      const userStr = localStorage.getItem('currentUser');
+      if (userStr) {
+        const user = JSON.parse(userStr);
+        localStorage.removeItem(`chatHistory_${user.id}`); // Hapus chat
+        localStorage.removeItem(`lastGreet_${user.id}`); // Hapus greet date
+        this.messages = []; // Kosongkan chat di UI
+        console.log('🗑️ Chat history dihapus untuk user:', user.id);
+
+        this.showHelloMessage(user.name); // Kirim salam lagi setelah clear
+      }
+    }
+  }
+}

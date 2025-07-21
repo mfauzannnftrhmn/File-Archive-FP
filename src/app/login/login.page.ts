@@ -36,9 +36,24 @@ export class LoginPage {
     this.initStorage(); // ✅ Inisialisasi saat konstruktor dipanggil
   }
 
-  async initStorage() {
-    await this.storage.create();
+async initStorage() {
+  await this.storage.create();
+
+  // ✅ Ambil status login & user data
+  const isLoggedIn = await this.storage.get('isLoggedIn');
+  const userData = await this.storage.get('userData');
+
+  if (isLoggedIn && userData) {
+    console.log('User sudah login, redirect ke /dashboard');
+    this.navCtrl.navigateRoot('/dashboard', { animated: true, animationDirection: 'forward' });
+  } else {
+    console.log('Belum login atau data tidak ditemukan, tetap di /login');
+    // ✅ Pastikan tidak redirect kalau data kosong atau sudah logout
+    await this.storage.remove('isLoggedIn'); // optional, untuk bersih-bersih
+    await this.storage.remove('userData');
   }
+}
+
 
   async doSubmit() {
     if (!this.email || !this.password) {

@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- ✅ Tambahkan default back button -->
+      <ion-back-button defaultHref="/option"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>
+      <div class="header-title">
+        Chat
+        <ion-text class="header-subtitle">Online</ion-text>
+      </div>
+    </ion-title>
+
+    <!-- ✅ Tampilkan tombol hapus jika login -->
+    <ion-button
+      *ngIf="isLoggedIn"
+      color="danger"
+      expand="block"
+      (click)="clearChatHistory()"
+    >
+      🗑️ Hapus Riwayat Chat
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content [fullscreen]="true" class="ion-padding chat-content">
+
+  <div class="chat-messages">
+    <div
+      *ngFor="let msg of messages"
+      [ngClass]="{
+        'message-wrapper': true,
+        'message-sent': msg.sentBy === 'user',
+        'message-received': msg.sentBy !== 'user'
+      }"
+    >
+      <div class="bubble">
+        <p class="message-text" [innerHTML]="msg.text | safeHtml"></p>
+        <span class="message-time">{{ msg.time }}</span>
+
+        <ion-button
+          *ngIf="msg.isWelcome && !isLoggedIn"
+          size="small"
+          fill="outline"
+          color="primary"
+          (click)="copyFormat()"
+        >
+          <ion-icon slot="start" name="copy-outline"></ion-icon>
+          Copy Format
+        </ion-button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="typing-indicator">
+      <ion-spinner name="dots" color="primary"></ion-spinner>
+      <span class="typing-text">Mengetik...</span>
+    </div>
+  </div>
+</ion-content>
+
+<div class="chat-footer">
+  <ion-toolbar class="chat-input-toolbar">
+    <ion-item lines="none" class="chat-input-container">
+      <ion-textarea
+        placeholder="Ketik pesan..."
+        [(ngModel)]="messageText"
+        (keyup.enter)="sendMessage()"
+        auto-grow="true"
+        rows="1"
+        max-rows="4"
+      ></ion-textarea>
+
+      <ion-button
+        fill="solid"
+        slot="end"
+        (click)="sendMessage()"
+        [disabled]="isLoading || !messageText.trim()"
+        class="send-button"
+      >
+        <ion-icon name="send" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</div>

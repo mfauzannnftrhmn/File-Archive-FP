@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Storage } from '@ionic/storage';
 
 // ... (Interface UserProfileData dan ApiProfileResponse tidak perlu diubah)
 interface UserProfileData {
@@ -68,7 +69,8 @@ export class ProfilePage implements OnInit, OnDestroy {
     private http: HttpClient,
     private toastController: ToastController,
     private loadingController: LoadingController,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private storage: Storage // ✅ Tambahkan storage
   ) {}
 
   ngOnInit() {
@@ -207,23 +209,34 @@ copyProfileUrl() {
   }
 
   // Fungsi untuk konfirmasi logout
-  async confirmLogout() {
-    const alert = await this.alertController.create({
-      header: 'Konfirmasi',
-      message: 'Apakah Anda yakin ingin keluar?',
-      buttons: [
-        { text: 'Batal', role: 'cancel' },
-        {
-          text: 'Keluar',
-          handler: () => {
-            localStorage.clear();
-            this.router.navigate(['/login']);
-          }
+ async confirmLogout() {
+  const alert = await this.alertController.create({
+    header: 'Konfirmasi',
+    message: 'Apakah Anda yakin ingin keluar?',
+    buttons: [
+      { text: 'Batal', role: 'cancel' },
+      {
+        text: 'Keluar',
+        handler: async () => {
+          // ✅ Hapus data di Ionic Storage
+          await this.storage.remove('isLoggedIn');
+          await this.storage.remove('userData');
+
+          // ✅ Hapus juga data di localStorage
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('chatHistory');
+          localStorage.removeItem('lastGreet');
+
+          console.log('✅ Semua data user & chat sudah dihapus');
+          this.router.navigate(['/login']);
         }
-      ],
-    });
-    await alert.present();
-  }
+      }
+    ],
+  });
+  await alert.present();
+}
+
+
 
   // Helper untuk mengambil token
   private getToken(): string | null {

@@ -10,13 +10,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ButtonModule } from 'primeng/button';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
-import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
-
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 // ✅ Tambahkan ini
 import { IonicStorageModule } from '@ionic/storage-angular';
 
-// ❌ Hapus ini karena tidak digunakan lagi di Angular 17+
-// import { ImageCropperModule } from 'ngx-image-cropper';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +21,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    SafeHtmlPipe,
     FormsModule,
     BrowserAnimationsModule,
     ButtonModule,
@@ -33,10 +31,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
     IonicStorageModule.forRoot()
     // ✅ Tidak perlu ImageCropperModule
   ],
-  providers: [AndroidPermissions,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,0 +1,65 @@
+
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar style="--background: rgba(226, 192, 142, 0.8); --backdrop-filter: blur(12px);">
+    <ion-title class="font-bold text-center" style="color: var(--deep-brown);">SIMPAP</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="flex items-center justify-center h-full" style="--background: transparent;">
+    <div *ngIf="isLoading" class="loading-screen">
+    <ion-spinner name="crescent" color="warning"></ion-spinner>
+    <p class="loading-text">Memuat aplikasi...</p>
+  </div>
+  
+  <div class="star-background">
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    <div class="star"></div>
+    </div>
+
+  <div class="main-content flex flex-col justify-center h-full">
+    <div class="text-center mb-10 px-4">
+      <h1 class="text-4xl font-extrabold tracking-tight" style="color: #2c1910;">Selamat Datang</h1>
+      <p class="mt-2 text-lg" style="color: #2c1910;">Pilih salah satu layanan di bawah ini untuk memulai sesi Anda.</p>
+    </div>
+
+    <div class="w-full grid grid-cols-1 gap-6 px-4">
+      <ion-card (click)="goToLogin()" class="group m-0 cursor-pointer rounded-2xl bg-white/70 backdrop-blur-md"
+        style="border: 1px solid var(--border-color);"
+        onmouseover="this.style.borderColor='var(--accent-hover)';"
+        onmouseout="this.style.borderColor='var(--border-color)';">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="p-4 rounded-full mb-4" style="background-color: var(--muted-orange);">
+            <ion-icon name="key-outline" class="text-4xl" style="color: rgb(0, 0, 0);"></ion-icon>
+          </div>
+          <div>
+            <ion-card-title class="text-xl font-bold" style="color: black;">Akses Arsip</ion-card-title>
+            <ion-card-subtitle class="mt-1 text-base" style="color: black;">Login untuk mengelola file Anda.</ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card>
+
+      <ion-card (click)="goToChat()" class="group m-0 cursor-pointer rounded-2xl bg-white/70 backdrop-blur-md"
+        style="border: 1px solid var(--border-color);"
+        onmouseover="this.style.borderColor='var(--accent-hover)';"
+        onmouseout="this.style.borderColor='var(--border-color)';">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="p-4 rounded-full mb-4" style="background-color: var(--muted-orange);">
+            <ion-icon name="chatbubbles-outline" class="text-4xl" style="color: rgb(0, 0, 0);"></ion-icon>
+          </div>
+          <div>
+            <ion-card-title class="text-xl font-bold" style="color: black;">Ruang Diskusi</ion-card-title>
+            <ion-card-subtitle class="mt-1 text-base" style="color: black;">Diskusikan dokumen dan tugas.</ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>
