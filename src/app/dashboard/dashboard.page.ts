@@ -9,7 +9,8 @@ import { APP_VERSION } from '../app-version'; // Pastikan path ini benar
 import { LocalNotifications, Channel } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
 import { NavController } from '@ionic/angular';
-
+import { App } from '@capacitor/app';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-dashboard',
@@ -73,10 +74,38 @@ goToChatWithAdminTemplate() {
     }
   });
 }
+checkPlayStoreUpdate() {
+  if (this.platform.is('android')) {
+    console.log('📱 Mengecek update Play Store...');
+    // ID aplikasi di Play Store (ganti sesuai App ID kamu)
+    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.kakoi.app'; 
 
+    // Buka Play Store jika user klik "Update Sekarang"
+    this.alertController.create({
+      header: 'Pembaruan Tersedia',
+      message: 'Versi baru aplikasi tersedia di Play Store. Perbarui sekarang untuk mendapatkan fitur terbaru!',
+      buttons: [
+        {
+          text: 'Nanti',
+          role: 'cancel'
+        },
+        {
+          text: 'Update Sekarang',
+          handler: async () => {
+            console.log('🔗 Membuka Play Store:', playStoreUrl);
+            await Browser.open({ url: playStoreUrl });
+          }
+        }
+      ]
+    }).then(alert => alert.present());
+  } else {
+    console.log('Platform bukan Android, lewati cek Play Store.');
+  }
+}
     ngOnInit() {
     this.loadAllData();
     this.checkForUpdate();
+    this.checkPlayStoreUpdate();
     this.reportUserVersion();
     this.loadUserNotifications(); // <<< MEMUAT NOTIFIKASI SAAT DASHBOARD DIMUAT
     this.createNotificationChannel(); 
