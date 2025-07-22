@@ -8,6 +8,7 @@ import { APP_VERSION } from '../app-version'; // Pastikan path ini benar
 // --- IMPORTS UNTUK NOTIFIKASI LOKAL (JIKA MAU TAMPILKAN POPUP NOTIF) ---
 import { LocalNotifications, Channel } from '@capacitor/local-notifications';
 import { Capacitor } from '@capacitor/core';
+import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -45,10 +46,33 @@ export class DashboardPage implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private alertController: AlertController, // <<< Injeksi AlertController
-    private platform: Platform // <<< Injeksi Platform
+    private platform: Platform,
+    private navCtrl: NavController
   ) {
     this.setUserNameFromStorage();
   }
+goToChatWithAdminTemplate() {
+  const userStr = localStorage.getItem('currentUser');
+  let userEmail = '(email kamu)'; // default kalau tidak ada user
+
+  if (userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      if (user && user.email) {
+        userEmail = user.email; // ambil email user
+      }
+    } catch (error) {
+      console.error('Gagal parsing currentUser dari localStorage:', error);
+    }
+  }
+
+  // Kirim param "presetMessage" ke /chat
+  this.navCtrl.navigateForward('/chat', {
+    queryParams: {
+      presetMessage: `!admin\nemail = ${userEmail}\nAlasan = Masukan Alasan menhubungi admin`
+    }
+  });
+}
 
     ngOnInit() {
     this.loadAllData();

@@ -55,8 +55,22 @@
             <ion-icon name="chatbubbles-outline" class="text-4xl" style="color: rgb(0, 0, 0);"></ion-icon>
           </div>
           <div>
-            <ion-card-title class="text-xl font-bold" style="color: black;">Ruang Diskusi</ion-card-title>
-            <ion-card-subtitle class="mt-1 text-base" style="color: black;">Diskusikan dokumen dan tugas.</ion-card-subtitle>
+            <ion-card-title class="text-xl font-bold" style="color: black;">Chatky</ion-card-title>
+            <ion-card-subtitle class="mt-1 text-base" style="color: black;">Daftar dan mulailah percakapan dengan Chatky.</ion-card-subtitle>
+          </div>
+        </div>
+      </ion-card>
+      <ion-card (click)="resendToChatky()" class="group m-0 cursor-pointer rounded-2xl bg-white/70 backdrop-blur-md"
+        style="border: 1px solid var(--border-color);"
+        onmouseover="this.style.borderColor='var(--accent-hover)';"
+        onmouseout="this.style.borderColor='var(--border-color)';">
+        <div class="p-6 flex flex-col items-center text-center">
+          <div class="p-4 rounded-full mb-4" style="background-color: var(--muted-orange);">
+            <ion-icon name="mail-outline" class="text-4xl" style="color: rgb(0, 0, 0);"></ion-icon>
+          </div>
+          <div>
+            <ion-card-title class="text-xl font-bold" style="color: black;">Kirim Ulang Email</ion-card-title>
+            <ion-card-subtitle class="mt-1 text-base" style="color: black;">Jika Anda blm menerima Link verifikasi silahkan klik</ion-card-subtitle>
           </div>
         </div>
       </ion-card>

@@ -5,6 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 import { Keyboard } from '@capacitor/keyboard';
 import { NavController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +25,10 @@ export class ChatPage implements OnInit, OnDestroy {
 
   constructor(
     private toastController: ToastController, 
-    private navCtrl: NavController
+    private navCtrl: NavController,
+  private platform: Platform,
+  private location: Location,
+  private route: ActivatedRoute 
   ) {
     this.checkLoginAndShowWelcome();
   }
@@ -110,22 +117,46 @@ Saya adalah <b>Chatky</b>. Ketik pesan untuk memulai percakapan.`;
   }
 
   ngOnInit() {
-    Keyboard.addListener('keyboardWillShow', (info) => {
-      const footer = document.querySelector('.chat-footer') as HTMLElement;
-      footer.style.bottom = `${info.keyboardHeight}px`;
-    });
+  // Cek apakah ada preset message dari queryParams
+  this.route.queryParams.subscribe(params => {
+    if (params['presetMessage']) {
+      this.messageText = params['presetMessage'];
+    }
+  });
 
-    Keyboard.addListener('keyboardWillHide', () => {
-      const footer = document.querySelector('.chat-footer') as HTMLElement;
-      footer.style.bottom = '0px';
-    });
-  }
+  Keyboard.addListener('keyboardWillShow', (info) => {
+    const footer = document.querySelector('.chat-footer') as HTMLElement;
+    footer.style.bottom = `${info.keyboardHeight}px`;
+  });
+
+  Keyboard.addListener('keyboardWillHide', () => {
+    const footer = document.querySelector('.chat-footer') as HTMLElement;
+    footer.style.bottom = '0px';
+  });
+}
 
   ngOnDestroy() {
     Keyboard.removeAllListeners();
   }
 
-
+ionViewWillEnter() {
+  this.platform.backButton.subscribeWithPriority(10, () => {
+    if (window.history.length > 1) {
+      // ✅ Ada halaman sebelumnya, kembali
+      this.location.back();
+    } else {
+      // ✅ Tidak ada history, arahkan ke halaman fallback
+      this.navCtrl.navigateRoot('/home'); // Ganti '/home' dengan route yang Anda mau
+    }
+  });
+}
+goBack() {
+  if (window.history.length > 1) {
+    this.location.back(); // ✅ Kembali ke halaman sebelumnya
+  } else {
+    this.navCtrl.navigateRoot('/login'); // ✅ Fallback ke halaman utama
+  }
+}
 
   showWelcomeMessage() {
     const formatText = `👋 Halo! Selamat datang di <b>SIMPAP Application</b> 🌟<br><br>
