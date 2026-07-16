@@ -60,7 +60,7 @@ export class ProfilePage implements OnInit, OnDestroy {
     profilePicture: 'https://s6.imgcdn.dev/YcXKdt.png',
   };
 
-  private laravelApiUrl = 'https://simpap.my.id/public/api';
+  private laravelApiUrl = 'https://simpap.kakoi.my.id/api';
   private profileSubscription: Subscription | undefined;
 
   constructor(
@@ -153,7 +153,7 @@ export class ProfilePage implements OnInit, OnDestroy {
 copyProfileUrl() {
   const token = this.getToken(); // Ambil token dari localStorage
 
-  this.http.get<{ url: string }>('https://simpap.my.id/public/api/profile/url', {
+  this.http.get<{ url: string }>('https://simpap.kakoi.my.id/api/profile/url', {
     headers: new HttpHeaders({
       Authorization: `Bearer ${token}`
     })

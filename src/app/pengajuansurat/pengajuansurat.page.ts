@@ -164,7 +164,7 @@ export class PengajuansuratPage implements OnInit {
         .set('Accept', 'application/json');
 
       const categoryParam = encodeURIComponent(template.category);
-      const url = `https://simpap.my.id/public/api/pengajuan-surats/check-status?category=${categoryParam}`;
+      const url = `https://simpap.kakoi.my.id/api/pengajuan-surats/check-status?category=${categoryParam}`;
       console.log('Requesting check-status URL:', url);
 
       this.http.get(url, { headers }).subscribe({
@@ -291,7 +291,7 @@ generateSuratNumber() {
       'Accept': 'application/json'
     });
 
-    const url = `https://simpap.my.id/public/api/pengajuan-surats/last-number`;
+    const url = `https://simpap.kakoi.my.id/api/pengajuan-surats/last-number`;
 
     // Ganti GET ke POST dan kirim data category
     this.http.post(url, { category: category }, { headers }).subscribe({
@@ -483,7 +483,7 @@ generateSuratNumber() {
     }
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http.post('https://simpap.my.id/public/api/pengajuan-surats', payload, { headers })
+    this.http.post('https://simpap.kakoi.my.id/api/pengajuan-surats', payload, { headers })
       .subscribe({
         next: async (response) => {
           this.isLoading = false;
@@ -714,7 +714,7 @@ generateSuratNumber() {
     }
     let httpHeaders = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/pdf');
 
-    this.http.post('https://simpap.my.id/public/api/pengajuan-surats/generate-pdf', payload, {
+    this.http.post('https://simpap.kakoi.my.id/api/pengajuan-surats/generate-pdf', payload, {
         headers: httpHeaders,
         responseType: 'blob'
     }).subscribe({

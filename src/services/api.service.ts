@@ -8,7 +8,7 @@ import { map, delay } from 'rxjs/operators'; // Import map dan delay
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://simpap.my.id/public/api'; 
+  private baseUrl = 'https://simpap.kakoi.my.id/api'; 
 
   constructor(private http: HttpClient) { }
 private getAuthHeaders(): HttpHeaders {
@@ -53,12 +53,19 @@ private getAuthHeaders(): HttpHeaders {
   }
 
  getLatestAppVersion() {
-  const versionUrl = 'https://simpap.my.id/public/api/check-update';
+  const versionUrl = 'https://simpap.kakoi.my.id/api/check-update';
   return this.http.get(versionUrl);
+}
+getLatestVersion() {
+  return this.http.get<{ version: string }>('https://simpap.kakoi.my.id/api/latest-version');
+}
+
+getPlayStoreVersion() {
+  return this.http.get(`${this.baseUrl}/check-update-playstore`);
 }
 
 sendUserAppVersion(email: string, name: string, version: string) {
-  return this.http.post('https://simpap.my.id/public/api/user-app-version', {
+  return this.http.post('https://simpap.kakoi.my.id/api/user-app-version', {
     email,
     name,
     app_version: version

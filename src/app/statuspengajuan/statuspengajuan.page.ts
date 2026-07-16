@@ -43,8 +43,6 @@ interface Surat {
 })
 export class StatuspengajuanPage {
   @ViewChild(IonContent) content!: IonContent;
-
-  // Daftar surat yang sudah diajukan
   submittedSurat = [
     { 
       id: 1, 
@@ -217,8 +215,6 @@ export class StatuspengajuanPage {
     });
     gesture.enable();
   }
-
-  // Fungsi untuk memuat data riwayat surat dari localStorage
   loadRiwayatSurat() {
     const storedSurat = localStorage.getItem('riwayatSurat');
     if (storedSurat) {
@@ -252,47 +248,38 @@ export class StatuspengajuanPage {
     }
   }
 
-  // Fungsi untuk mendapatkan status berdasarkan progress
   getStatusFromProgress(progress: number): string {
     if (progress < 0.3) return 'Menunggu';
     if (progress < 0.8) return 'Dalam Proses';
     return 'Selesai';
   }
 
-  // Fungsi yang dipanggil saat surat dipilih
   async onSuratSelected() {
     if (!this.selectedSurat) {
       this.selectedSuratDetails = null;
       return;
     }
 
-    // Set loading state
     this.isLoading = true;
     this.selectedSuratDetails = null;
 
-    // Simulasi loading dengan delay
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    // Mencari surat yang dipilih berdasarkan suratNumber
     this.selectedSuratDetails = this.riwayatSurat.find(surat => surat.suratNumber === this.selectedSurat);
     
-    // Jika surat ditemukan, tambahkan status jika belum ada
     if (this.selectedSuratDetails && !this.selectedSuratDetails.status) {
       const overallProgress = this.getOverallProgress();
       this.selectedSuratDetails.status = this.getStatusFromProgress(overallProgress);
     }
 
-    // End loading state
     this.isLoading = false;
   }
 
-  // Fungsi untuk menghitung progress keseluruhan dari surat yang dipilih
   getOverallProgress() {
     if (!this.selectedSuratDetails) {
       return 0;
     }
     
-    // Menghitung rata-rata dari ketiga progress
     const totalProgress = (
       this.selectedSuratDetails.distribusiProgress + 
       this.selectedSuratDetails.verifikasiProgress + 
@@ -302,18 +289,14 @@ export class StatuspengajuanPage {
     return totalProgress;
   }
 
-  // Fungsi untuk refresh data
   doRefresh(event: any) {
     setTimeout(() => {
-      // Muat ulang data riwayat surat
       this.loadRiwayatSurat();
       
-      // Jika ada surat yang dipilih, perbarui detailnya
       if (this.selectedSurat) {
         this.onSuratSelected();
       }
       
-      // Tampilkan toast konfirmasi refresh
       this.toastController.create({
         message: 'Data berhasil diperbarui',
         duration: 1500,
@@ -321,7 +304,6 @@ export class StatuspengajuanPage {
         position: 'top'
       }).then(toast => toast.present());
       
-      // Selesaikan event refresh
       event.target.complete();
     }, 1000);
   }

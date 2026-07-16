@@ -3,8 +3,6 @@
     <ion-buttons slot="start">
       <!-- ✅ Tambahkan default back button -->
       <ion-back-button defaultHref="/login"></ion-back-button>
-
-
     </ion-buttons>
 
     <ion-title>
@@ -14,23 +12,23 @@
       </div>
     </ion-title>
 
-    <!-- ✅ Tampilkan tombol hapus jika login -->
-    <ion-button
-      *ngIf="isLoggedIn"
-      color="danger"
-      expand="block"
-      (click)="clearChatHistory()"
-    >
-      🗑️ Hapus Riwayat Chat
-    </ion-button>
+    <ion-buttons slot="end">
+      <!-- ✅ Tampilkan tombol hapus jika login -->
+      <ion-button
+        *ngIf="isLoggedIn"
+        color="danger"
+        fill="clear"
+        (click)="clearChatHistory()"
+        class="clear-chat-button"
+      >
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-
-
-<ion-content [fullscreen]="true" class="ion-padding chat-content">
-
-  <div class="chat-messages">
+<ion-content [fullscreen]="true" class="ion-padding chat-content" #chatContent>
+  <div class="chat-messages" #messagesContainer>
     <div
       *ngFor="let msg of messages"
       [ngClass]="{
@@ -39,6 +37,7 @@
         'message-received': msg.sentBy !== 'user'
       }"
     >
+    <ion-spinner *ngIf="isLoading" name="dots" class="mt-2"></ion-spinner>
       <div class="bubble">
         <p class="message-text" [innerHTML]="msg.text | safeHtml"></p>
         <span class="message-time">{{ msg.time }}</span>
@@ -49,6 +48,7 @@
           fill="outline"
           color="primary"
           (click)="copyFormat()"
+          class="copy-format-button"
         >
           <ion-icon slot="start" name="copy-outline"></ion-icon>
           Copy Format

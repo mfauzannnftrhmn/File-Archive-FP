@@ -11,13 +11,12 @@ import { IonicModule, NavController } from '@ionic/angular';
   imports: [IonicModule, CommonModule]
 })
 export class OptionPage {
-  isLoading = true; // ✅ Tambahkan state untuk loading
+  isLoading = true; 
 
   constructor(private navCtrl: NavController) {
     this.showLoadingScreen();
   }
 resendToChatky() {
-  // Bawa user ke halaman chat dengan presetMessage
   this.navCtrl.navigateForward('/chat', {
     queryParams: {
       presetMessage: `!resend\nemail = (email kamu)`
@@ -25,11 +24,10 @@ resendToChatky() {
   });
 }
 
-  // ✅ Fungsi untuk menampilkan loading sementara
   showLoadingScreen() {
     setTimeout(() => {
-      this.isLoading = false; // Hilangkan loading setelah 2.5 detik
-    }, 2500);
+      this.isLoading = false; 
+    }, 6000);
   }
 
   goToLogin() {

@@ -6,13 +6,11 @@ import { environment } from 'src/environments/environment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Channel } from '@capacitor/local-notifications';
-// --- IMPORT PLUGIN CAPACITOR ---
 import { Platform } from '@ionic/angular';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { CapacitorHttp } from '@capacitor/core';
-// --- AKHIR IMPORT PLUGIN CAPACITOR ---
 
 interface Surat {
   id: number;
@@ -20,7 +18,7 @@ interface Surat {
   suratNumber: string;
   date: string;
   time?: string;
-  status?: string; // Pastikan ini ada dan berisi 'Disetujui', 'proses', 'ditolak' (huruf kecil)
+  status?: string;
   category: string;
   remarks?: string;
   file_url?: string;
@@ -190,13 +188,13 @@ async requestNotificationPermissions() {
     if (Capacitor.isNativePlatform()) {
       try {
         const channel: Channel = {
-          id: 'download_notifications', // Harus cocok dengan channelId di notifikasi
+          id: 'download_notifications', 
           name: 'Unduhan File',
           description: 'Notifikasi untuk unduhan dokumen yang selesai',
-          importance: 5, // 5 = High (make sound and pop on screen)
+          importance: 5,
           vibration: true,
-          sound: 'notif', // Nama file suara Android (tanpa ekstensi) untuk channel ini
-          visibility: 1, // 1 = NotificationVisibility.Public
+          sound: 'notif', 
+          visibility: 1, 
           lights: true,
           lightColor: '#FF0000', // Red
         };
@@ -354,7 +352,6 @@ async downloadSurat(surat: Surat) {
     }
 
   } else {
-    // Untuk surat yang memerlukan token
     if (!isApproved) {
       this.presentToast('Surat belum Disetujui, tidak bisa diunduh.', 'warning');
       return;
@@ -453,8 +450,6 @@ async downloadSurat(surat: Surat) {
 
 
   async loadRiwayatSurat(event?: any) {
-
-    // ... (fungsi ini tetap sama seperti kode Anda sebelumnya) ...
 
     const currentUser = localStorage.getItem('currentUser');
 

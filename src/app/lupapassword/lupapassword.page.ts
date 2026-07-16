@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule, ToastController, LoadingController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
-import { RouterModule } from '@angular/router'; // ✅ Tambahkan ini
+import { RouterModule } from '@angular/router'; 
 
 @Component({
   selector: 'app-lupapassword',
@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router'; // ✅ Tambahkan ini
     CommonModule,
     FormsModule,
     IonicModule,
-    RouterModule // ✅ Tambahkan ini agar routerLink dikenali
+    RouterModule 
   ],
   templateUrl: './lupapassword.page.html',
   styleUrls: ['./lupapassword.page.scss'],

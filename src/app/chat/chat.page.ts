@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IonicModule, ToastController } from '@ionic/angular';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { IonicModule, ToastController, IonContent } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
@@ -8,7 +8,8 @@ import { NavController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-
+import { ChangeDetectorRef } from '@angular/core';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
@@ -18,51 +19,89 @@ import { ActivatedRoute } from '@angular/router';
   imports: [IonicModule, CommonModule, FormsModule, SafeHtmlPipe],
 })
 export class ChatPage implements OnInit, OnDestroy {
+  @ViewChild('chatContent', { static: false }) chatContent!: IonContent;
+  @ViewChild('messagesContainer', { static: false }) messagesContainer!: ElementRef;
+
   messageText = '';
   isLoggedIn = false;
   messages: { text: string; sentBy: string; time: string; isWelcome?: boolean }[] = [];
   isLoading = false;
 
   constructor(
-    private toastController: ToastController, 
-    private navCtrl: NavController,
+  private toastController: ToastController,
+  private navCtrl: NavController,
   private platform: Platform,
   private location: Location,
-  private route: ActivatedRoute 
-  ) {
-    this.checkLoginAndShowWelcome();
-  }
-
-checkLoginAndShowWelcome() {
-  const userStr = localStorage.getItem('currentUser');
-  let user;
-
-  try {
-    user = userStr ? JSON.parse(userStr) : null;
-  } catch (e) {
-    console.error('Gagal parse currentUser dari localStorage:', e);
-    user = null;
-  }
-
-  if (!user || !user.token) {
-    console.log('❌ User belum login atau sudah logout, tampilkan welcome message');
-
-    // ✅ Bersihkan data user & chat history saat logout
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('chatHistory');
-    localStorage.removeItem('lastGreet');
-    this.messages = []; // Kosongkan chat UI
-
-    this.isLoggedIn = false;
-    this.showWelcomeMessage();
-  } else {
-    console.log('✅ User sudah login, cek ucapan selamat datang untuk', user.name);
-    this.isLoggedIn = true;
-    this.loadChatHistory(user.id);
-    this.greetUserOncePerDay(user.id, user.name);
-  }
+  private route: ActivatedRoute,
+  private cdr: ChangeDetectorRef,
+  private ngZone: NgZone
+) {
+  this.checkLoginAndShowWelcome();
 }
 
+  fetchWithTimeout(resource: RequestInfo, options: any = {}): Promise<any> {
+  const { timeout = 8000 } = options;
+
+  return Promise.race([
+    fetch(resource, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('⏱️ Timeout')), timeout)
+    )
+  ]);
+}
+buildChatContext(): string {
+  return this.messages
+    .map(msg => {
+      const role = msg.sentBy === 'user' ? '👤' : '🤖';
+      return `${role}: ${msg.text.replace(/<\/?[^>]+(>|$)/g, "")}`; // Hilangkan HTML
+    })
+    .join('\n');
+}
+
+
+  // Method to scroll to the bottom of the chat messages
+ scrollToBottom() {
+  this.ngZone.runOutsideAngular(() => {
+    setTimeout(() => {
+      this.ngZone.run(() => {
+        if (this.chatContent) {
+          this.chatContent.scrollToBottom(200);
+        }
+      });
+    }, 10);
+  });
+}
+
+
+  checkLoginAndShowWelcome() {
+    const userStr = localStorage.getItem('currentUser');
+    let user;
+
+    try {
+      user = userStr ? JSON.parse(userStr) : null;
+    } catch (e) {
+      console.error('Gagal parse currentUser dari localStorage:', e);
+      user = null;
+    }
+
+    if (!user || !user.token) {
+      console.log('❌ User belum login atau sudah logout, tampilkan welcome message');
+
+      // ✅ Bersihkan data user & chat history saat logout
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('chatHistory');
+      localStorage.removeItem('lastGreet');
+      this.messages = []; // Kosongkan chat UI
+
+      this.isLoggedIn = false;
+      this.showWelcomeMessage();
+    } else {
+      console.log('✅ User sudah login, cek ucapan selamat datang untuk', user.name);
+      this.isLoggedIn = true;
+      this.loadChatHistory(user.id);
+      this.greetUserOncePerDay(user.id, user.name);
+    }
+  }
 
   greetUserOncePerDay(userId: string, userName: string) {
     const lastGreetKey = `lastGreet_${userId}`;
@@ -89,6 +128,7 @@ checkLoginAndShowWelcome() {
         this.messages = [];
       }
     }
+    this.scrollToBottom(); // Scroll to bottom after loading history
   }
 
   saveChatHistory() {
@@ -114,49 +154,55 @@ Saya adalah <b>Chatky</b>. Ketik pesan untuk memulai percakapan.`;
     };
     this.messages.push(helloMessage);
     this.saveChatHistory();
+    this.scrollToBottom(); // Scroll to bottom after adding message
   }
 
   ngOnInit() {
-  // Cek apakah ada preset message dari queryParams
-  this.route.queryParams.subscribe(params => {
-    if (params['presetMessage']) {
-      this.messageText = params['presetMessage'];
-    }
-  });
+    // Cek apakah ada preset message dari queryParams
+    this.route.queryParams.subscribe(params => {
+      if (params['presetMessage']) {
+        this.messageText = params['presetMessage'];
+      }
+    });
 
-  Keyboard.addListener('keyboardWillShow', (info) => {
-    const footer = document.querySelector('.chat-footer') as HTMLElement;
-    footer.style.bottom = `${info.keyboardHeight}px`;
-  });
+    Keyboard.addListener('keyboardWillShow', (info) => {
+      const footer = document.querySelector('.chat-footer') as HTMLElement;
+      if (footer) {
+        footer.style.bottom = `${info.keyboardHeight}px`;
+      }
+      this.scrollToBottom(); // Scroll to bottom when keyboard shows
+    });
 
-  Keyboard.addListener('keyboardWillHide', () => {
-    const footer = document.querySelector('.chat-footer') as HTMLElement;
-    footer.style.bottom = '0px';
-  });
-}
+    Keyboard.addListener('keyboardWillHide', () => {
+      const footer = document.querySelector('.chat-footer') as HTMLElement;
+      if (footer) {
+        footer.style.bottom = '0px';
+      }
+    });
+  }
 
   ngOnDestroy() {
     Keyboard.removeAllListeners();
   }
 
-ionViewWillEnter() {
-  this.platform.backButton.subscribeWithPriority(10, () => {
-    if (window.history.length > 1) {
-      // ✅ Ada halaman sebelumnya, kembali
-      this.location.back();
-    } else {
-      // ✅ Tidak ada history, arahkan ke halaman fallback
-      this.navCtrl.navigateRoot('/home'); // Ganti '/home' dengan route yang Anda mau
-    }
-  });
-}
-goBack() {
-  if (window.history.length > 1) {
-    this.location.back(); // ✅ Kembali ke halaman sebelumnya
-  } else {
-    this.navCtrl.navigateRoot('/login'); // ✅ Fallback ke halaman utama
+  ionViewWillEnter() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      if (window.history.length > 1) {
+        // ✅ Ada halaman sebelumnya, kembali
+        this.location.back();
+      } else {
+        // ✅ Tidak ada history, arahkan ke halaman fallback
+        this.navCtrl.navigateRoot('/home'); // Ganti '/home' dengan route yang Anda mau
+      }
+    });
   }
-}
+  goBack() {
+    if (window.history.length > 1) {
+      this.location.back(); // ✅ Kembali ke halaman sebelumnya
+    } else {
+      this.navCtrl.navigateRoot('/login'); // ✅ Fallback ke halaman utama
+    }
+  }
 
   showWelcomeMessage() {
     const formatText = `👋 Halo! Selamat datang di <b>SIMPAP Application</b> 🌟<br><br>
@@ -175,6 +221,7 @@ Jika kamu ingin menggunakan aplikasi ini tetapi belum daftar, silakan ketik:<br>
       isWelcome: true,
     };
     this.messages.push(welcomeMessage);
+    this.scrollToBottom(); // Scroll to bottom after adding message
   }
 
   async copyFormat() {
@@ -204,50 +251,61 @@ Password = (password baru minimal 1 huruf kapital & minimal 6 karakter)`;
   }
 
   async sendMessage() {
-    if (this.messageText.trim().length === 0) return;
+  if (this.messageText.trim().length === 0) return;
 
-    const userMessage = {
-      text: this.messageText,
-      sentBy: 'user',
+  const currentMessage = this.messageText;
+  this.messageText = '';
+  this.isLoading = true;
+
+  const userMessage = {
+    text: currentMessage,
+    sentBy: 'user',
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+  };
+  this.messages.push(userMessage);
+  this.saveChatHistory();
+  this.scrollToBottom();
+
+  try {
+    const context = this.buildChatContext();
+
+    const response = await this.fetchWithTimeout('https://simpap.kakoi.my.id/api/chat/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: currentMessage,
+        context: context
+      }),
+      keepalive: true,
+      timeout: 8000,
+    });
+
+    const data = await response.json();
+    const botReply = data.success
+      ? data.reply
+      : '🤖 Plana tidak mengerti maksudnya 🥲';
+
+    this.messages.push({
+      text: botReply,
+      sentBy: 'bot',
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    };
-    this.messages.push(userMessage);
+    });
     this.saveChatHistory();
-
-    const currentMessage = this.messageText;
-    this.messageText = '';
-    this.isLoading = true;
-
-    try {
-      const response = await fetch('https://simpap.my.id/public/api/chat/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: currentMessage }),
-      });
-
-      const data = await response.json();
-      const botReply = data.success
-        ? data.reply
-        : 'Plana tidak mengerti maksudnya 🥲';
-
-      this.messages.push({
-        text: botReply,
-        sentBy: 'bot',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      });
-      this.saveChatHistory();
-    } catch (error) {
-      console.error('API Error: ', error);
-      this.messages.push({
-        text: '⚠️ Tidak bisa terhubung ke server. Coba lagi nanti.',
-        sentBy: 'bot',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      });
-      this.saveChatHistory();
-    } finally {
-      this.isLoading = false;
-    }
+  } catch (error) {
+    console.error('❌ API Error:', error);
+    this.messages.push({
+      text: '⚠️ Tidak bisa terhubung ke server. Coba lagi nanti.',
+      sentBy: 'bot',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    });
+    this.saveChatHistory();
+  } finally {
+    this.isLoading = false;
+    this.scrollToBottom();
   }
+}
+
+
 
   // ✅ Fungsi untuk menghapus chat history
   clearChatHistory() {

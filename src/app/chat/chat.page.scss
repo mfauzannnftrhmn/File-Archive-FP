@@ -1,251 +1,178 @@
-/* Untuk variabel warna, Anda bisa meletakkannya di src/theme/variables.scss */
-/* Contoh variabel warna di src/theme/variables.scss */
-:root {
-  --ion-color-primary: #ff86e5; /* Warna dasar yang menarik */
-  --ion-color-primary-rgb: 108, 99, 255;
-  --ion-color-primary-contrast: #e69f9f;
-  --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #5f57e0;
-  --ion-color-primary-tint: #7b73ff;
-
-  --ion-color-medium: #929292; /* Tambahkan atau sesuaikan jika belum ada */
-  --ion-color-light: #ffedcd;
-}
-
-
-/* src/app/chat/chat.page.scss */
+/* chat.page.scss */
 
 ion-header {
   ion-toolbar {
-    --background: rgba(255, 248, 215, 0.7); /* Your primary color with transparency */
-    --border-width: 0; /* Remove default Ionic border */
-    --box-shadow: none; /* Remove default Ionic shadow if any */
+    --background: #B09070; /* Warna coklat pudar untuk header */
+    --color: rgb(7, 7, 7);
+    padding-inline: 10px; // Add some horizontal padding
 
-    // Apply the glassmorphism effect
-    backdrop-filter: blur(10px) saturate(180%); /* Blur the background and boost saturation */
-    -webkit-backdrop-filter: blur(10px) saturate(180%); /* For Safari compatibility */
-    color: #6e3b00;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border at the bottom */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  }
+    .header-title {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; // Align title and subtitle to the start
+      line-height: 1.2;
 
-  .header-title {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 5px;
-
-    ion-title {
-      padding-inline-start: 0; /* Remove default padding from ion-title if it interferes */
+      ion-text.header-subtitle {
+        font-size: 0.8em;
+        opacity: 0.8;
+        color: rgb(0, 0, 0); // Ensure subtitle is visible
+      }
     }
 
-    .header-subtitle {
-      font-size: 0.8em;
-      opacity: 0.9;
-      margin-top: -2px;
-      color: rgba(0, 0, 0, 0.8); /* Adjust subtitle color for better visibility on glass */
+    ion-button.clear-chat-button {
+      --padding-start: 8px;
+      --padding-end: 8px;
+      --min-width: 40px; // Ensure button is not too wide
     }
-  }
-
-  // Ensure icons and text on the header are visible and contrasting
-  ion-buttons ion-button,
-  ion-buttons ion-back-button {
-    color: white; // Make sure buttons are white for contrast on the primary background
   }
 }
 
 ion-content.chat-content {
-  --background: #272727a6; /* Latar belakang aplikasi yang lembut */
-  display: flex; /* Untuk flexbox layout */
-  flex-direction: column; /* Pesan akan tersusun vertikal */
-  justify-content: flex-end; /* Memulai pesan dari bawah */
+  --background: var(--ion-color-light, #f4f5f8); // Light background for chat area
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; // Stick messages to the bottom
+  padding-bottom: 0; // Remove default padding-bottom as footer handles spacing
+}
 
-  .chat-messages {
-    flex-grow: 1; /* Memastikan chat messages mengambil ruang yang tersedia */
-    display: flex;
-    flex-direction: column;
-    padding: 10px 12px; /* Padding sisi untuk gelembung */
-    overflow-y: auto; /* Memungkinkan scroll jika pesan banyak */
-  }
+.chat-messages {
+  flex-grow: 1; // Allow messages to take up available space
+  overflow-y: auto; // Enable scrolling for messages
+  padding: 10px; // Padding around the message bubbles
+  display: flex;
+  flex-direction: column; // Stack messages vertically
+  justify-content: flex-end; // Keep messages at the bottom
+}
 
-  .message-wrapper {
-    display: flex;
-    margin-bottom: 10px;
-    position: relative;
+.message-wrapper {
+  display: flex;
+  margin-bottom: 10px; // Space between messages
+  align-items: flex-end; // Align bubbles to the bottom if they have different heights
 
+  &.message-sent {
+    justify-content: flex-end; // Align sent messages to the right
     .bubble {
-      max-width: 80%;
-      padding: 10px 14px; /* Padding lebih nyaman */
-      border-radius: 20px; /* Sudut lebih bulat */
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Bayangan yang lebih jelas */
-      position: relative;
-      word-wrap: break-word;
-
-      .message-text {
-        margin: 0;
-        padding: 0;
-        line-height: 1.45; /* Jarak antar baris lebih nyaman */
-        font-size: 0.95em;
-      }
-
-      .message-time {
-        font-size: 0.65em; /* Ukuran waktu lebih kecil */
-        color: rgba(0, 0, 0, 0.5); /* Warna waktu yang lebih lembut */
-        margin-top: 5px;
-        display: block;
-        text-align: right; /* Default untuk waktu di dalam bubble */
-      }
-
-      ion-button {
-        margin-top: 8px; /* Jarak dari teks pesan */
-        font-size: 0.8em;
-        --padding-start: 12px;
-        --padding-end: 12px;
-        --padding-top: 6px;
-        --padding-bottom: 6px;
-        height: auto; /* Agar tombol menyesuaikan konten */
-        text-transform: none; /* Jangan huruf kapital semua */
-        border-radius: 15px; /* Sudut tombol copy */
-      }
-    }
-
-    &.message-sent {
-      justify-content: flex-end;
-
-      .bubble {
-        background-color: #f7fff1;
-        color: black;
-        border-bottom-left-radius: 5px; /* Sedikit kurang bulat di sisi 'tail' */
-
-        .message-time {
-          color: black;
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          border: 8px solid transparent; /* Ukuran tail lebih kecil */
-          border-left-color: var(--ion-color-primary);
-          border-bottom-color: var(--ion-color-primary);
-          bottom: 0;
-          right: -7px; /* Menyesuaikan posisi tail */
-          z-index: 1; /* Pastikan tail di atas bubble */
-        }
-      }
-    }
-
-    &.message-received {
-      justify-content: flex-start;
-
-      .bubble {
-        background-color: #f7fff1;
-        color: black;
-        border-bottom-left-radius: 5px; /* Sedikit kurang bulat di sisi 'tail' */
-
-        .message-time {
-          color: black;
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          border: 8px solid transparent; /* Ukuran tail lebih kecil */
-          border-right-color: #ffffff;
-          border-bottom-color: #ffffff;
-          bottom: 0;
-          left: -7px; /* Menyesuaikan posisi tail */
-          z-index: 1;
-        }
-      }
+      background: #B09070; /* Warna coklat pudar untuk pesan terkirim */
+      color: rgb(0, 0, 0);
+      border-bottom-right-radius: 5px; // Slightly less rounded on the bottom right for sent
+      border-bottom-left-radius: 20px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
     }
   }
 
-  .typing-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    margin-left: 15px; /* Sesuaikan dengan padding gelembung */
-    margin-top: 5px;
-    color: black;
-    font-size: 0.9em;
+  &.message-received {
+    justify-content: flex-start; // Align received messages to the left
+    .bubble {
+      background: #E0E0E0; /* Warna abu-abu terang untuk pesan diterima */
+      color: black; /* Warna teks hitam untuk kontras yang lebih baik */
+      border-bottom-left-radius: 5px; // Slightly less rounded on the bottom left for received
+      border-bottom-right-radius: 20px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+    }
+  }
 
-    ion-spinner {
-      margin-right: 8px;
-      transform: scale(0.8); /* Ukuran spinner sedikit lebih kecil */
+  .bubble {
+    max-width: 80%; // Limit bubble width
+    padding: 12px 15px; // Padding inside the bubble
+    border-radius: 20px; // Rounded corners for bubbles
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // Subtle shadow
+    position: relative;
+    display: flex;
+    flex-direction: column; // Stack text and time
+
+    p.message-text {
+      margin: 0; // Remove default paragraph margin
+      word-wrap: break-word; // Ensure long words break
+      white-space: pre-wrap; // Preserve whitespace and line breaks
     }
-    .typing-text {
-      font-style: italic;
+
+    span.message-time {
+      font-size: 0.7em;
+      opacity: 0.7;
+      align-self: flex-end; // Align time to the right within the bubble
+      margin-top: 5px; // Space between text and time
     }
+
+    .copy-format-button {
+      margin-top: 10px; // Space above the button
+      --border-radius: 15px; // Rounded button corners
+      font-size: 0.8em;
+      height: 30px; // Smaller height for the button
+    }
+  }
+}
+
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  margin-top: 10px;
+  color: #000000;
+
+  ion-spinner {
+    margin-right: 8px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .typing-text {
+    font-style: italic;
   }
 }
 
 .chat-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-  background: #38ffbd; /* Pastikan background footer putih */
-  box-shadow: 0 2px 8px rgba(221, 192, 192, 0.1); /* Bayangan yang lebih kuat untuk memisahkan */
-  transition: bottom 0.3s ease-in-out; /* Transisi untuk keyboard */
+  width: 100%;
+  padding: 5px 0; // Padding for the footer area
+  background: var(--ion-color-light, #f4f5f8); // Match content background
+  border-top: 1px solid var(--ion-color-medium-tint, #dcdcdc); // Separator line
+  position: relative; // For keyboard adjustment
 
-  ion-toolbar {
-    --background: transparent; /* Toolbar di dalam footer harus transparan */
-    padding: 8px 10px; /* Padding untuk toolbar */
-  }
+  ion-toolbar.chat-input-toolbar {
+    --background: transparent; // Make toolbar background transparent
+    --min-height: auto; // Allow height to adjust
 
-  .chat-input-container {
-    --background: transparent;
-    --inner-padding-end: 0;
-    --inner-padding-start: 0;
-    align-items: center; /* Memastikan item di tengah secara vertikal */
+    ion-item.chat-input-container {
+      --background: #ffc65d; /* Warna putih pasir untuk bar input chat */
+      border-radius: 25px; // Rounded input container
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // Shadow for input
+      margin: 0 10px; // Margin from sides
+      padding-inline-start: 15px; // Padding inside input
+      color: rgb(0, 0, 0);
+      align-items: center; // Vertically align content
 
-    ion-textarea {
-      --padding-start: 18px; /* Padding lebih dalam */
-      --padding-end: 18px;
-      --padding-top: 10px;
-      --padding-bottom: 10px;
-      border: 1px solid var(--ion-color-medium); /* Border lembut */
-      border-radius: 25px; /* Sudut sangat bulat */
-      background-color: #ffae62; /* Background input lebih terang */
-      color: rgb(39, 0, 0); /* Warna teks input */
-      margin: 0; /* Hapus margin yang tidak perlu */
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.733); /* Efek cekung lebih lembut */
-      resize: none; /* Nonaktifkan resize default browser */
-      flex-grow: 1; /* Biarkan textarea mengambil ruang */
-      max-height: 120px; /* Batasi tinggi maksimum textarea */
-      overflow-y: auto; /* Aktifkan scroll jika teks terlalu panjang */
-    }
+      ion-textarea {
+        --padding-start: 0;
+        --padding-end: 0;
+        --padding-top: 10px;
+        --padding-bottom: 10px;
+        font-size: 1.05em;
+        line-height: 1.4;
+        max-height: 100px; // Limit textarea height
+        overflow-y: auto;
+      }
 
-    .send-button {
-      margin-left: 8px; /* Jarak antara textarea dan tombol send */
-      --padding-start: 12px;
-      --padding-end: 12px;
-      --padding-top: 10px;
-      --padding-bottom: 10px;
-      height: 48px; /* Pastikan tombol send memiliki tinggi yang konsisten */
-      width: 48px;
-      border-radius: 50%; /* Tombol bulat */
-      background: #6e3b00; /* Warna tombol send */
-      color: #38ffbd;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Bayangan tombol send */
-      font-size: 1.3em; /* Ukuran ikon send */
-
-      &:disabled {
-        opacity: 0.6;
-        box-shadow: none;
+      .send-button {
+        --border-radius: 50%; // Circular button
+        width: 45px;
+        height: 45px;
+        margin-left: 10px; // Space between textarea and button
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); // Shadow for send button
       }
     }
   }
 }
 
-/* Penyesuaian untuk keyboard */
-.keyboard-is-open .chat-footer {
-  position: absolute;
-  /* `bottom` akan diatur oleh JavaScript */
-  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15); /* Bayangan lebih kuat saat keyboard muncul */
-}
+// Responsive adjustments
+@media (min-width: 768px) {
+  .chat-messages {
+    padding: 20px; // More padding on larger screens
+  }
 
-ion-content {
-  --padding-bottom: 80px; /* Beri ruang ekstra di bawah content agar tidak tertutup footer */
+  .chat-footer ion-item.chat-input-container {
+    max-width: 700px; // Max width for input on larger screens
+    margin: 0 auto; // Center the input
+  }
 }

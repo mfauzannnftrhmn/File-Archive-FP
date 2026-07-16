@@ -1,19 +1,16 @@
 <ion-content
   [fullscreen]="true"
-  class="flex items-center justify-center h-full bg-gradient-to-br from-[#FFF0E6] via-white to-[#FFE0D0] dark:from-gray-900 dark:via-gray-800 dark:to-[#3E2A23]"
+  class="flex items-center justify-center h-full 
+    bg-gradient-to-br from-[#FDE2E4] via-[#FAD2E1] to-[#E2C2F0] 
+    dark:from-[#2C1A2E] dark:via-[#3A2340] dark:to-[#1A0F1F]"
 >
-  <div class="absolute top-0 left-0 w-full overflow-hidden">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" class="w-full h-auto opacity-75">
-      <path fill="rgba(187, 62, 0, 0.1)" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,149.3C960,160,1056,160,1152,138.7C1248,117,1344,75,1392,53.3L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
-    </svg>
-  </div>
-  
+
   <div class="absolute bottom-0 right-0 hidden md:block">
-    <div class="w-64 h-64 bg-[#BB3E00] opacity-5 rounded-full -mb-20 -mr-20"></div>
+    <div class="w-64 h-64 bg-[#E75480] opacity-10 rounded-full -mb-20 -mr-20"></div>
   </div>
   
   <div class="absolute top-1/4 left-0 hidden md:block">
-    <div class="w-40 h-40 bg-[#BB3E00] opacity-5 rounded-full -ml-20"></div>
+    <div class="w-40 h-40 bg-[#E75480] opacity-10 rounded-full -ml-20"></div>
   </div>
 
   <div
@@ -22,25 +19,25 @@
   >
  
     <div class="flex justify-center -mt-16 mb-6">
-      <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-[#BB3E00]/20">
+      <div class="w-20 h-20 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg border-4 border-[#E75480]/20">
         <img
           src="assets/icon/logo.png"
           alt="Logo"
-          class="w-12 h-12"
+          class="w-22 h-25"
         />
       </div>
     </div>
 
     <div class="text-center mb-8">
-      <h2 class="text-2xl font-bold text-[#BB3E00] dark:text-[#FF8C5A]">Selamat Datang</h2>
-      <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Login untuk melanjutkan</p>
+      <h2 class="text-2xl font-bold text-[#E75480] dark:text-[#FF8FB1]">Selamat Datang Di Paud Teratai IV</h2>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mt-2">Login untuk melanjutkan Pembelajaran</p>
     </div>
     
     <form class="space-y-5" (ngSubmit)="doSubmit()">
 
-      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
+      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#E75480] dark:focus-within:ring-[#FF8FB1] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
-          <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
+          <div class="bg-[#E75480] dark:bg-[#D14270] p-3 flex items-center justify-center">
             <ion-icon
               name="mail-outline"
               class="text-white text-xl"
@@ -58,9 +55,9 @@
         </div>
       </div>
 
-      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#BB3E00] dark:focus-within:ring-[#FF8C5A] border border-gray-200 dark:border-gray-700">
+      <div class="relative bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 focus-within:ring-2 focus-within:ring-[#E75480] dark:focus-within:ring-[#FF8FB1] border border-gray-200 dark:border-gray-700">
         <div class="flex items-center">
-          <div class="bg-[#BB3E00] dark:bg-[#A03500] p-3 flex items-center justify-center">
+          <div class="bg-[#E75480] dark:bg-[#D14270] p-3 flex items-center justify-center">
             <ion-icon
               name="lock-closed-outline"
               class="text-white text-xl"
@@ -79,9 +76,7 @@
       </div>
 
       <div class="flex justify-between items-center text-sm">
-        <div class="flex items-center space-x-2">
-        </div>
-        <a [routerLink]="['/lupapassword']" class="text-[#BB3E00] dark:text-[#FF8C5A] font-medium hover:underline transition-colors">Lupa password?</a>
+        <a [routerLink]="['/lupapassword']" class="text-[#E75480] dark:text-[#FF8FB1] font-medium hover:underline transition-colors">Lupa password?</a>
       </div>
 
       <ion-button
@@ -89,14 +84,14 @@
         class="mt-8 font-medium text-white tracking-wide overflow-hidden"
         (click)="doSubmit()"
         shape="round"
-        style="--background: #BB3E00; --background-activated: #A03500; --background-hover: #A03500;"
+        style="--background: #E75480; --background-activated: #D14270; --background-hover: #D14270;"
       >
         <ion-icon name="log-in-outline" slot="start"></ion-icon>
         Masuk
       </ion-button>
 
       <p class="text-center text-xs text-gray-500 dark:text-gray-400 mt-6">
-        Butuh bantuan? <a href="/option" class="text-[#BB3E00] dark:text-[#FF8C5A] hover:underline">Silahkan tanya Chatky</a>
+        Butuh bantuan? <a href="/option" class="text-[#E75480] dark:text-[#FF8FB1] hover:underline">Silahkan tanya Kakoi</a>
       </p>
     </form>
   </div>

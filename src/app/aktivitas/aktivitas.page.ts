@@ -43,7 +43,7 @@ export class AktivitasPage implements OnInit {
 
   public recentLetters: PengajuanSurat[] = [];
   public isLoading: boolean = true;
-  private apiUrl = 'https://simpap.my.id/public/api';
+  private apiUrl = 'https://simpap.kakoi.my.id/api';
 
   constructor(
     private http: HttpClient,

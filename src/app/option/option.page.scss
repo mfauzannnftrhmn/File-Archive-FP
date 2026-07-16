@@ -1,12 +1,12 @@
 ion-content {
-  --background: #FAF3E0; /* Cream untuk light mode */
-  background-color: #FAF3E0 !important;
+  --background: #d2819e; /* Cream untuk light mode */
+  background-color: #d2819e !important;
 }
 
 @media (prefers-color-scheme: dark) {
   ion-content {
-    --background: #7c543b; /* Cream gelap untuk dark mode */
-    background-color: #FFF0E6 !important;
+    --background: #d2819e /* Cream gelap untuk dark mode */
+    background-color: #d2819e !important;
   }
 }
   :root {
@@ -23,8 +23,8 @@ ion-content {
     /* Warna baru untuk bintang - disesuaikan dengan coklat/cream */
     --star-color: #E0C9A6; /* Krem hangat, mirip warna pasir */
     --star-shadow: rgba(224, 201, 166, 0.7); /* Bayangan bintang yang cocok */
-    --background-gradient-start: #D2B48C; /* Coklat muda */
-    --background-gradient-end: #C4A484; /* Coklat lebih tua */
+    --background-gradient-start: ##d2819e; /* Coklat muda */
+    --background-gradient-end: ##d2819e; /* Coklat lebih tua */
   }
 
   .star-background {
@@ -153,25 +153,53 @@ ion-content {
     transform: translateY(-5px); /* Efek angkat saat hover */
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
-
 .loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
+}
+
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
-  color: #fff;
+  background-color: #a4400f; /* bisa diganti sesuai tema */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
+
+.loading-image {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover; /* menyesuaikan ukuran layar */
+  animation: pulse 2s infinite;
+}
+
 .loading-text {
-  margin-top: 16px;
-  font-size: 1.2em;
-  color: #ffffff; /* ✅ Teks putih agar kontras */
+  position: absolute;
+  bottom: 40px;
+  color: #ffc409;
+  font-size: 20px;
   font-weight: 600;
+  text-shadow: 1px 1px 2px #000;
+  text-align: center;
 }
-  .center-spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.9; }
+}

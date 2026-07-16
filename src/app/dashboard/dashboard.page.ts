@@ -74,34 +74,59 @@ goToChatWithAdminTemplate() {
     }
   });
 }
+// dashboard.page.ts
+async presentErrorAlert(message: string) {
+  const alert = await this.alertController.create({
+    header: 'Terjadi Kesalahan',
+    message,
+    buttons: ['OK']
+  });
+  await alert.present();
+}
+
 checkPlayStoreUpdate() {
   if (this.platform.is('android')) {
     console.log('📱 Mengecek update Play Store...');
-    // ID aplikasi di Play Store (ganti sesuai App ID kamu)
-    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.kakoi.app'; 
+    
+    this.apiService.getPlayStoreVersion().subscribe({
+      next: (response: any) => {
+        if (response && response.latestVersion) {
+          this.latestAppVersion = response.latestVersion;
+          console.log(`Versi dari Play Store: ${this.latestAppVersion}, versi lokal: ${this.currentAppVersion}`);
 
-    // Buka Play Store jika user klik "Update Sekarang"
-    this.alertController.create({
-      header: 'Pembaruan Tersedia',
-      message: 'Versi baru aplikasi tersedia di Play Store. Perbarui sekarang untuk mendapatkan fitur terbaru!',
-      buttons: [
-        {
-          text: 'Nanti',
-          role: 'cancel'
-        },
-        {
-          text: 'Update Sekarang',
-          handler: async () => {
-            console.log('🔗 Membuka Play Store:', playStoreUrl);
-            await Browser.open({ url: playStoreUrl });
+          const isOutdated = this.compareVersions(this.latestAppVersion, this.currentAppVersion);
+
+          if (isOutdated) {
+            this.alertController.create({
+              header: 'Pembaruan Tersedia',
+              message: `Versi baru (${this.latestAppVersion}) tersedia di Play Store. Perbarui sekarang?`,
+              buttons: [
+                { text: 'Nanti', role: 'cancel' },
+                {
+                  text: 'Update Sekarang',
+                  handler: async () => {
+                    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.kakoi.app';
+                    await Browser.open({ url: playStoreUrl });
+                  }
+                }
+              ]
+            }).then(alert => alert.present());
+          } else {
+            console.log('✅ Tidak ada pembaruan di Play Store.');
           }
         }
-      ]
-    }).then(alert => alert.present());
+      },
+    error: (err) => {
+  console.error('❌ Gagal mendapatkan versi Play Store:', JSON.stringify(err, null, 2));
+  this.presentErrorAlert('Gagal mengambil informasi versi aplikasi dari Play Store.');
+}
+
+    });
   } else {
-    console.log('Platform bukan Android, lewati cek Play Store.');
+    console.log('Bukan platform Android, lewati cek update Play Store.');
   }
 }
+
     ngOnInit() {
     this.loadAllData();
     this.checkForUpdate();
@@ -284,160 +309,151 @@ checkPlayStoreUpdate() {
     }
   }
 
-  /**
-   * Fungsi untuk memeriksa pembaruan aplikasi dari server.
-   * Membandingkan versi saat ini dengan versi terbaru yang tersedia.
-   */
-  checkForUpdate() {
-  console.log('Mengecek pembaruan aplikasi...');
-  this.apiService.getLatestAppVersion().subscribe({
-    next: (response: any) => {
-      if (response && response.latestVersion) {
-        this.latestAppVersion = response.latestVersion;
-        this.downloadUpdateUrl = response.downloadUrl;
-        console.log(`Versi saat ini: ${this.currentAppVersion}, Versi terbaru: ${this.latestAppVersion}`);
+    /**
+     * Fungsi untuk memeriksa pembaruan aplikasi dari server.
+     * Membandingkan versi saat ini dengan versi terbaru yang tersedia.
+     */
+    checkForUpdate() {
+  console.log('🔍 Mengecek versi dari Play Store via backend...');
 
-        if (this.compareVersions(this.latestAppVersion, this.currentAppVersion)) {
-          this.showUpdatePrompt = true;
-          this.updateMessage = `Pembaruan tersedia! V. ${this.latestAppVersion}`;
-          this.presentToast(`Pembaruan tersedia ke versi ${this.latestAppVersion}!`, 'warning');
-        } else {
-          console.log('Aplikasi sudah versi terbaru.');
-        }
+  this.apiService.getPlayStoreVersion().subscribe({
+    next: (response: any) => {
+      const latest = response.latestVersion;
+      const url = response.playStoreUrl;
+
+      if (latest && this.compareVersions(latest, this.currentAppVersion)) {
+        this.latestAppVersion = latest;
+        this.downloadUpdateUrl = url;
+        this.showUpdatePrompt = true;
+        this.updateMessage = `Pembaruan tersedia! V. ${latest}`;
+        this.presentToast(`Pembaruan tersedia ke versi ${latest}!`, 'warning');
       } else {
-        console.warn('Respon API untuk versi terbaru tidak valid atau kosong.');
+        console.log('✅ Aplikasi sudah versi terbaru.');
       }
     },
     error: (err) => {
-      if (
-        err.status === 200 &&
-        typeof err.error === 'string' &&
-        err.error.startsWith('PK')
-      ) {
-        console.warn('Server mengembalikan file, bukan JSON. Pastikan endpoint check-update adalah JSON.');
-        this.presentToast('Format response pembaruan tidak valid.', 'danger');
-      } else {
-        console.error('Gagal mendapatkan versi terbaru dari server:', err);
-        this.presentToast('Gagal cek pembaruan aplikasi.', 'danger');
-      }
+      console.error('❌ Gagal mengambil versi dari Play Store:', err);
+      this.presentToast('Gagal cek pembaruan aplikasi.', 'danger');
     }
   });
 }
-checkIfAppIsLatestVersion() {
-  this.apiService.getLatestAppVersion().subscribe({
-    next: (response: any) => {
-      if (response && response.latestVersion) {
-        const latest = response.latestVersion;
-        const current = this.currentAppVersion;
 
-        if (this.compareVersions(latest, current)) {
-          console.log("Aplikasi BELUM diperbarui.");
-          localStorage.setItem('appIsLatest', 'false');
-        } else {
-          console.log("Aplikasi SUDAH versi terbaru.");
-          localStorage.setItem('appIsLatest', 'true');
+  checkIfAppIsLatestVersion() {
+    this.apiService.getLatestAppVersion().subscribe({
+      next: (response: any) => {
+        if (response && response.latestVersion) {
+          const latest = response.latestVersion;
+          const current = this.currentAppVersion;
+
+          if (this.compareVersions(latest, current)) {
+            console.log("Aplikasi BELUM diperbarui.");
+            localStorage.setItem('appIsLatest', 'false');
+          } else {
+            console.log("Aplikasi SUDAH versi terbaru.");
+            localStorage.setItem('appIsLatest', 'true');
+          }
         }
+      },
+      error: (err) => {
+        console.error("Gagal mengecek versi terbaru", err);
       }
+    });
+  }
+  reportUserVersion() {
+    const currentUserStr = localStorage.getItem('currentUser');
+    const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
+
+    if (!currentUser?.email || !currentUser?.name) return;
+
+    console.log('📤 Mengirim versi aplikasi pengguna:');
+  console.log('Email:', currentUser.email);
+  console.log('Name:', currentUser.name);
+  console.log('APP_VERSION saat ini:', this.currentAppVersion);
+
+  this.apiService.sendUserAppVersion(
+    currentUser.email,
+    currentUser.name,
+    this.currentAppVersion
+  ).subscribe({
+    next: () => {
+      console.log('✅ Versi aplikasi pengguna berhasil dikirim.');
     },
     error: (err) => {
-      console.error("Gagal mengecek versi terbaru", err);
+      console.error('❌ Gagal kirim versi aplikasi:', err);
     }
   });
-}
-reportUserVersion() {
-  const currentUserStr = localStorage.getItem('currentUser');
-  const currentUser = currentUserStr ? JSON.parse(currentUserStr) : null;
 
-  if (!currentUser?.email || !currentUser?.name) return;
-
-  console.log('📤 Mengirim versi aplikasi pengguna:');
-console.log('Email:', currentUser.email);
-console.log('Name:', currentUser.name);
-console.log('APP_VERSION saat ini:', this.currentAppVersion);
-
-this.apiService.sendUserAppVersion(
-  currentUser.email,
-  currentUser.name,
-  this.currentAppVersion
-).subscribe({
-  next: () => {
-    console.log('✅ Versi aplikasi pengguna berhasil dikirim.');
-  },
-  error: (err) => {
-    console.error('❌ Gagal kirim versi aplikasi:', err);
   }
-});
 
-}
+    /**
+     * Fungsi untuk membandingkan dua string versi (format X.Y.Z).
+     * Mengembalikan true jika 'latest' lebih baru dari 'current'.
+     * @param latest Versi terbaru (string).
+     * @param current Versi saat ini (string).
+     * @returns True jika versi terbaru lebih tinggi, false jika tidak.
+     */
+    compareVersions(latest: string, current: string): boolean {
+      const latestParts = latest.split('.').map(Number);
+      const currentParts = current.split('.').map(Number);
 
-  /**
-   * Fungsi untuk membandingkan dua string versi (format X.Y.Z).
-   * Mengembalikan true jika 'latest' lebih baru dari 'current'.
-   * @param latest Versi terbaru (string).
-   * @param current Versi saat ini (string).
-   * @returns True jika versi terbaru lebih tinggi, false jika tidak.
-   */
-  compareVersions(latest: string, current: string): boolean {
-    const latestParts = latest.split('.').map(Number);
-    const currentParts = current.split('.').map(Number);
+      for (let i = 0; i < Math.max(latestParts.length, currentParts.length); i++) {
+        const l = latestParts[i] || 0;
+        const c = currentParts[i] || 0;
 
-    for (let i = 0; i < Math.max(latestParts.length, currentParts.length); i++) {
-      const l = latestParts[i] || 0;
-      const c = currentParts[i] || 0;
-
-      if (l > c) {
-        return true;
+        if (l > c) {
+          return true;
+        }
+        if (l < c) {
+          return false;
+        }
       }
-      if (l < c) {
-        return false;
-      }
+      return false;
     }
-    return false;
-  }
 
-  /**
-   * Menangani aksi klik pada tombol 'Update Sekarang'.
-   * Di sini Anda akan mengimplementasikan unduhan langsung.
-   */
-  navigateToUpdate() {
-    if (this.downloadUpdateUrl) {
-      console.log('Mencoba mengunduh dari:', this.downloadUpdateUrl);
-      
-      // Membuat elemen anchor tersembunyi untuk memicu unduhan
-      const link = document.createElement('a');
-      link.href = this.downloadUpdateUrl;
-      link.target = '_blank'; // Membuka di tab/jendela baru
-      link.download = `simpap.apk`; // Menentukan nama file yang ingin diunduh
+    /**
+     * Menangani aksi klik pada tombol 'Update Sekarang'.
+     * Di sini Anda akan mengimplementasikan unduhan langsung.
+     */
+    navigateToUpdate() {
+  const packageName = 'com.kakoi.app';
+  const androidIntentUrl = `market://details?id=${packageName}`;
+  const webFallbackUrl = `https://play.google.com/store/apps/details?id=${packageName}`;
 
-      document.body.appendChild(link);
-      link.click(); // Memicu klik untuk memulai unduhan
-      document.body.removeChild(link); // Hapus elemen setelah unduhan dimulai
+  try {
+    // Coba buka intent Android
+    window.location.href = androidIntentUrl;
 
-      this.presentToast('Memulai unduhan pembaruan...', 'primary');
-    } else {
-      this.presentToast('Tautan unduhan tidak tersedia.', 'danger');
-    }
-    this.dismissUpdatePrompt(); // Sembunyikan prompt setelah klik
-  }
-
-  /**
-   * Fungsi untuk menutup prompt pembaruan.
-   */
-  dismissUpdatePrompt() {
-    this.showUpdatePrompt = false;
-  }
-
-  // Fungsi refresh "pull-to-refresh"
-  doRefresh(event: any) {
-    console.log('Memulai operasi refresh');
-    this.loadAllData();
-    this.checkForUpdate(); // Juga cek pembaruan saat refresh
-
+    // Fallback ke versi web setelah delay jika market:// gagal (tidak dijalankan di perangkat Android)
     setTimeout(() => {
-      console.log('Operasi refresh selesai');
-      event.target.complete();
-    }, 1500);
+      window.open(webFallbackUrl, '_blank');
+    }, 1000);
+  } catch (error) {
+    // Jika terjadi error langsung buka versi web
+    window.open(webFallbackUrl, '_blank');
   }
+
+  this.dismissUpdatePrompt();
+}
+
+
+    /**
+     * Fungsi untuk menutup prompt pembaruan.
+     */
+    dismissUpdatePrompt() {
+      this.showUpdatePrompt = false;
+    }
+
+    // Fungsi refresh "pull-to-refresh"
+    doRefresh(event: any) {
+      console.log('Memulai operasi refresh');
+      this.loadAllData();
+      this.checkForUpdate(); // Juga cek pembaruan saat refresh
+
+      setTimeout(() => {
+        console.log('Operasi refresh selesai');
+        event.target.complete();
+      }, 1500);
+    }
 
   // Fungsi untuk menangani aksi klik pada item informasi
   handleInfoClick(infoItem: any) {

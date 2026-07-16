@@ -59,7 +59,7 @@ export class TemplatesuratPage implements OnInit {
   constructor(private sanitizer: DomSanitizer, private router: Router) {}
 
   ngOnInit() {
-    this.filteredTemplates = this.allTemplates; // Tampilkan semua saat awal
+    this.filteredTemplates = this.allTemplates; 
   }
 
   filterByCategory(category: string) {
@@ -83,7 +83,6 @@ export class TemplatesuratPage implements OnInit {
   }
 
   viewTemplate(template: any) {
-    // Fungsi saat tombol "Lihat" diklik
     console.log('Lihat template:', template);
   }
 }
